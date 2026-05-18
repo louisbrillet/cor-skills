@@ -20,22 +20,22 @@ There is also a meta dimension: the harness remembers. After each task, COR writ
 ## Install
 
 ```bash
-npx skills add louisbrillet/Coding-On-Rails
+npx skills add louisbrillet/cor-skills
 ```
 
 The `skills` CLI will ask which skills and which agents to install to. Supports multi-select for both. Works with GitHub Copilot, Codex, Claude Code, Cursor, and [50+ other agents](https://github.com/vercel-labs/skills#supported-agents).
 
 ## Skills
 
-| Skill | Phase | What it does |
-|---|---|---|
-| `cor-setup` | Init | Detects your stack, configures check commands, sets plan storage |
-| `cor-think` | 1 — Think | Interrogates you with targeted questions, ends with a confidence summary |
-| `cor-plan` | 2 — Plan | Breaks the work into an ordered task list, saved to your chosen storage |
-| `cor-code` | 3 — Code | Implements tasks autonomously, running all checks after each; pauses only when new information changes the approach |
-| `cor-test` | 4 — Test | Runs only the tests that were planned — unit, integration, or UAT |
-| `cor-work` | Any | Entry point: reads plan state and routes to the right phase automatically |
-| `token-caveman` | Always | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy |
+| Skill           | Phase     | What it does                                                                                                        |
+| --------------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
+| `cor-setup`     | Init      | Detects your stack, configures check commands, sets plan storage                                                    |
+| `cor-think`     | 1 — Think | Interrogates you with targeted questions, ends with a confidence summary                                            |
+| `cor-plan`      | 2 — Plan  | Breaks the work into an ordered task list, saved to your chosen storage                                             |
+| `cor-code`      | 3 — Code  | Implements tasks autonomously, running all checks after each; pauses only when new information changes the approach |
+| `cor-test`      | 4 — Test  | Runs only the tests that were planned — unit, integration, or UAT                                                   |
+| `cor-work`      | Any       | Entry point: reads plan state and routes to the right phase automatically                                           |
+| `token-caveman` | Always    | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy       |
 
 ## How it works
 
@@ -93,14 +93,14 @@ After completing each task, `cor-code` assesses what was discovered and appends 
 
 `cor-setup` detects your stack and proposes sensible check defaults:
 
-| Stack | Default checks |
-|---|---|
+| Stack                        | Default checks                               |
+| ---------------------------- | -------------------------------------------- |
 | TypeScript + ESLint + Vitest | `tsc --noEmit`, `eslint --fix`, `vitest run` |
-| TypeScript + Biome | `tsc --noEmit`, `biome check --apply` |
-| Ruby on Rails | `rubocop -a` |
-| Python | `ruff check --fix`, `mypy` |
-| Go | `go vet ./...`, `go build ./...` |
-| Rust | `cargo check`, `cargo clippy` |
+| TypeScript + Biome           | `tsc --noEmit`, `biome check --apply`        |
+| Ruby on Rails                | `rubocop -a`                                 |
+| Python                       | `ruff check --fix`, `mypy`                   |
+| Go                           | `go vet ./...`, `go build ./...`             |
+| Rust                         | `cargo check`, `cargo clippy`                |
 
 You can remove, modify, or add any command at setup time, or re-run `cor-setup` anytime.
 
@@ -108,11 +108,11 @@ You can remove, modify, or add any command at setup time, or re-run `cor-setup` 
 
 COR adapts its behaviour to the agent running it:
 
-| Agent | Task tracking | Questions |
-|---|---|---|
-| Claude Code | `TodoWrite` | `AskUserQuestion` (multiple choice) |
-| GitHub Copilot | `todo_write` / `todo_read` | `vscode_askQuestions` |
-| Codex / other | `.cor/plan.md` directly | Inline numbered list |
+| Agent          | Task tracking              | Questions                           |
+| -------------- | -------------------------- | ----------------------------------- |
+| Claude Code    | `TodoWrite`                | `AskUserQuestion` (multiple choice) |
+| GitHub Copilot | `todo_write` / `todo_read` | `vscode_askQuestions`               |
+| Codex / other  | `.cor/plan.md` directly    | Inline numbered list                |
 
 All phases work across all three environments. The agent detects which tools are available at startup and uses the right ones throughout the session.
 
