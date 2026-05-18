@@ -1,0 +1,21 @@
+{
+  "name": "cor-skills",
+  "version": "0.1.0",
+  "description": "COR (CodingOnRails) — Think, Plan, Code, Test methodology skills for AI coding agents",
+  "files": [
+    "skills/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "claude-code",
+    "github-copilot",
+    "codex",
+    "ai",
+    "methodology",
+    "skills",
+    "coding-on-rails"
+  ],
+  "license": "MIT"
+}

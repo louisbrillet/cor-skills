@@ -1,0 +1,12 @@
+{
+  "name": "cor-skills",
+  "skills": [
+    "./skills/cor-code",
+    "./skills/cor-plan",
+    "./skills/cor-setup",
+    "./skills/cor-test",
+    "./skills/cor-think",
+    "./skills/cor-work",
+    "./skills/token-caveman"
+  ]
+}
