@@ -13,11 +13,11 @@ You are opening the Code phase of the COR (CodingOnRails) methodology. Implement
 
 Determine which task-tracking and question tools are available. Probe in this order:
 
-| Priority | Signal | Environment | Todo tool | Question tool |
-|---|---|---|---|---|
-| 1 | `TodoWrite` available | Claude Code | `TodoWrite` | `AskUserQuestion` |
-| 2 | `todo_write` MCP available | Copilot | `todo_write` / `todo_read` | `vscode_askQuestions` |
-| 3 | neither | Codex / other | none — `.cor/plan.md` | inline numbered list |
+| Priority | Signal                     | Environment   | Todo tool                  | Question tool         |
+| -------- | -------------------------- | ------------- | -------------------------- | --------------------- |
+| 1        | `TodoWrite` available      | Claude Code   | `TodoWrite`                | `AskUserQuestion`     |
+| 2        | `todo_write` MCP available | Copilot       | `todo_write` / `todo_read` | `vscode_askQuestions` |
+| 3        | neither                    | Codex / other | none — `.cor/plan.md`      | inline numbered list  |
 
 Store as **active environment**. Use consistently across all steps.
 
@@ -30,6 +30,7 @@ Before reading config or loading the plan, detect whether a prior run was interr
 ### Easy case (same session)
 
 Scan prior conversation for the most recent task that was started. Verify:
+
 - Step 3 checks passed for that task.
 - `TodoWrite` was called marking it `"completed"` (Step 4 completed).
 
@@ -41,12 +42,14 @@ Either missing → interrupted; cross-validate with checkpoint below.
 **1. Check `.cor/checkpoint.md`**
 
 If it exists, read it:
+
 ```
 plan: .cor/plan_2_checkout_flow.md
 task: T03
 phase: implementing   # implementing | checks | marking-complete | done
 started: 2026-05-12T14:30:00
 ```
+
 If `phase: done` → task finished cleanly. Proceed to Step 1.
 
 Otherwise task was interrupted at that phase. Use the `plan:` field as the active plan file. Proceed to Severity Assessment.
@@ -54,6 +57,7 @@ Otherwise task was interrupted at that phase. Use the `plan:` field as the activ
 **2. Fallback — git state**
 
 If no checkpoint (or `phase: done`) but `git status` reports uncommitted changes:
+
 - Run `git diff --name-only` to list changed files.
 - Cross-reference against `.cor/plan*.md` files to identify the likely interrupted task.
 - Treat phase as unknown.
@@ -67,23 +71,25 @@ No checkpoint, `phase: done`, or no dirty git state → no prior interruption. P
 
 Run all configured checks from `.cor/config.md`.
 
-| Result | Action |
-|---|---|
-| All checks pass | Safe. Re-run the interrupted task from the beginning of Step 2. |
+| Result                           | Action                                                                                   |
+| -------------------------------- | ---------------------------------------------------------------------------------------- |
+| All checks pass                  | Safe. Re-run the interrupted task from the beginning of Step 2.                          |
 | Only linter / formatter failures | Auto-fix (`eslint --fix`, `rubocop -a`, `ruff --fix`, etc.), re-run checks, then resume. |
-| Test failures or compile errors | **Pause.** Report: interrupted task, phase, failing check output, and options below. |
-| Can't map dirty files to a task | **Pause.** Show `git diff --stat` summary and ask how to proceed. |
+| Test failures or compile errors  | **Pause.** Report: interrupted task, phase, failing check output, and options below.     |
+| Can't map dirty files to a task  | **Pause.** Show `git diff --stat` summary and ask how to proceed.                        |
 
 When pausing, use the native question widget:
-- *Claude Code*: `AskUserQuestion` — options: re-implement task from scratch / skip task and continue / investigate manually.
-- *Copilot*: `vscode_askQuestions` with same choices.
-- *Codex*: Inline numbered list, `**(Recommended)**` on the safest default, plus "Other — describe in free text."
+
+- _Claude Code_: `AskUserQuestion` — options: re-implement task from scratch / skip task and continue / investigate manually.
+- _Copilot_: `vscode_askQuestions` with same choices.
+- _Codex_: Inline numbered list, `**(Recommended)**` on the safest default, plus "Other — describe in free text."
 
 ---
 
 ## Step 1 — Read Config and Plan
 
 Read `.cor/config.md`. Extract:
+
 - `Checks` — commands to run after each task
 - `Plan Storage` — where the plan lives (`markdown`, `memory`, or `session`)
 
@@ -106,15 +112,19 @@ Extract all tasks (checked and unchecked) from the active plan file into a worki
 **Claude Code (`TodoWrite`)**
 
 Read `.cor/plan.md` (or memory). Call `TodoWrite` **once, right now, with every task in the plan** — all of them, not just the first. This is mandatory before any implementation begins. Map statuses: `- [x]` → `"completed"`, in-progress marker → `"in_progress"`, `- [ ]` → `"pending"`. `TodoWrite` replaces the entire list, so every task must be present in every call:
+
 ```json
-{ "todos": [
+{
+  "todos": [
     { "content": "T01 — description [tag]", "status": "completed" },
     { "content": "T02 — description [tag]", "status": "pending" },
     { "content": "T03 — description [tag]", "status": "pending" },
     { "content": "T04 — description [tag]", "status": "pending" },
     { "content": "T05 — description [tag]", "status": "pending" }
-]}
+  ]
+}
 ```
+
 If the session already has the full plan loaded (all tasks present), skip this call and use the existing list. If any tasks are missing, reload the full list.
 
 **Copilot (`todo_write` / `todo_read`)**
@@ -123,15 +133,30 @@ If the session already has the full plan loaded (all tasks present), skip this c
    - Result contains todos matching this plan → use them directly; skip step 2.
    - Result is empty or null → proceed to step 2.
 2. Read `.cor/plan.md` (or memory). Call `todo_write` with all tasks:
+
 ```json
-{ "title": "COR Plan", "todos": [
-    { "id": "T01", "content": "T01 — description [tag]", "status": "pending",   "priority": "medium" },
-    { "id": "T02", "content": "T02 — description [tag]", "status": "completed", "priority": "medium" }
-]}
+{
+  "title": "COR Plan",
+  "todos": [
+    {
+      "id": "T01",
+      "content": "T01 — description [tag]",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "id": "T02",
+      "content": "T02 — description [tag]",
+      "status": "completed",
+      "priority": "medium"
+    }
+  ]
+}
 ```
-   - Map `.cor/plan.md` checkboxes: `- [x]` → `"completed"`, `- [ ]` → `"pending"`.
-   - `id` must match the task ID (e.g. `"T01"`).
-   - Always pass the full task list — `todo_write` replaces the entire list.
+
+- Map `.cor/plan.md` checkboxes: `- [x]` → `"completed"`, `- [ ]` → `"pending"`.
+- `id` must match the task ID (e.g. `"T01"`).
+- Always pass the full task list — `todo_write` replaces the entire list.
 
 **Codex / fallback**: Read `.cor/plan.md`. Track state in memory only — no tool to populate.
 
@@ -153,6 +178,7 @@ If it does, compare its `plan:` field to the current active plan file:
 - **Different plan** → a previous plan was interrupted. Pause using the native question widget:
 
   > "Plan `[checkpoint plan]` was interrupted at `[task]` (phase: `[phase]`). You are now starting `[current plan]`. What do you want to do?"
+  >
   > - A: Discard the old checkpoint and continue with the current plan
   > - B: Stop here — switch back to `[checkpoint plan]` first (use cor-work)
 
@@ -161,17 +187,20 @@ If it does, compare its `plan:` field to the current active plan file:
 ### Write checkpoint
 
 Write `.cor/checkpoint.md`:
+
 ```
 plan: .cor/plan_2_checkout_flow.md
 task: T03
 phase: implementing
 started: 2026-05-12T14:30:00
 ```
+
 Always include the `plan:` field — even when only one plan file exists. Use the actual task ID, active plan file path, and current timestamp. This file is the crash-recovery signal — write it first, before any code change.
 
 No confirmation prompt. Begin immediately.
 
 Implement the task surgically:
+
 - Only touch files and lines required by this task.
 - Do not refactor unrelated code.
 - Do not add abstractions beyond what the task requires.
@@ -184,6 +213,7 @@ Implement the task surgically:
 ## Step 3 — Run Checks
 
 Update `.cor/checkpoint.md` — change `phase` to `checks` (preserve all other fields):
+
 ```
 plan: .cor/plan_2_checkout_flow.md
 task: T03
@@ -194,6 +224,7 @@ started: 2026-05-12T14:30:00
 Run every command listed in the `Checks` section of `.cor/config.md`, in order.
 
 If a check fails:
+
 - Read the error output carefully.
 - Fix the root cause. Do not skip or suppress errors.
 - Re-run the failing check (and dependents) until it passes.
@@ -206,6 +237,7 @@ If a failure is caused by pre-existing code unrelated to this task → flag it i
 ## Step 4 — Mark Complete
 
 When all checks pass, update `.cor/checkpoint.md` — change `phase` to `marking-complete` (preserve all other fields):
+
 ```
 plan: .cor/plan_2_checkout_flow.md
 task: T03
@@ -214,12 +246,14 @@ started: 2026-05-12T14:30:00
 ```
 
 Mark the task complete in the plan and todo tool (see below), then overwrite `.cor/checkpoint.md`:
+
 ```
 plan: .cor/plan_2_checkout_flow.md
 task: T03
 phase: done
 started: 2026-05-12T14:30:00
 ```
+
 No `rm` needed — `phase: done` is the clean-finish signal.
 
 **markdown**: Edit the active plan file — change `- [ ] T0X` to `- [x] T0X`.
@@ -228,20 +262,23 @@ No `rm` needed — `phase: done` is the clean-finish signal.
 
 **session**:
 
-*Claude Code*: Call `TodoWrite` with **every task in the plan** — never a subset. Set the just-finished task to `"in_progress"` first, then `"completed"` in a second call. Every other task keeps its current status:
+_Claude Code_: Call `TodoWrite` with **every task in the plan** — never a subset. Set the just-finished task to `"in_progress"` first, then `"completed"` in a second call. Every other task keeps its current status:
+
 ```json
-{ "todos": [
+{
+  "todos": [
     { "content": "T01 — description [tag]", "status": "completed" },
     { "content": "T02 — description [tag]", "status": "in_progress" },
     { "content": "T03 — description [tag]", "status": "pending" },
     { "content": "T04 — description [tag]", "status": "pending" },
     { "content": "T05 — description [tag]", "status": "pending" }
-]}
+  ]
+}
 ```
 
-*Copilot*: Call `todo_write` with the full list, setting the completed task's `status` to `"completed"`. Never omit tasks — `todo_write` replaces the entire list.
+_Copilot_: Call `todo_write` with the full list, setting the completed task's `status` to `"completed"`. Never omit tasks — `todo_write` replaces the entire list.
 
-*Codex*: Edit the active plan file — change `- [ ] T0X` to `- [x] T0X`.
+_Codex_: Edit the active plan file — change `- [ ] T0X` to `- [x] T0X`.
 
 ---
 
@@ -263,34 +300,53 @@ If nothing noteworthy → skip this step entirely.
 
 First, classify the note by audience:
 
-| Audience | Destination |
-|---|---|
-| Human developers (setup, config, env vars) | `README.md` |
-| AI agents — project-wide rules | agent instruction file (global) |
+| Audience                                   | Destination                     |
+| ------------------------------------------ | ------------------------------- |
+| Human developers (setup, config, env vars) | `README.md`                     |
+| AI agents — project-wide rules             | agent instruction file (global) |
 | AI agents — scoped to a module / directory | agent instruction file (scoped) |
 
 **README.md** — use for any setup/config info: env vars to add, config files to create, services to start, migrations to run. This is the canonical place a new developer looks. Find the most relevant existing section (`## Configuration`, `## Environment Variables`, `## Setup`, `## Getting Started`) and append there. If no suitable section exists, create a minimal `## Configuration` section. Write in plain prose or a bullet list — no COR Notes comment block, no tags. Keep it concise and human-friendly.
 
 For all other note types, use the appropriate agent file per agent:
 
-**Claude Code**
-- Global → root `CLAUDE.md`
-- Scoped → `CLAUDE.md` inside the relevant subdirectory (e.g. `app/controllers/api/CLAUDE.md`). Claude Code loads all `CLAUDE.md` files in the path hierarchy — subdirectory files apply only to that subtree.
-- Create the file with a minimal header if it doesn't exist.
+**Unified scoped rules — `.claude/rules/` (preferred)**
 
-**Copilot**
+`.claude/rules/*.md` files are natively loaded by **both Claude Code and GitHub Copilot in VS Code** — no duplication, single source of truth. Use this for all scoped rules whenever the project targets both agents.
+
+- Scope with a `paths` YAML frontmatter array (glob patterns relative to workspace root):
+  ```markdown
+  ---
+  paths:
+    - "src/**"
+  ---
+  ```
+- Files without `paths` frontmatter are loaded unconditionally (global).
+- VS Code Copilot reads this directory natively (`chat.instructionsFilesLocations` includes `.claude/rules` by default).
+- Claude Code loads all `.claude/rules/*.md` files at session start; path-scoped ones trigger on demand.
+- One file per topic with a descriptive name (e.g. `k8s.md`, `api.md`, `frontend.md`).
+- Create the `.claude/rules/` directory if it doesn't exist.
+
+**Claude Code — additional scoped options**
+
+- Global → root `CLAUDE.md` (or `.claude/CLAUDE.md`)
+- Subtree → `CLAUDE.md` inside the relevant subdirectory. Claude Code loads subdirectory `CLAUDE.md` files on demand when it reads files there.
+- Prefer `.claude/rules/` over subdirectory `CLAUDE.md` — it's more explicit and also works for Copilot.
+
+**Copilot — additional scoped options**
+
 - Global → `.github/copilot-instructions.md`
-- Scoped → `.github/instructions/<topic>.instructions.md` with an `applyTo` frontmatter glob:
+- Scoped → `.github/instructions/<topic>.instructions.md` with `applyTo` frontmatter (single glob string). Use this only when the project does **not** use `.claude/rules/` already — prefer the unified approach above to avoid duplication.
   ```markdown
   ---
   applyTo: "app/controllers/api/**/*.rb"
   ---
   ```
-  Copilot automatically surfaces this file when the user is editing files that match the glob. Create the file if it doesn't exist; append rules below the frontmatter.
 
 **Codex**
-- Global → root `AGENTS.md`
-- Scoped → `AGENTS.md` inside the relevant subdirectory (e.g. `app/controllers/api/AGENTS.md`). Codex loads per-directory `AGENTS.md` files as context when working in that directory.
+
+- Global → root `AGENTS.md`. Update with `@.claude/rules/<file>.md` imports if the project uses `.claude/rules/` — Codex supports `@path` imports in `AGENTS.md`.
+- Scoped → `AGENTS.md` inside the relevant subdirectory (e.g. `app/controllers/api/AGENTS.md`). Codex loads per-directory `AGENTS.md` when working in that directory. Use this as a fallback if `@` imports are unconfirmed.
 - Create the file with a minimal header if it doesn't exist.
 
 ### Note format
@@ -301,6 +357,7 @@ Find or create a `## COR Notes` section in the target file. Append entries there
 ## COR Notes
 
 <!-- T02 — 2026-05-12 -->
+
 - [gotcha] Rails `before_action` skips API-only controllers unless explicitly included
 - [rule] Always use explicit HTTP status codes with `render json:` in API controllers
 ```
@@ -332,12 +389,14 @@ If no pending tasks remain: "All tasks complete. Use **cor-test** for planned te
 Pause and surface to the user ONLY when a tool or command output reveals new information that would materially change the implementation approach. Not for routine failures. Not for pre-existing issues. Not as a courtesy.
 
 **Pause for:**
+
 - A migration reveals the table already exists with a conflicting schema.
 - A dependency install shows a version conflict requiring a choice between incompatible approaches.
 - A test run reveals the feature already exists elsewhere (duplicate implementation risk).
 - A file read reveals the target function is used in unexpected places the task didn't account for.
 
 **Do not pause for:**
+
 - A linter fails → fix and continue.
 - A test fails → fix the root cause and continue.
 - A pre-existing unrelated failure → note it, offer to log as a separate task, continue.
@@ -345,9 +404,9 @@ Pause and surface to the user ONLY when a tool or command output reveals new inf
 
 When pausing, state clearly: the unexpected finding, why it matters, and the paths forward. Ask for direction using the native question widget:
 
-- *Claude Code*: `AskUserQuestion` with the relevant options.
-- *Copilot*: `vscode_askQuestions` with the relevant options.
-- *Codex*: Inline numbered list with `**(Recommended)**` on the best default and a final "Other — describe in free text" option.
+- _Claude Code_: `AskUserQuestion` with the relevant options.
+- _Copilot_: `vscode_askQuestions` with the relevant options.
+- _Codex_: Inline numbered list with `**(Recommended)**` on the best default and a final "Other — describe in free text" option.
 
 ---
 
