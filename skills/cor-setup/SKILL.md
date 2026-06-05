@@ -1,6 +1,8 @@
 ---
 name: cor-setup
 description: "Initialize a project for the COR (CodingOnRails) methodology. Detects the tech stack, proposes check commands, and writes a .cor/config.md file. Run once per repo before using any other COR skills. Claude Code users: invoke as /cor:setup."
+status: stable
+stability: guaranteed
 ---
 
 # COR Setup — Project Initializer

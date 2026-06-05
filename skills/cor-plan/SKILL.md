@@ -1,6 +1,8 @@
 ---
 name: cor-plan
 description: "Plan phase of the COR methodology. Takes the understanding built in the Think phase and turns it into a structured, ordered task list saved to .cor/plan.md (or agent memory / session tasks). No coding happens here — only decomposition and sequencing. Claude Code users: invoke as /cor:plan."
+status: stable
+stability: guaranteed
 ---
 
 # COR Plan — Plan Phase

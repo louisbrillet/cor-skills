@@ -1,6 +1,8 @@
 ---
 name: cor-code
 description: "Code phase of the COR methodology. Implements tasks from the plan sequentially and autonomously, running all configured checks after each task. Pauses only when tool/command output reveals unexpected high-impact information. Appends technical notes to the agent instruction file after each task. Claude Code users: invoke as /cor:code [task-id]."
+status: stable
+stability: guaranteed
 ---
 
 # COR Code — Code Phase

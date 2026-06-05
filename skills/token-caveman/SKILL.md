@@ -1,6 +1,8 @@
 ---
 name: token-caveman
 description: "Ultra-compressed communication mode. Cuts token usage ~75% by dropping filler, articles, and pleasantries while keeping full technical accuracy. Active by default. Invoke /token:caveman to re-assert the mode or remind Claude to stay terse."
+status: stable
+stability: guaranteed
 ---
 
 # Token Caveman — Always-On Terse Mode

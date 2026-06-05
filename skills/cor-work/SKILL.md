@@ -1,6 +1,8 @@
 ---
 name: cor-work
 description: "Entry point for the COR (CodingOnRails) methodology. Detects the current project state, shows a compact progress summary, and routes automatically to the right phase (Think, Code, or Test). Use this when resuming mid-task or to check what's next. Claude Code users: invoke as /cor:work."
+status: stable
+stability: guaranteed
 ---
 
 # COR Work — Entry Point

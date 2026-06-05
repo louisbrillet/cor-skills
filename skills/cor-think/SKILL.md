@@ -1,6 +1,8 @@
 ---
 name: cor-think
 description: "Deep interrogation phase of the COR methodology. Ask the user focused questions across problem definition, scope, constraints, risks, and acceptance criteria before any planning or coding begins. Produces a confidence summary after each round. Claude Code users: invoke as /cor:think."
+status: stable
+stability: guaranteed
 ---
 
 # COR Think — Think Phase

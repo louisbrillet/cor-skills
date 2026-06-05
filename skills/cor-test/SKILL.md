@@ -1,6 +1,8 @@
 ---
 name: cor-test
 description: "Test phase of the COR methodology. Runs only the tests that were explicitly planned — unit, integration, and UAT. No unplanned testing scope creep. Claude Code users: invoke as /cor:test."
+status: stable
+stability: guaranteed
 ---
 
 # COR Test — Test Phase
