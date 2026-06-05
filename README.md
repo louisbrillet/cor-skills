@@ -27,6 +27,8 @@ The `skills` CLI will ask which skills and which agents to install to. Supports 
 
 ## Skills
 
+### Stable skills
+
 | Skill           | Phase     | What it does                                                                                                        |
 | --------------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
 | `cor-setup`     | Init      | Detects your stack, configures check commands, sets plan storage                                                    |
@@ -36,6 +38,17 @@ The `skills` CLI will ask which skills and which agents to install to. Supports 
 | `cor-test`      | 4 — Test  | Runs only the tests that were planned — unit, integration, or UAT                                                   |
 | `cor-work`      | Any       | Entry point: reads plan state and routes to the right phase automatically                                           |
 | `token-caveman` | Always    | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy       |
+
+### Experimental skills (beta)
+
+These skills are available but may change structure or behavior without backward-compatibility guarantees.
+
+| Skill                         | Status | What it does                                                                                     |
+| ----------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
+| `cor-design`                  | Beta   | Exploratory UI design phase with variant generation, scoring, and hand-off into planning.        |
+| `cor-refacto`                 | Beta   | Think+Plan workflow for behavior-preserving refactoring with strict simplification gates.        |
+| `ux-frameworks`               | Beta   | Layered UX diagnostics using Nielsen, Garrett, Gestalt/PARC, Morville, and Yablonski frameworks. |
+| `ui-design-system-principles` | Beta   | Systematic UI design-token and accessibility principles for frontend output quality.             |
 
 ## How it works
 

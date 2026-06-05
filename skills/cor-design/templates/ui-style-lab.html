@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="en" data-style="a">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI Style Lab - Modern Variants</title>
+    <style>
+      :root {
+        /* Global tokens - primary */
+        --primary-50: #ecf3ff;
+        --primary-100: #d9e8ff;
+        --primary-200: #b8d3ff;
+        --primary-300: #8cb6ff;
+        --primary-400: #5f92ff;
+        --primary-500: #1f5fff;
+        --primary-600: #1a50dc;
+        --primary-700: #153fb3;
+        --primary-800: #122f82;
+        --primary-900: #0d1f54;
+
+        /* Global tokens - secondary accent */
+        --sky-100: #daf6ff;
+        --sky-300: #7adfff;
+        --sky-500: #23b8d9;
+        --sky-700: #1883a2;
+
+        /* Global tokens - neutral */
+        --neutral-0: #ffffff;
+        --neutral-50: #f8faff;
+        --neutral-100: #eef3ff;
+        --neutral-200: #dde6fb;
+        --neutral-300: #ced9f2;
+        --neutral-500: #4f628f;
+        --neutral-700: #24355e;
+        --neutral-900: #0d1835;
+
+        /* Global tokens - feedback */
+        --success-50: #e8f8f0;
+        --success-700: #1f9d6d;
+        --warning-50: #fff5df;
+        --warning-700: #b77b00;
+        --danger-50: #fdeced;
+        --danger-700: #b03535;
+        --info-50: #eaf0ff;
+        --info-700: #3457b5;
+
+        /* Alias tokens */
+        --color-bg-primary: var(--neutral-100);
+        --color-bg-secondary: var(--neutral-50);
+        --color-surface: rgba(255, 255, 255, 0.88);
+        --color-surface-strong: var(--neutral-0);
+        --color-text-primary: var(--neutral-900);
+        --color-text-secondary: var(--neutral-500);
+        --color-border: var(--neutral-300);
+        --color-primary: var(--primary-500);
+        --color-primary-soft: var(--primary-100);
+        --color-secondary: var(--sky-500);
+        --color-on-primary: var(--neutral-0);
+        --color-success: var(--success-700);
+        --color-success-soft: var(--success-50);
+        --color-warning: var(--warning-700);
+        --color-warning-soft: var(--warning-50);
+        --color-danger: var(--danger-700);
+        --color-danger-soft: var(--danger-50);
+        --color-info: var(--info-700);
+        --color-info-soft: var(--info-50);
+
+        /* Typography tokens */
+        --font-size-xs: 0.75rem;
+        --font-size-sm: 0.875rem;
+        --font-size-md: 1rem;
+        --font-size-lg: 1.25rem;
+        --font-size-xl: 1.75rem;
+        --line-height-tight: 1.2;
+        --line-height-normal: 1.5;
+
+        /* Spacing tokens (4px base) */
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-5: 1.25rem;
+        --space-6: 1.5rem;
+        --space-8: 2rem;
+
+        /* Component aliases (legacy bindings kept) */
+        --bg: var(--color-bg-primary);
+        --bg-secondary: var(--color-bg-secondary);
+        --panel: var(--color-surface);
+        --panel-strong: var(--color-surface-strong);
+        --text: var(--color-text-primary);
+        --muted: var(--color-text-secondary);
+        --border: var(--color-border);
+        --accent: var(--color-primary);
+        --accent-2: var(--color-secondary);
+        --accent-contrast: var(--color-on-primary);
+        --ok: var(--color-success);
+        --warn: var(--color-warning);
+        --danger: var(--color-danger);
+        --info: var(--color-info);
+        --radius-xs: 10px;
+        --radius-sm: 14px;
+        --radius-md: 20px;
+        --radius-lg: 28px;
+        --elev-1: 0 12px 32px rgba(22, 44, 95, 0.14);
+        --elev-2: 0 20px 50px rgba(18, 36, 80, 0.2);
+        --font-display: "Avenir Next Condensed", "Franklin Gothic Medium", "Arial Narrow", sans-serif;
+        --font-body: "Avenir Next", "Segoe UI", sans-serif;
+        --chip-weight: 700;
+      }
+
+      html[data-style="b"] {
+        --primary-500: #1c7dff;
+        --primary-600: #1768d6;
+        --primary-700: #1252ac;
+        --sky-500: #45c5ea;
+        --neutral-100: #eef4ff;
+        --neutral-50: #f9fbff;
+        --neutral-300: #ccd9f7;
+        --neutral-500: #4f6698;
+        --neutral-900: #142248;
+        --success-700: #198f67;
+        --warning-700: #a86f00;
+        --danger-700: #a63642;
+        --info-700: #3559c9;
+        --color-surface: rgba(255, 255, 255, 0.92);
+        --radius-xs: 8px;
+        --radius-sm: 10px;
+        --radius-md: 14px;
+        --radius-lg: 18px;
+        --elev-1: 0 8px 24px rgba(28, 62, 128, 0.12);
+        --elev-2: 0 18px 44px rgba(20, 48, 101, 0.17);
+        --font-display: "Avenir Next", "Segoe UI", sans-serif;
+        --font-body: "Avenir Next", "Segoe UI", sans-serif;
+        --chip-weight: 700;
+      }
+
+      html[data-style="c"] {
+        --primary-500: #2e4dff;
+        --primary-600: #263fd3;
+        --primary-700: #2033ac;
+        --sky-500: #36a8ff;
+        --neutral-100: #edf3ff;
+        --neutral-50: #f7faff;
+        --neutral-300: #d1ddf6;
+        --neutral-500: #546792;
+        --neutral-900: #111f40;
+        --success-700: #188c62;
+        --warning-700: #a67008;
+        --danger-700: #a63a3a;
+        --info-700: #3858c2;
+        --color-surface: rgba(255, 255, 255, 0.9);
+        --radius-xs: 16px;
+        --radius-sm: 20px;
+        --radius-md: 26px;
+        --radius-lg: 34px;
+        --elev-1: 0 12px 26px rgba(31, 59, 122, 0.13);
+        --elev-2: 0 22px 48px rgba(24, 47, 102, 0.18);
+        --font-display: "Avenir Next Condensed", "Franklin Gothic Medium", "Arial Narrow", sans-serif;
+        --font-body: "Avenir Next", "Segoe UI", sans-serif;
+        --chip-weight: 700;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+          radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 72%),
+          linear-gradient(180deg, var(--bg), var(--bg-secondary));
+        font-family: var(--font-body);
+      }
+
+      .lab {
+        width: min(1380px, calc(100% - 32px));
+        margin: var(--space-6) auto var(--space-8);
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: var(--space-5);
+        align-items: center;
+        margin-bottom: var(--space-4);
+      }
+
+      .title-wrap {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .toolbar h1 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(2.1rem, 3.8vw, 3.1rem);
+        letter-spacing: 0.01em;
+      }
+
+      .subtitle {
+        font-size: var(--font-size-sm);
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .style-switch {
+        display: inline-grid;
+        grid-auto-flow: column;
+        gap: 10px;
+        padding: 8px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--panel);
+        box-shadow: var(--elev-1);
+        backdrop-filter: blur(7px);
+      }
+
+      .style-switch button {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: var(--panel-strong);
+        color: var(--text);
+        border-radius: var(--radius-sm);
+        padding: 10px 14px;
+        font: 700 0.9rem/1 var(--font-body);
+        cursor: pointer;
+        transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease;
+      }
+
+      .style-switch button[aria-pressed="true"] {
+        background: linear-gradient(
+          135deg,
+          color-mix(in srgb, var(--accent) 86%, #fff),
+          color-mix(in srgb, var(--accent-2) 68%, #fff)
+        );
+        color: var(--accent-contrast);
+        border-color: color-mix(in srgb, var(--accent) 65%, #0000);
+      }
+
+      .style-switch button:hover {
+        transform: translateY(-2px);
+      }
+
+      .style-switch button:focus-visible,
+      .btn:focus-visible,
+      .menu-item:focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--accent) 42%, transparent);
+        outline-offset: 2px;
+      }
+
+      .canvas {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--panel);
+        backdrop-filter: blur(12px);
+        box-shadow: var(--elev-2);
+        overflow: hidden;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 770px;
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--border);
+        padding: 24px 18px;
+        position: relative;
+        background:
+          radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 58%),
+          var(--panel-strong);
+      }
+
+      .brand {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 2rem;
+        line-height: 0.95;
+      }
+
+      .brand small {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font: 700 0.76rem/1 var(--font-body);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .menu-group {
+        margin-top: 20px;
+      }
+
+      .menu-group h3 {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font: 700 0.72rem/1 var(--font-body);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .menu-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .menu-item {
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+        border-radius: var(--radius-sm);
+        padding: 10px 12px;
+        font: 650 0.94rem/1.1 var(--font-body);
+        cursor: pointer;
+        transition: background-color 140ms ease, transform 140ms ease;
+      }
+
+      .menu-item:hover {
+        background: color-mix(in srgb, var(--accent) 10%, var(--panel-strong));
+        transform: translateX(3px);
+      }
+
+      .menu-item.active {
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 16%, var(--panel-strong));
+      }
+
+      .main {
+        padding: var(--space-5);
+        display: grid;
+        gap: var(--space-4);
+        align-content: start;
+      }
+
+      .top-nav {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 14px;
+        background: var(--panel-strong);
+        display: grid;
+        gap: 12px;
+      }
+
+      .top-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .top-row h2 {
+        margin: 0;
+        font: 800 clamp(1.3rem, 2.2vw, 1.7rem) / 1 var(--font-display);
+      }
+
+      .top-row p {
+        margin: var(--space-2) 0 0;
+        color: var(--muted);
+        line-height: var(--line-height-normal);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        border: 1px solid var(--border);
+        background: var(--panel-strong);
+        color: var(--text);
+        border-radius: var(--radius-sm);
+        padding: 10px var(--space-4);
+        font: 700 var(--font-size-sm) / 1 var(--font-body);
+        cursor: pointer;
+        transition: transform 130ms ease, filter 130ms ease, border-color 130ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        filter: saturate(1.12);
+      }
+
+      .btn.primary {
+        background: linear-gradient(
+          135deg,
+          color-mix(in srgb, var(--accent) 92%, #fff),
+          color-mix(in srgb, var(--accent-2) 70%, #fff)
+        );
+        color: var(--accent-contrast);
+        border-color: color-mix(in srgb, var(--accent) 65%, #0000);
+      }
+
+      .btn.secondary {
+        background: color-mix(in srgb, var(--accent) 10%, var(--panel-strong));
+        border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+      }
+
+      .btn.ghost {
+        background: transparent;
+      }
+
+      .btn.pending {
+        opacity: 0.65;
+        cursor: progress;
+      }
+
+      .btn:disabled {
+        opacity: 0.46;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .kpi {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--panel-strong);
+        padding: 12px;
+      }
+
+      .kpi span {
+        display: block;
+        font-size: var(--font-size-xs);
+        color: var(--muted);
+      }
+
+      .kpi strong {
+        display: block;
+        margin-top: 5px;
+        font: 800 2rem/1 var(--font-display);
+      }
+
+      .review-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 12px;
+      }
+
+      .review-head h3 {
+        margin: 0;
+        font: 800 1.8rem/1 var(--font-display);
+      }
+
+      .review-head p {
+        margin: 7px 0 0;
+        color: var(--muted);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--panel-strong);
+        padding: 14px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        height: 3px;
+        background: color-mix(in srgb, var(--accent) 36%, transparent);
+      }
+
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .card h4 {
+        margin: 0;
+        font: 780 1.16rem/1.15 var(--font-display);
+      }
+
+      .card p {
+        margin: var(--space-3) 0 0;
+        color: var(--muted);
+        font-size: var(--font-size-md);
+        line-height: var(--line-height-normal);
+      }
+
+      .status {
+        border: 1px solid transparent;
+        border-radius: 999px;
+        padding: var(--space-1) 10px;
+        font-weight: var(--chip-weight);
+        font-size: var(--font-size-xs);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .status.pending {
+        background: color-mix(in srgb, var(--warn) 18%, #fff);
+        color: var(--warn);
+        border-color: color-mix(in srgb, var(--warn) 36%, #fff);
+      }
+
+      .status.accepted {
+        background: color-mix(in srgb, var(--ok) 16%, #fff);
+        color: var(--ok);
+        border-color: color-mix(in srgb, var(--ok) 35%, #fff);
+      }
+
+      .status.rejected {
+        background: color-mix(in srgb, var(--danger) 16%, #fff);
+        color: var(--danger);
+        border-color: color-mix(in srgb, var(--danger) 34%, #fff);
+      }
+
+      .status.edited {
+        background: color-mix(in srgb, var(--info) 16%, #fff);
+        color: var(--info);
+        border-color: color-mix(in srgb, var(--info) 35%, #fff);
+      }
+
+      .card-actions {
+        margin-top: 11px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .score-shell {
+        margin-top: 14px;
+        --score-bg: rgba(248, 250, 253, 0.82);
+        --score-bg-head: rgba(242, 245, 250, 0.9);
+        --score-border: #cfd6e0;
+        --score-border-soft: #dde3eb;
+        --score-text: #243042;
+        --score-muted: #5f6f84;
+        --score-font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        --score-shadow: 0 6px 20px rgba(80, 96, 122, 0.12);
+      }
+
+      .score {
+        border: 1px solid var(--score-border);
+        border-radius: 16px;
+        background: var(--score-bg);
+        overflow: hidden;
+        backdrop-filter: blur(4px);
+        box-shadow: var(--score-shadow);
+        color: var(--score-text);
+        font-family: var(--score-font);
+      }
+
+      .score header {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--score-border);
+        background: var(--score-bg-head);
+      }
+
+      .score h5 {
+        margin: 0;
+        font: 700 1.02rem/1.1 var(--score-font);
+        letter-spacing: 0.01em;
+      }
+
+      .score p {
+        margin: 6px 0 0;
+        color: var(--score-muted);
+      }
+
+      .score td,
+      .score th {
+        border-bottom-color: var(--score-border-soft);
+        color: var(--score-text);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--border);
+        padding: 9px 12px;
+        text-align: left;
+      }
+
+      th {
+        font-family: var(--font-display);
+      }
+
+      .score th {
+        font-family: var(--score-font);
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .score td {
+        font-size: 0.94rem;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+        font-weight: 800;
+      }
+
+      .stagger {
+        animation: rise 520ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+      }
+
+      .d1 {
+        animation-delay: 70ms;
+      }
+
+      .d2 {
+        animation-delay: 130ms;
+      }
+
+      .d3 {
+        animation-delay: 190ms;
+      }
+
+      .d4 {
+        animation-delay: 250ms;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      html[data-style="b"] .toolbar h1 {
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+        letter-spacing: 0;
+      }
+
+      html[data-style="b"] .main {
+        gap: var(--space-3);
+      }
+
+      html[data-style="b"] .btn {
+        border-radius: var(--radius-xs);
+        padding: 9px var(--space-3);
+      }
+
+      html[data-style="b"] .card h4 {
+        font-size: 1.08rem;
+      }
+
+      html[data-style="b"] .card::after {
+        height: 2px;
+        background: color-mix(in srgb, var(--accent) 42%, transparent);
+      }
+
+      html[data-style="c"] .main {
+        gap: var(--space-5);
+      }
+
+      html[data-style="c"] .btn {
+        padding: 11px var(--space-5);
+      }
+
+      html[data-style="c"] .card h4 {
+        font-size: 1.22rem;
+      }
+
+      html[data-style="c"] .card p {
+        line-height: 1.6;
+      }
+
+      html[data-style="c"] .btn.primary {
+        background: linear-gradient(
+          130deg,
+          color-mix(in srgb, var(--accent) 94%, #fff),
+          color-mix(in srgb, var(--accent-2) 70%, #fff)
+        );
+      }
+
+      @media (max-width: 1080px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: 0;
+          border-bottom: 1px solid var(--border);
+        }
+
+        .menu-list.modules {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 840px) {
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .style-switch {
+          width: fit-content;
+          max-width: 100%;
+          grid-auto-flow: row;
+        }
+
+        .top-row,
+        .review-head {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .kpis,
+        .cards,
+        .menu-list.modules {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="lab">
+      <header class="toolbar stagger">
+        <div class="title-wrap">
+          <h1>UI Style Lab</h1>
+          <p class="subtitle">3 modern declinaisons from A on one shared UI surface</p>
+        </div>
+        <div class="style-switch" role="radiogroup" aria-label="Style selector">
+          <button type="button" data-style="a" aria-pressed="true">A1 - Editorial</button>
+          <button type="button" data-style="b" aria-pressed="false">A2 - Sharp</button>
+          <button type="button" data-style="c" aria-pressed="false">A3 - Soft</button>
+        </div>
+      </header>
+
+      <section class="canvas stagger d1" aria-live="polite">
+        <div class="app">
+          <aside class="sidebar stagger d2">
+            <h2 class="brand">Doc Explorer<small>Control Center</small></h2>
+
+            <section class="menu-group">
+              <h3>Navigation</h3>
+              <div class="menu-list">
+                <button class="menu-item active" type="button">Home</button>
+                <button class="menu-item" type="button">Review</button>
+                <button class="menu-item" type="button">History</button>
+                <button class="menu-item" type="button">Settings</button>
+              </div>
+            </section>
+
+            <section class="menu-group">
+              <h3>Modules</h3>
+              <div class="menu-list modules">
+                <button class="menu-item" type="button">Accueil</button>
+                <button class="menu-item" type="button">Vente</button>
+                <button class="menu-item" type="button">Facturation</button>
+              </div>
+            </section>
+          </aside>
+
+          <div class="main">
+            <nav class="top-nav stagger d2">
+              <div class="top-row">
+                <div>
+                  <h2>Block Review Workspace</h2>
+                  <p>Pending actions are highlighted with explicit visual priority.</p>
+                </div>
+                <div class="actions">
+                  <button class="btn ghost" type="button">Refresh</button>
+                  <button class="btn secondary" type="button">Open Doc</button>
+                  <button class="btn primary" type="button">Continue Review</button>
+                </div>
+              </div>
+            </nav>
+
+            <section class="kpis stagger d3">
+              <article class="kpi"><span>Total Blocks</span><strong>124</strong></article>
+              <article class="kpi"><span>Pending</span><strong>17</strong></article>
+              <article class="kpi"><span>Accepted</span><strong>82</strong></article>
+              <article class="kpi"><span>Rejected</span><strong>25</strong></article>
+            </section>
+
+            <section class="stagger d4">
+              <header class="review-head">
+                <div>
+                  <h3>Block Review Cards</h3>
+                  <p>Same product surface, three strong visual directions.</p>
+                </div>
+                <button class="btn secondary" type="button">Filter pending only</button>
+              </header>
+
+              <div class="cards">
+                <article class="card">
+                  <header class="card-head">
+                    <h4>Section 2.1 - Eligibility</h4>
+                    <span class="status pending">pending</span>
+                  </header>
+                  <p>Proposal awaits reviewer decision. Keep decision actions obvious and fast.</p>
+                  <div class="card-actions">
+                    <button class="btn primary" type="button">Accept</button>
+                    <button class="btn secondary" type="button">Reject</button>
+                    <button class="btn pending" type="button" disabled>Applying...</button>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <header class="card-head">
+                    <h4>Section 2.4 - Payment scope</h4>
+                    <span class="status accepted">accepted</span>
+                  </header>
+                  <p>Approved change is merged in the current baseline.</p>
+                  <div class="card-actions">
+                    <button class="btn secondary" type="button">Revert</button>
+                    <button class="btn ghost" type="button">Open history</button>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <header class="card-head">
+                    <h4>Section 3.2 - Exceptions</h4>
+                    <span class="status rejected">rejected</span>
+                  </header>
+                  <p>Rejected block remains traceable for audit and team sync.</p>
+                  <div class="card-actions">
+                    <button class="btn primary" type="button">Re-open</button>
+                    <button class="btn ghost" type="button">View rationale</button>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <header class="card-head">
+                    <h4>Section 4.7 - Checklist</h4>
+                    <span class="status edited">edited</span>
+                  </header>
+                  <p>Manual edits were applied after generation before validation.</p>
+                  <div class="card-actions">
+                    <button class="btn secondary" type="button">Review edit</button>
+                    <button class="btn ghost" type="button">Open diff</button>
+                  </div>
+                </article>
+              </div>
+
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="score-shell stagger d4" aria-label="Scorecard comparison">
+        <article class="score">
+          <header>
+            <h5>Style Scorecard (out of 10)</h5>
+            <p>Readability, hierarchy, action clarity, depth, desirability.</p>
+          </header>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Criteria</th>
+                <th scope="col">A1</th>
+                <th scope="col">A2</th>
+                <th scope="col">A3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Readability</td><td>9</td><td>8</td><td>8</td></tr>
+              <tr><td>Hierarchy</td><td>9</td><td>8</td><td>8</td></tr>
+              <tr><td>Action clarity</td><td>9</td><td>8</td><td>8</td></tr>
+              <tr><td>Perceived depth</td><td>8</td><td>9</td><td>8</td></tr>
+              <tr><td>Desirability</td><td>9</td><td>8</td><td>8</td></tr>
+              <tr><td>Total</td><td>44 / 50</td><td>41 / 50</td><td>40 / 50</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const root = document.documentElement;
+      const buttons = Array.from(document.querySelectorAll(".style-switch button"));
+      const supportedStyles = new Set(["a", "b", "c"]);
+
+      function applyStyle(style) {
+        if (!supportedStyles.has(style)) return;
+        root.dataset.style = style;
+        for (const item of buttons) {
+          item.setAttribute("aria-pressed", String(item.dataset.style === style));
+        }
+      }
+
+      for (const button of buttons) {
+        button.addEventListener("click", () => {
+          const style = button.dataset.style;
+          if (!style) return;
+          applyStyle(style);
+        });
+      }
+
+      const initialStyle = new URL(window.location.href).searchParams.get("style");
+      if (initialStyle) applyStyle(initialStyle);
+    </script>
+  </body>
+</html>
