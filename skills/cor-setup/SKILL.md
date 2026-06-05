@@ -15,11 +15,11 @@ You are running the COR (CodingOnRails) repo-specific setup. This runs once per 
 
 Determine which interactive question tool is available. Check in this order:
 
-| Priority | Signal | Environment | Question tool |
-|---|---|---|---|
-| 1 | `AskUserQuestion` available | Claude Code | `AskUserQuestion` |
-| 2 | `vscode_askQuestions` available | Copilot | `vscode_askQuestions` |
-| 3 | neither | Codex / other | inline numbered list |
+| Priority | Signal                          | Environment   | Question tool         |
+| -------- | ------------------------------- | ------------- | --------------------- |
+| 1        | `AskUserQuestion` available     | Claude Code   | `AskUserQuestion`     |
+| 2        | `vscode_askQuestions` available | Copilot       | `vscode_askQuestions` |
+| 3        | neither                         | Codex / other | inline numbered list  |
 
 Store as **active environment**. Use consistently for all interactive prompts in this skill.
 
@@ -55,6 +55,7 @@ Use Bash to check for these files in the current working directory:
 - `Cargo.toml` — Rust
 
 If `package.json` exists, read it and extract:
+
 - Framework: `next`, `react`, `vue`, `svelte`, `express`
 - Test runner: `vitest`, `jest`, `mocha`, `playwright`
 - Linting: `eslint`, `prettier`, `biome`
@@ -70,28 +71,28 @@ Based on your detection, propose a specific, ordered list of check commands that
 **Reference defaults by stack:**
 
 TypeScript + ESLint + Prettier + Vitest (Next.js / React):
-  npx tsc --noEmit
-  npx eslint . --fix --ext .ts,.tsx
-  npx vitest run --passWithNoTests
+npx tsc --noEmit
+npx eslint . --fix --ext .ts,.tsx
+npx vitest run --passWithNoTests
 
 TypeScript + ESLint only:
-  npx tsc --noEmit
-  npx eslint . --fix --ext .ts,.tsx
+npx tsc --noEmit
+npx eslint . --fix --ext .ts,.tsx
 
 TypeScript + Biome:
-  npx tsc --noEmit
-  npx biome check --apply .
+npx tsc --noEmit
+npx biome check --apply .
 
 Ruby on Rails + RuboCop:
-  bundle exec rubocop -a
+bundle exec rubocop -a
 
 Python + ruff + mypy:
-  ruff check . --fix
-  mypy .
+ruff check . --fix
+mypy .
 
 Go:
-  go vet ./...
-  go build ./...
+go vet ./...
+go build ./...
 
 Present the list clearly. Then ask: "Do these checks look right? Remove, modify, or add any command, then confirm."
 
@@ -103,9 +104,9 @@ Wait for explicit confirmation before continuing. If the user modifies the list,
 
 Ask the user: "Where should task plans live for this project?"
 
-  1. Markdown file — saved to `.cor/plan.md` in the repo. Tracked by git, survives context resets. Best for team projects or anything long-running.
-  2. Agent memory — loaded at session start, invisible in the repo. Best for solo, exploratory work.
-  3. Session tasks — the task panel (if your agent supports it). Resets on new session. Best for short, self-contained tasks.
+1. Markdown file — saved to `.cor/plan.md` in the repo. Tracked by git, survives context resets. Best for team projects or anything long-running.
+2. Agent memory — loaded at session start, invisible in the repo. Best for solo, exploratory work.
+3. Session tasks — the task panel (if your agent supports it). Resets on new session. Best for short, self-contained tasks.
 
 Wait for the user to choose before continuing.
 
@@ -115,18 +116,22 @@ Wait for the user to choose before continuing.
 
 Create `.cor/` if it does not exist. Write `.cor/config.md` with this exact structure (no extra sections):
 
-  # COR Config
+# COR Config
 
-  ## Stack
-  [detected stack, e.g. "TypeScript / Next.js / React"]
+## Stack
 
-  ## Checks
-  [one confirmed check command per line, exactly as the user confirmed]
+[detected stack, e.g. "TypeScript / Next.js / React"]
 
-  ## Plan Storage
-  [one of: markdown | memory | session]
+## Checks
 
-  ## Extensions
-  [comma-separated list from Step 0, e.g. "claude-code, copilot"]
+[one confirmed check command per line, exactly as the user confirmed]
+
+## Plan Storage
+
+[one of: markdown | memory | session]
+
+## Extensions
+
+[comma-separated list from Step 0, e.g. "claude-code, copilot"]
 
 Then confirm: "Setup complete. Config saved to `.cor/config.md`. Use the **cor-think** skill to start thinking about your first task, or **cor-work** to continue an in-progress one."

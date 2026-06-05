@@ -17,11 +17,11 @@ If the user provides a topic or problem statement when invoking this skill, trea
 
 Determine which interactive question tool is available. Check in this order:
 
-| Priority | Signal | Environment | Question tool |
-|---|---|---|---|
-| 1 | `AskUserQuestion` available | Claude Code | `AskUserQuestion` |
-| 2 | `vscode_askQuestions` available | Copilot | `vscode_askQuestions` |
-| 3 | neither | Codex / other | inline numbered list |
+| Priority | Signal                          | Environment   | Question tool         |
+| -------- | ------------------------------- | ------------- | --------------------- |
+| 1        | `AskUserQuestion` available     | Claude Code   | `AskUserQuestion`     |
+| 2        | `vscode_askQuestions` available | Copilot       | `vscode_askQuestions` |
+| 3        | neither                         | Codex / other | inline numbered list  |
 
 Store as **active environment**. Use the matching format from the Question Format section for every question in this skill.
 
@@ -34,26 +34,31 @@ Run the Q&A in rounds. Each round targets a specific area. Ask 2–4 focused que
 Cover these areas across rounds (order as the conversation demands):
 
 **Problem definition**
+
 - What exactly needs to change? What is broken, missing, or suboptimal?
 - What is the current behavior vs. the expected behavior?
 - Is this a bug fix, a new feature, a refactor, or a performance issue?
 
 **Context and scope**
+
 - Which parts of the codebase are involved? Which files, modules, or APIs?
 - Who or what triggers this code path? (user action, cron job, API call, etc.)
 - Are there other features or systems that depend on what you're about to change?
 
 **Constraints**
+
 - Are there performance, compatibility, or API contract requirements?
 - Is there a deadline or scope limit on this task?
 - Are there things that must NOT change?
 
 **Unknowns and risks**
+
 - What could go wrong? What are you least confident about?
 - Are there edge cases you haven't fully thought through?
 - Are there parts of the codebase you're unfamiliar with that this touches?
 
 **Acceptance criteria**
+
 - How will you know the task is done?
 - Is there a manual test you'd walk through? An automated test that should pass?
 - Who else (if anyone) needs to validate the result?
@@ -64,21 +69,23 @@ Cover these areas across rounds (order as the conversation demands):
 
 After each Q&A round, produce a structured summary. Use this format exactly:
 
-  ## Understanding so far
+## Understanding so far
 
-  **What we're building:** [1–2 sentences]
+**What we're building:** [1–2 sentences]
 
-  **Confidence by area:**
-  - Problem definition: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
-  - Scope and context: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
-  - Constraints: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
-  - Risks and unknowns: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
-  - Acceptance criteria: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
+**Confidence by area:**
 
-  **Still unclear:**
-  - [bullet list of open questions, or "Nothing blocking" if all HIGH]
+- Problem definition: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
+- Scope and context: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
+- Constraints: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
+- Risks and unknowns: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
+- Acceptance criteria: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
 
-  → Run another Q&A round, or proceed to the Plan phase?
+**Still unclear:**
+
+- [bullet list of open questions, or "Nothing blocking" if all HIGH]
+
+→ Run another Q&A round, or proceed to the Plan phase?
 
 Wait for the user's answer before doing anything else. If they want another round, continue with questions targeting the lowest-confidence areas. If they say proceed, stop the interrogation — do not add more questions.
 
@@ -89,12 +96,14 @@ Wait for the user's answer before doing anything else. If they want another roun
 Every question you ask must be presented as a multiple-choice question with suggested answers. Never ask bare open-ended questions.
 
 **Claude Code** — use the `AskUserQuestion` tool:
+
 - One tool call per question (or per tightly related batch using separate `questions[]` entries).
 - Append `(Recommended)` to the label of the best default option.
 - Do NOT add an "Other" entry — the tool appends it automatically.
 - Use `multiSelect: false` unless the question genuinely accepts multiple answers.
 
 **GitHub Copilot** — use the `vscode_askQuestions` tool:
+
 - Parameters: `prompt` (string) and `choices` (array of strings).
 - Embed `(Recommended)` directly inside the choice string for the best default, e.g. `"Frontend only (Recommended)"`.
 - Always append `"Other — describe your answer in free text"` as the last choice manually.
@@ -110,6 +119,7 @@ Every question you ask must be presented as a multiple-choice question with sugg
   ```
 
 **Codex in plan mode** — use the `request_user_input` tool:
+
 - Codex only exposes `request_user_input` in plan mode. If you are running in agent mode, prompt the user to switch: "Switch Codex to plan mode for the Think phase — interactive questions require it."
 - One tool call per question or tightly related batch using separate `questions[]` entries.
 - Append `(Recommended)` to the label of the best default option.
@@ -133,6 +143,7 @@ Every question you ask must be presented as a multiple-choice question with sugg
   ```
 
 **Codex in agent mode, or any other extension without a native MCQ widget** — inline numbered list:
+
 - Format each question as a numbered list in your response.
 - Mark the recommended option with `**(Recommended)**` after its label.
 - Always add a final option: `N. Other — describe your answer in free text`.

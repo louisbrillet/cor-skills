@@ -15,11 +15,11 @@ You are the COR (CodingOnRails) orchestrator. Your job is to detect the current 
 
 Determine which interactive question tool is available. Check in this order:
 
-| Priority | Signal | Environment | Todo tool | Question tool |
-|---|---|---|---|---|
-| 1 | `TodoWrite` available | Claude Code | `TodoWrite` | `AskUserQuestion` |
-| 2 | `todo_write` MCP available | Copilot | `todo_write` / `todo_read` | `vscode_askQuestions` |
-| 3 | neither | Codex / other | none — `.cor/plan.md` | inline numbered list |
+| Priority | Signal                     | Environment   | Todo tool                  | Question tool         |
+| -------- | -------------------------- | ------------- | -------------------------- | --------------------- |
+| 1        | `TodoWrite` available      | Claude Code   | `TodoWrite`                | `AskUserQuestion`     |
+| 2        | `todo_write` MCP available | Copilot       | `todo_write` / `todo_read` | `vscode_askQuestions` |
+| 3        | neither                    | Codex / other | none — `.cor/plan.md`      | inline numbered list  |
 
 Store as **active environment**. Use consistently across all steps.
 
@@ -30,8 +30,8 @@ Store as **active environment**. Use consistently across all steps.
 Check if `.cor/config.md` exists.
 
 If it does not exist:
-  "No project config found. Run the **cor-setup** skill to initialise COR for this repo."
-  Stop here.
+"No project config found. Run the **cor-setup** skill to initialise COR for this repo."
+Stop here.
 
 If it exists, read it and extract `Plan Storage` and `Checks`.
 
@@ -40,6 +40,7 @@ If it exists, read it and extract `Plan Storage` and `Checks`.
 ## Step 2 — Gate: Plan
 
 Load the plan based on `Plan Storage`:
+
 - **markdown**: Scan `.cor/` for `plan.md` and any `plan_*.md` files. Filter to those with at least one `- [ ]` task. If none found, no plan yet.
 
   If multiple active plan files exist, list each with its filename and remaining task count. Pre-select the most recently modified. Ask the user to confirm or pick another. Wait. Use the chosen file for all subsequent steps.
@@ -48,8 +49,8 @@ Load the plan based on `Plan Storage`:
 - **session**: Check current session todos. If none tagged as COR tasks, no plan yet.
 
 If no plan exists:
-  "No active plan found. Run the **cor-think** skill to start the Think phase."
-  Stop here.
+"No active plan found. Run the **cor-think** skill to start the Think phase."
+Stop here.
 
 ---
 
@@ -63,11 +64,11 @@ Parse the plan and categorise tasks:
 
 Determine current phase:
 
-| State | Phase to enter |
-|---|---|
-| Pending implementation tasks exist | Code |
-| No pending implementation tasks, pending test tasks exist | Test |
-| All tasks complete | Done |
+| State                                                     | Phase to enter |
+| --------------------------------------------------------- | -------------- |
+| Pending implementation tasks exist                        | Code           |
+| No pending implementation tasks, pending test tasks exist | Test           |
+| All tasks complete                                        | Done           |
 
 ---
 
@@ -75,29 +76,31 @@ Determine current phase:
 
 Show a compact status summary, then act:
 
-  ## COR Status
+## COR Status
 
-  Plan: .cor/plan_2_checkout_flow.md   # active plan file path
-  Stack: TypeScript / Next.js
-  Checks: tsc, eslint
+Plan: .cor/plan_2_checkout_flow.md # active plan file path
+Stack: TypeScript / Next.js
+Checks: tsc, eslint
 
-  Progress: 2 / 5 tasks complete
-  - [x] T01: Add withAuth middleware
-  - [x] T02: Reject unauthenticated requests
-  - [ ] T03: Write unit tests for withAuth [unit]    ← next
-  - [ ] T04: Extract token validation helper
-  - [ ] T05: Verify login flow [UAT]
+Progress: 2 / 5 tasks complete
+
+- [x] T01: Add withAuth middleware
+- [x] T02: Reject unauthenticated requests
+- [ ] T03: Write unit tests for withAuth [unit] ← next
+- [ ] T04: Extract token validation helper
+- [ ] T05: Verify login flow [UAT]
 
 **If routing to Code:** "Resuming Code phase. Next task: T03." — then follow the full **cor-code** skill instructions starting from Step 2 (confirm task).
 
 **If routing to Test:** "All implementation done. Starting Test phase." — then follow the full **cor-test** skill instructions starting from Step 2.
 
 **If all done:**
-  "All tasks complete. Nothing left to do here.
+"All tasks complete. Nothing left to do here.
 
-  What's next? You can:
-  - Start a new feature with the cor-think skill
-  - Re-run setup with cor-setup if the stack or checks need updating"
+What's next? You can:
+
+- Start a new feature with the cor-think skill
+- Re-run setup with cor-setup if the stack or checks need updating"
 
 ---
 

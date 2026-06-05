@@ -15,11 +15,11 @@ You are opening the Plan phase of the COR (CodingOnRails) methodology. You take 
 
 Determine which interactive question tool is available. Check in this order:
 
-| Priority | Signal | Environment | Question tool |
-|---|---|---|---|
-| 1 | `AskUserQuestion` available | Claude Code | `AskUserQuestion` |
-| 2 | `vscode_askQuestions` available | Copilot | `vscode_askQuestions` |
-| 3 | neither | Codex / other | inline numbered list |
+| Priority | Signal                          | Environment   | Question tool         |
+| -------- | ------------------------------- | ------------- | --------------------- |
+| 1        | `AskUserQuestion` available     | Claude Code   | `AskUserQuestion`     |
+| 2        | `vscode_askQuestions` available | Copilot       | `vscode_askQuestions` |
+| 3        | neither                         | Codex / other | inline numbered list  |
 
 Store as **active environment**. Use the matching question tool whenever user input is required in this skill. For Codex, use inline numbered lists with `**(Recommended)**` on the best default and a final "Other — describe in free text" option.
 
@@ -48,16 +48,16 @@ Break the work into an ordered list of concrete, implementable tasks. Follow the
 - Do not add tasks that were not discussed — stay within the scope established in Think.
 
 Task type tags (append to the task description when applicable):
-  [unit]        — unit tests to write or update
-  [integration] — integration tests to write or update
-  [UAT]         — user acceptance test to walk through manually
+[unit] — unit tests to write or update
+[integration] — integration tests to write or update
+[UAT] — user acceptance test to walk through manually
 
 Example task list:
 
-  T01: Add `withAuth` middleware to the `/api/orders` route
-  T02: Reject unauthenticated requests with a 401 response
-  T03: Write unit tests for `withAuth` [unit]
-  T04: Verify the login → orders flow works end-to-end [UAT]
+T01: Add `withAuth` middleware to the `/api/orders` route
+T02: Reject unauthenticated requests with a 401 response
+T03: Write unit tests for `withAuth` [unit]
+T04: Verify the login → orders flow works end-to-end [UAT]
 
 Present the list to the user. Ask: "Does this task breakdown look right? Add, remove, reorder, or reword anything before I save it."
 
@@ -78,14 +78,17 @@ Before writing, check for existing plan files. Scan `.cor/` for `plan.md` and an
 **No existing plans found** — proceed directly. Save to `.cor/plan.md` using the structure below.
 
 **Existing plans found** — for each file, check whether any tasks are marked `- [x]`. Classify:
+
 - **In-progress**: at least one `- [x]` task
 - **Untouched**: all tasks are `- [ ]`
 
 If any in-progress plans exist, present two options using the native question widget:
+
 - A: Merge new tasks as a new phase in an existing plan
 - B: Create a separate plan file
 
 If only untouched plans exist, present three options:
+
 - A: Merge new tasks as a new phase in an existing plan
 - B: Overwrite (treat existing plan as stale)
 - C: Create a separate plan file
@@ -121,16 +124,18 @@ After saving, tell the user: "Saved as `plan_[N]_[slug].md`. cor-code and cor-wo
 
 **Plan file structure** (used for new files and overwrites):
 
-  # COR Plan
+# COR Plan
 
-  ## Context
-  [1–2 sentence summary of what we're building and why]
+## Context
 
-  ## Tasks
-  - [ ] T01: [description]
-  - [ ] T02: [description]
-  - [ ] T03: [description] [unit]
-  - [ ] T04: [description] [UAT]
+[1–2 sentence summary of what we're building and why]
+
+## Tasks
+
+- [ ] T01: [description]
+- [ ] T02: [description]
+- [ ] T03: [description] [unit]
+- [ ] T04: [description] [UAT]
 
 **memory** — Save the plan to the agent's memory system using the same structure as above. For Claude Code, this is `~/.claude/projects/[project-path]/memory/cor_plan.md`.
 
