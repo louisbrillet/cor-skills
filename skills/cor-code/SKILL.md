@@ -351,7 +351,7 @@ For all other note types, use the appropriate agent file per agent:
 
 ### Note format
 
-Find or create a `## COR Notes` section in the target file. Append entries there. Keep each entry compact — one line, prefixed with a tag:
+Find or create a `## COR Notes` section in the target file. Append entries there, always in english. Keep each entry compact — one line, prefixed with a tag:
 
 ```markdown
 ## COR Notes
