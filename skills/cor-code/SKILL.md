@@ -1,6 +1,6 @@
 ---
 name: cor-code
-description: "Code phase of the COR methodology. Implements tasks from the plan sequentially and autonomously, running all configured checks after each task. Pauses only when tool/command output reveals unexpected high-impact information. Appends technical notes to the agent instruction file after each task. Claude Code users: invoke as /cor:code [task-id]."
+description: "Code phase of the COR methodology. Implements tasks from the plan sequentially and autonomously, running all configured checks after each task. Pauses only when tool/command output reveals unexpected high-impact information. Maintains concise repo instructions by updating active rules and archiving historical notes after each task. Claude Code users: invoke as /cor:code [task-id]."
 status: stable
 stability: guaranteed
 ---
@@ -351,22 +351,32 @@ For all other note types, use the appropriate agent file per agent:
 - Scoped → `AGENTS.md` inside the relevant subdirectory (e.g. `app/controllers/api/AGENTS.md`). Codex loads per-directory `AGENTS.md` when working in that directory. Use this as a fallback if `@` imports are unconfirmed.
 - Create the file with a minimal header if it doesn't exist.
 
-### Note format
+### Note format and maintenance policy
 
-Find or create a `## COR Notes` section in the target file. Append entries there, always in english. Keep each entry compact — one line, prefixed with a tag:
+Find or create a `## COR Notes` section in the target file. Write entries in english. Keep each entry compact (one line), with a tag and a stable ID:
 
 ```markdown
 ## COR Notes
 
-<!-- T02 — 2026-05-12 -->
+### Active Rules
 
-- [gotcha] Rails `before_action` skips API-only controllers unless explicitly included
-- [rule] Always use explicit HTTP status codes with `render json:` in API controllers
+- [rule][API-AUTH-001] Always use explicit HTTP status codes with `render json:`
+- [gotcha][API-AUTH-002] API-only controllers may skip `before_action` unless explicitly included
 ```
 
-Tags: `[gotcha]` `[rule]` `[decision]` `[skip]` `[error]` `[practice]`
+Tags: `[gotcha]` `[rule]` `[decision]` `[skip]` `[error]` `[practice]` `[setup]`
 
-For Copilot scoped files, place the `## COR Notes` section below the frontmatter block — do not put content inside the frontmatter.
+When updating instruction files, enforce these rules:
+
+1. Keep one canonical rule body in one file (`.claude/rules/<topic>.md`). Do not duplicate the same rule text across `AGENTS.md`, `CLAUDE.md`, and `.github/copilot-instructions.md`.
+2. Keep scoped rule files in this section order: `## COR Notes`, `### Active Rules`, `### Active Decisions`, `### Gotchas` (optional), `### Runbook`, `### Archive`.
+3. Keep only reusable/current constraints in active sections. Move historical or plan-specific context to `.cor/instruction-archive/<topic>.cor-notes.archive.md`, then leave a pointer in `### Archive`.
+4. Deduplicate before appending: if an equivalent rule exists, update it in place instead of adding a near-duplicate line.
+5. Avoid volatile wording like `current version is X` unless the same change updates the code source of truth; prefer references to source files (for example `src/lib/db.ts`).
+6. Keep active rule files concise (target <= 120 lines or <= 40 bullets). If a file exceeds this, archive older context first.
+7. Do not add per-task HTML timeline headers (`<!-- T.. -->`) in active files. Keep timeline detail in archive files.
+
+For Copilot scoped files, place the `## COR Notes` section below frontmatter — never inside frontmatter.
 
 ---
 
