@@ -65,9 +65,37 @@ Cover these areas across rounds (order as the conversation demands):
 
 ---
 
+## Answer Interpretation Before Recap
+
+After each user answer batch, do **not** jump directly to confidence scoring.
+
+First, interpret the answers:
+
+- Distinguish between:
+  - explicit facts ("it is in `api/orders`")
+  - uncertainty ("I don't know")
+  - delegated discovery ("you should check/explore the codebase")
+- Treat delegated discovery as an instruction to investigate immediately.
+
+If the user says they don't know and asks you to check, run a short exploration pass before the confidence recap:
+
+- Inspect relevant files/modules/routes/tests/configs in the repo.
+- Confirm or correct assumptions using evidence from the codebase.
+- Convert discovered facts into updated understanding for the current round.
+
+If exploration reveals new ambiguities, missing constraints, or conflicts, ask targeted follow-up questions before scoring confidence:
+
+- Ask only the minimum 1–3 questions needed to unblock understanding.
+- Focus on high-impact unknowns discovered in code, not generic re-questioning.
+- After follow-up answers, interpret them again before recap.
+
+Only after this interpretation + exploration (+ optional follow-up questions) pass, produce the confidence summary.
+
+---
+
 ## Confidence Summary
 
-After each Q&A round, produce a structured summary. Use this format exactly:
+After each Q&A round, produce a structured summary. If discovery was delegated, this summary must reflect what you learned from your exploration (not only user-provided info). Use this format exactly:
 
 ## Understanding so far
 
@@ -166,3 +194,4 @@ Apply this format to every question, including the opening prompt asking for a p
 - Never suggest implementation approaches during Think. Save those for Plan.
 - If the user goes off-topic, bring them back: "Let's stay in Think for now — we'll handle that in Plan."
 - If you reach HIGH confidence in all areas after a round, note it: "I have high confidence across all areas. Ready to move to the Plan phase when you are."
+- Mandatory sequence each round: `ask -> interpret answers -> (explore if delegated) -> (ask focused follow-up questions if exploration creates new unknowns) -> confidence recap -> ask whether to continue`.
