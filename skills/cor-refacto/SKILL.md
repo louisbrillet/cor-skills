@@ -1,8 +1,6 @@
 ---
 name: cor-refacto
 description: "Think+Plan skill for behavior-preserving refactoring. Use when the user wants to improve readability, simplicity, maintainability, duplication, or coupling without functional changes. Produces a concrete refactor plan and a strict handoff for cor-code; blocks theoretical refactors that do not reduce net complexity."
-status: beta
-stability: experimental
 ---
 
 # COR Refacto — Think + Plan
@@ -12,14 +10,12 @@ Open a refactoring session focused on **real simplification**.
 Hard constraint: every proposed step must preserve behavior strictly.
 
 This skill performs:
-
 - Think (interrogate scope, risks, constraints, acceptance)
 - Plan (produce ordered, atomic tasks and save plan)
 
 This skill does **not** implement code. Implementation is delegated to `cor-code`.
 
 Mandatory sequencing:
-
 1. Deep code analysis and exploration
 2. Think Q&A
 3. Plan
@@ -32,11 +28,11 @@ Never start planning before analysis artifacts are produced.
 
 Detect question tooling in this order:
 
-| Priority | Signal                          | Environment   | Question tool         |
-| -------- | ------------------------------- | ------------- | --------------------- |
-| 1        | `AskUserQuestion` available     | Claude Code   | `AskUserQuestion`     |
-| 2        | `vscode_askQuestions` available | Copilot       | `vscode_askQuestions` |
-| 3        | neither                         | Codex / other | inline numbered list  |
+| Priority | Signal | Environment | Question tool |
+|---|---|---|---|
+| 1 | `AskUserQuestion` available | Claude Code | `AskUserQuestion` |
+| 2 | `vscode_askQuestions` available | Copilot | `vscode_askQuestions` |
+| 3 | neither | Codex / other | inline numbered list |
 
 Use multiple-choice format for every question.
 
@@ -63,7 +59,6 @@ If a candidate refactor fails any gate, explicitly mark it `REJECTED` with reaso
 Perform a code exploration pass before proposing any task breakdown.
 
 Minimum required exploration:
-
 - Read the primary files in scope end-to-end.
 - Read directly connected modules (callers/callees, shared helpers, routes, actions, tests).
 - Identify duplication candidates with concrete file/line evidence.
@@ -92,7 +87,6 @@ Run focused Q&A in rounds (2–4 questions per round) until confidence is high.
 Think must use Step 0 findings as input. If findings are weak or incomplete, go back to exploration.
 
 Cover:
-
 - Problem definition (what is hard to change/read today)
 - Scope and hotspots (duplication, coupling, complexity density)
 - Constraints (no behavior change, PR size target, deadline)
@@ -106,7 +100,6 @@ After each round, output:
 **What we're building:** [1–2 sentences]
 
 **Confidence by area:**
-
 - Problem definition: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
 - Scope and context: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
 - Constraints: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
@@ -114,7 +107,6 @@ After each round, output:
 - Acceptance criteria: [🟢 HIGH | 🟠 MEDIUM | 🔴 LOW] — [one-line reason]
 
 **Still unclear:**
-
 - [open points, or "Nothing blocking"]
 
 → Run another Q&A round, or proceed to Plan phase?
@@ -128,7 +120,6 @@ When all areas are HIGH, proceed to Plan.
 ### Step 1 — Read Config
 
 Read `.cor/config.md`.
-
 - If missing: "Run the **cor-setup** skill first to configure this project." and stop.
 - Extract `Plan Storage` and `Checks`.
 - Supported plan storage: `markdown`, `memory`, `session`.
@@ -136,7 +127,6 @@ Read `.cor/config.md`.
 ### Step 2 — Build Atomic Task List
 
 Create ordered tasks with these constraints:
-
 - One concern per task.
 - Dependency-respecting order.
 - Separate implementation from tests.
@@ -145,7 +135,6 @@ Create ordered tasks with these constraints:
 - Every task must trace back to at least one finding from "Exploration Findings".
 
 For each implementation task, add a **Net Simplification Check**:
-
 - Complexity perceived: DOWN / SAME / UP
 - Duplication pressure: DOWN / SAME / UP
 - Coupling pressure: DOWN / SAME / UP
@@ -153,7 +142,6 @@ For each implementation task, add a **Net Simplification Check**:
 - Verdict: `ACCEPT` only if hidden cost is `NO` and no axis worsens.
 
 Task tags when relevant:
-
 - `[unit]`
 - `[integration]`
 - `[UAT]`
@@ -177,7 +165,6 @@ Scan `.cor/` for `plan.md` and `plan_*.md`.
   - C: create separate file
 
 When creating a separate file, use:
-
 - `.cor/plan_<N>_refacto_<slug>.md`
 
 Use structure:
@@ -185,39 +172,32 @@ Use structure:
 # COR Plan
 
 ## Context
-
 [1–2 sentence summary]
 
 ## Tasks
-
 - [ ] T01: ...
 - [ ] T02: ...
 
 ## Refactor Acceptance Rules
-
 - Behavior must remain identical.
 - Reject speculative abstractions.
 - Reject abstractions that increase cognitive load.
 - Reject shared "utils/helpers/common" extractions.
 
 ## Handoff to cor-code
-
 - Execution order: [task IDs in order]
 - Risk watchlist: [subtle behavior points to monitor]
 - Validation strategy: [tests/checks to run for this plan]
 
 #### memory
-
 Save same structure to memory plan store.
 
 #### session
-
 Create task panel entries from task list.
 
 ### Step 4 — Confirm
 
 Respond:
-
 - "Plan saved. [N] tasks ready."
 - "Next: run **cor-code** to implement the plan."
 
@@ -226,7 +206,6 @@ Respond:
 ## Refactoring Heuristics (Use, Don’t Worship)
 
 Apply only when they simplify **now**:
-
 - Strategy for algorithm variants across callers.
 - Template Method/Pipeline for stable process skeleton with variable steps.
 - Polymorphism when type-conditionals are duplicated across places.

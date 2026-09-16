@@ -35,6 +35,17 @@ Read `.cor/config.md`. Extract the `Plan Storage` value. If the file does not ex
 
 Summarise the key outputs from the Think phase in this conversation. If there is no prior Think phase in this session (the user jumped straight to Plan), ask: "What are we building? Give me a quick summary of the problem and constraints." Wait for the answer.
 
+**Standalone by default.** A plan is a handoff artifact, not a conversation summary — it must be readable and executable by someone (or some agent) with zero memory of this conversation. Before decomposing into tasks, pull out of the Think phase (and of any exploration you did during it) everything a cold reader would need in order to act without re-deriving it:
+
+- The problem/goal, in 1–2 sentences.
+- Root cause or current-state findings, if Think uncovered one — with concrete file/symbol references (`path/to/file.ts:123`), not a vague description.
+- Every locked decision or constraint from Think, each with its **why** when the reason is non-obvious. A decision recorded without its rationale gets silently re-litigated or reversed later by whoever executes the plan.
+- Explicit scope boundaries — what's out, not only what's in — especially anything that was discussed and deliberately excluded.
+- Any invariant the codebase already relies on that this work must not break.
+- The acceptance criteria decided in Think.
+
+This becomes the plan's Context section (Step 4). Stay complete, not exhaustive: do not pad it with information a reader could get by reading the code themselves (no need to explain what an obviously-named file does), and omit any subsection Think didn't actually produce content for rather than inventing filler. Keep it skimmable — bullets and short tables, not prose paragraphs. If the Context section needs more than ~20–30 lines to stay complete, that is usually a sign Think covered more than one plan's worth of work; consider whether it should split into separate plans instead of compressing further.
+
 ---
 
 ## Step 3 — Decompose into Tasks
@@ -124,11 +135,34 @@ After saving, tell the user: "Saved as `plan_[N]_[slug].md`. cor-code and cor-wo
 
 **Plan file structure** (used for new files and overwrites):
 
-# COR Plan
+# COR Plan — [short title, omit the dash-title only for the default untitled plan.md]
 
 ## Context
 
-[1–2 sentence summary of what we're building and why]
+[Problem/goal — 1–2 sentences]
+
+### Root cause / current state (omit if Think found nothing worth recording here)
+
+[What's actually happening today, with file:line references]
+
+### Decisions locked in Think (omit if Think made no non-obvious call)
+
+| Subject | Decision | Why |
+| --- | --- | --- |
+| ... | ... | ... |
+
+### Scope
+
+**In scope:** ...
+**Out of scope:** ... (anything discussed and deliberately excluded)
+
+### Invariants (omit if none apply)
+
+- [existing behavior/contract this work must not break]
+
+### Acceptance criteria
+
+[How we'll know this is done — from Think]
 
 ## Tasks
 
@@ -136,6 +170,8 @@ After saving, tell the user: "Saved as `plan_[N]_[slug].md`. cor-code and cor-wo
 - [ ] T02: [description]
 - [ ] T03: [description] [unit]
 - [ ] T04: [description] [UAT]
+
+Every subsection above is optional except Context's opening 1–2 sentences and Acceptance criteria — include only what Think actually produced. A one-line bug fix with no interesting decisions or invariants gets a one-line Context, not five empty headings.
 
 **memory** — Save the plan to the agent's memory system using the same structure as above. For Claude Code, this is `~/.claude/projects/[project-path]/memory/cor_plan.md`.
 

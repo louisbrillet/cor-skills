@@ -1,8 +1,6 @@
 ---
 name: cor-design
 description: "Exploratory UI design phase for COR. Captures visual goals and constraints, generates lightweight web variants for comparison, and produces a decision-ready direction before planning implementation."
-status: beta
-stability: experimental
 ---
 
 # COR Design — Exploratory UI Phase
@@ -10,7 +8,6 @@ stability: experimental
 You are opening the Design phase of COR (CodingOnRails). Your goal is to explore visual directions quickly with runnable lightweight web artifacts, then converge on a decision-ready UI direction before implementation planning.
 
 This phase is UI-focused:
-
 - Keep workflows and business logic stable unless explicitly requested.
 - Optimize visual hierarchy, clarity, and usability through presentation, states, and density.
 - Produce concrete variants the user can compare in-browser.
@@ -64,11 +61,11 @@ Run phases in this exact order:
 
 Determine which interactive question tool is available. Check in this order:
 
-| Priority | Signal                          | Environment   | Question tool         |
-| -------- | ------------------------------- | ------------- | --------------------- |
-| 1        | `AskUserQuestion` available     | Claude Code   | `AskUserQuestion`     |
-| 2        | `vscode_askQuestions` available | Copilot       | `vscode_askQuestions` |
-| 3        | neither                         | Codex / other | inline numbered list  |
+| Priority | Signal | Environment | Question tool |
+|---|---|---|---|
+| 1 | `AskUserQuestion` available | Claude Code | `AskUserQuestion` |
+| 2 | `vscode_askQuestions` available | Copilot | `vscode_askQuestions` |
+| 3 | neither | Codex / other | inline numbered list |
 
 Store as **active environment**. Use the matching question format whenever user input is required.
 
@@ -77,14 +74,12 @@ Store as **active environment**. Use the matching question format whenever user 
 ## Phase 1 — Audit
 
 Run a short non-destructive audit of the current UI implementation:
-
 - inspect theme/tokens (colors, typography, radius, shadows, spacing)
 - inspect shell surfaces (top nav, sidebar, page containers)
 - inspect a core task surface (cards/forms/tables/diff/review panels)
 - inspect interactive states (`hover`, `focus-visible`, `disabled`, loading)
 
 Output a compact diagnosis:
-
 - What works (keep)
 - What feels flat/faded (change)
 - Top 3 leverage points for improvement
@@ -96,7 +91,6 @@ Do not propose implementation details yet.
 ## Phase 2 — Brief
 
 Ask targeted questions and lock these decisions:
-
 - design context mode:
   - `greenfield` (recommended when no stable app UI exists yet)
   - `brownfield` (recommended when UI must be evaluated in real app context)
@@ -128,7 +122,6 @@ Then ask the user to confirm final mode selection. User choice always wins.
 Create runnable web exploration artifacts with the chosen format.
 
 Rules:
-
 - Start from the default scaffold template at `templates/ui-style-lab.html` unless the user explicitly requests a different base.
 - Use lightweight stack first (vanilla HTML/CSS/JS) unless user asks otherwise.
 - Keep identical content/structure across variants so visual comparison is fair.
@@ -137,21 +130,18 @@ Rules:
 - Keep code portable and easy to open locally.
 
 Brownfield safety model (mandatory when mode is `brownfield`):
-
 - Render style experiments inside a scoped theme wrapper (`.design-lab-theme-*`) instead of global CSS resets.
 - Expose experiments through an opt-in route or feature flag only.
 - Keep a visible floating style selector inside the scoped area; never force a global style switch for all users.
 - Do not modify business logic, navigation semantics, or data contracts during style-lab runs.
 
 Minimum output:
-
 - 3 visual variants
 - responsive desktop + mobile behavior
 - keyboard-visible focus styles
 - no backend dependency
 
 Variant distinctiveness and parity checks (required):
-
 - Each variant must differ on at least two structural axes:
   - layout rhythm/grid behavior
   - typography scale/voice
@@ -163,21 +153,18 @@ Variant distinctiveness and parity checks (required):
 - If a variant fails parity, regenerate before scoring.
 
 Recommended output paths:
-
 - `.cor/design-lab/index.html` (switchable), or
 - `.cor/design-lab/style-a.html`, `style-b.html`, `style-c.html`
 
 ### Default Scaffold (Reusable)
 
 The reusable baseline lives here:
-
 - `templates/ui-style-lab.html`
 - `templates/scorecard-template.md`
 - `templates/decision-log-template.md`
 - `templates/handoff-template.md`
 
 Expected usage:
-
 1. Copy scaffold to exploration output path.
 2. Keep the style switch mechanism (`data-style`, `aria-pressed`) intact.
 3. Replace `.placeholder` with shared UI surfaces for fair comparison.
@@ -188,7 +175,6 @@ Expected usage:
 ## Phase 4 — Scoring
 
 Evaluate each variant with a mandatory 1-5 scorecard using these locked criteria:
-
 - `Clarity`
 - `Hierarchy`
 - `Actionability`
@@ -198,14 +184,12 @@ Evaluate each variant with a mandatory 1-5 scorecard using these locked criteria
 - `Visual Distinctiveness`
 
 For every criterion, report:
-
 - score (`1` to `5`)
 - confidence (`High`, `Medium`, `Low`)
 - one-line rationale
 - optional uncertainty flag when evidence is weak or ambiguous
 
 Allowed evidence sources:
-
 - rendered artifact inspection
 - explicit rubric checks
 - deterministic token/component/state checks
@@ -213,7 +197,6 @@ Allowed evidence sources:
 Do not score from taste-only language or ungrounded intuition.
 
 Output format:
-
 - score table per variant and criterion
 - confidence and uncertainty annotations
 - key tradeoffs per variant
@@ -226,7 +209,6 @@ Default artifact template: `templates/scorecard-template.md`
 ## Phase 5 — Narrowing
 
 Narrow variants into a decision candidate set:
-
 - choose winner + runner-up
 - record unresolved risks
 - record whether choice was user-driven, model-driven, or hybrid
@@ -236,13 +218,11 @@ Narrow variants into a decision candidate set:
 Do not silently auto-resolve cross-framework conflicts.
 
 Finalist cross-check minimum:
-
 - assess finalists against at least Nielsen + Garrett + one perceptual/behavioral lens (Gestalt/PARC or Laws of UX)
 - list framework-confirmed strengths and violations
 - mark each violation severity (`low`, `medium`, `high`)
 
 Conflict arbitration policy:
-
 - Default action is to block auto-selection.
 - Present disagreement explicitly and ask the user to pick:
   - follow scorecard winner
@@ -253,7 +233,6 @@ Conflict arbitration policy:
 Default artifact template: `templates/decision-log-template.md`
 
 Convergence governance:
-
 - Default mode is `manual`; ask user decisions at each narrowing step.
 - Enable `auto` only when the user explicitly opts in.
 - Apply a default maximum of 3 narrowing rounds.
@@ -273,7 +252,6 @@ Produce a deterministic implementation hand-off for `cor-plan` using this schema
 ## cor-design hand-off
 
 ### Decision
-
 - Winner: [variant-id]
 - Runner-up: [variant-id]
 - Decision mode: [manual|auto|hybrid]
@@ -281,22 +259,18 @@ Produce a deterministic implementation hand-off for `cor-plan` using this schema
 - Unresolved risks: [list]
 
 ### Semantic token map
-
 - color: [alias -> value intent]
 - typography: [scale/family/weight decisions]
 - radius/elevation/density: [token decisions]
 
 ### Component impact matrix
-
 - [component/surface]: [change type] | [priority: high/med/low] | [risk]
 - ...
 
 ### Non-goals
-
 - [explicitly out of scope]
 
 ### Acceptance criteria
-
 - [visual criteria]
 - [usability criteria]
 - [accessibility criteria]
@@ -313,7 +287,6 @@ If requested, immediately convert this hand-off into a task list through `cor-pl
 ## Gold-standard quality gate
 
 Run this gate before any `cor-plan` hand-off:
-
 - Canonical UX frameworks check (Nielsen, Garrett, plus perceptual/behavioral lens)
 - UI system quality check via `ui-design-system-principles`
 - Stack feasibility check for the target app context
@@ -321,7 +294,6 @@ Run this gate before any `cor-plan` hand-off:
 If gate passes: continue normally.
 
 If gate fails:
-
 - show failed criteria and risk impact
 - recommend corrective iteration
 - allow bypass only when user explicitly acknowledges the tradeoff
