@@ -12,7 +12,7 @@ There is also a meta dimension: the harness remembers. After each task, COR writ
 
 - **Agent-native** — Claude Code, GitHub Copilot, Codex. Detects available tools at startup; adapts task tracking, question style, and plan storage per agent.
 - **Crash-resilient** — checkpoint written before any file is touched. Survives mid-task interruptions and context resets; resumes exactly where it stopped.
-- **Lightweight** — six skills, no added infrastructure. Structured workflow, not rigid one. No opinions on your stack, tooling, or memory setup.
+- **Lightweight** — no added infrastructure. Structured workflow, not rigid one. No opinions on your stack, tooling, or memory setup.
 - **Adaptable** — stack-detected defaults you override at setup. Plan storage (markdown / memory / session) is your choice.
 - **Transparent** — gotchas and best practices written to your native instruction file after each task. Plain text you own; nothing hidden.
 - **Token-efficient** — `token-caveman` ships with COR; cuts ~75% response verbosity without losing technical content.
@@ -38,6 +38,7 @@ The `skills` CLI will ask which skills and which agents to install to. Supports 
 | `cor-test`      | 4 — Test  | Runs only the tests that were planned — unit, integration, or UAT                                                   |
 | `cor-work`      | Any       | Entry point: reads plan state and routes to the right phase automatically                                           |
 | `token-caveman` | Always    | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy       |
+| `authoring-skills` | Meta   | Authors and audits skills against the Agent Skills best practices; ships a validator script                          |
 
 ### Experimental skills (beta)
 
@@ -128,6 +129,16 @@ COR adapts its behaviour to the agent running it:
 | Codex / other  | `.cor/plan.md` directly    | Inline numbered list                |
 
 All phases work across all three environments. The agent detects which tools are available at startup and uses the right ones throughout the session.
+
+## Skill quality
+
+`authoring-skills` is the meta-skill governing this repo's own skills. It encodes the Agent Skills authoring best practices (frontmatter validity, description discoverability, the 500-line SKILL.md budget, one-level-deep references, progressive disclosure, workflows and evaluations) and ships a validator:
+
+```bash
+python skills/authoring-skills/scripts/validate_skill.py skills/*/
+```
+
+Run it before shipping a skill change. `ERROR` findings must be fixed; `WARN` findings must be triaged explicitly.
 
 ## License
 

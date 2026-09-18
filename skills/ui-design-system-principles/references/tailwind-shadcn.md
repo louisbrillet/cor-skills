@@ -1,3 +1,10 @@
+# Tailwind CSS & shadcn/ui reference
+
+## Contents
+
+- Tailwind CSS integration: token → config mapping, principle → utility cheat sheet, dark mode classes, breakpoints, button and alert examples
+- shadcn/ui integration: CSS variable mapping, dark theme variables, feedback color extension, variant and size mapping, chart colors, card layout
+
 ## 11. Tailwind CSS Integration
 
 The skill's token system maps directly to Tailwind's architecture. Use this reference to translate principles into Tailwind utilities and config.

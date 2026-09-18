@@ -1,6 +1,6 @@
 ---
 name: ux-frameworks
-description: Apply, cite, and reason with the five canonical UX evaluation frameworks — Nielsen's 10 Usability Heuristics, Garrett's Five Planes of UX, Gestalt principles & PARC, Morville's UX Honeycomb, and Yablonski's Laws of UX. Use this skill whenever the user asks for a UX critique, heuristic evaluation, design review, audit of an interface, or wants to diagnose why a design "feels off". Also use it when the user mentions any of these framework names, when they ask for the right framework to apply to a specific UX problem, or when producing UX deliverables (audits, design rationales, design system documentation, design critique). Even when only one framework is named, prefer cross-referencing with the others to locate the problem at the right layer of abstraction.
+description: Applies and cites the five canonical UX evaluation frameworks — Nielsen's heuristics, Garrett's Five Planes, Gestalt/PARC, Morville's Honeycomb, Yablonski's Laws of UX. Use for UX critiques, heuristic evaluations, design reviews, interface audits, diagnosing why a design "feels off", choosing the right framework for a UX problem, or producing UX deliverables; also when any of those framework names is mentioned.
 status: beta
 stability: experimental
 ---

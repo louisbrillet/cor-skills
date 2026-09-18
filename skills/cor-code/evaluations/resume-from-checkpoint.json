@@ -1,0 +1,18 @@
+{
+  "skills": ["cor-setup", "cor-code"],
+  "query": "Continue the COR plan.",
+  "setup": [
+    "Repo has .cor/config.md with a failing-free check command.",
+    "Repo has .cor/plan.md with T01 checked and T02..T04 unchecked.",
+    "Repo has .cor/checkpoint.md containing plan: .cor/plan.md, task: T02, phase: implementing.",
+    "Working tree has uncommitted edits belonging to T02.",
+    "Session is fresh — no prior conversation about this plan."
+  ],
+  "expected_behavior": [
+    "Reads .cor/checkpoint.md before reading the plan or selecting a task",
+    "Identifies T02 as interrupted at phase implementing rather than starting T02 from the plan order by coincidence",
+    "Runs every configured check to assess severity before deciding how to resume",
+    "Resumes or pauses according to the Severity Assessment table instead of silently discarding the uncommitted T02 edits",
+    "Does not start T03 while T02 is unresolved"
+  ]
+}

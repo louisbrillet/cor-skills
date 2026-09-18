@@ -1,0 +1,16 @@
+{
+  "skills": ["cor-setup", "cor-code"],
+  "query": "Implement the next task.",
+  "setup": [
+    "Repo has .cor/config.md and .cor/plan.md with T01 = 'Add a users table migration'.",
+    "The database already has a users table with a conflicting schema.",
+    "The repo also contains one pre-existing lint error in an unrelated file."
+  ],
+  "expected_behavior": [
+    "Pauses on the conflicting existing users table because it materially changes the implementation approach",
+    "States the unexpected finding, why it matters, and the concrete paths forward when pausing",
+    "Asks for direction using the question widget of the detected environment, with a recommended default",
+    "Does NOT pause for the unrelated pre-existing lint error — notes it and offers to log it as a separate task",
+    "Does not invent a schema reconciliation and proceed without asking"
+  ]
+}

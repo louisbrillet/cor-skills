@@ -1,6 +1,6 @@
 ---
 name: ui-design-system-principles
-description: "Apply professional UI design system principles to any frontend output — React components, HTML pages, dashboards, data visualizations, charts, or interactive artifacts. Use this skill whenever generating any visual interface, styled component, color palette, typography system, layout, chart, data visualization, or design token structure. Trigger on ANY frontend/UI creation task, even if the user doesn't mention 'design system' explicitly. This includes: building components, pages, apps, dashboards, forms, cards, landing pages, widgets, charts, graphs, data tables, or any visual artifact. Also trigger when the user asks to 'make it look better', 'improve the design', 'fix the styling', or 'apply good UI principles'. This skill ensures every visual output follows systematic, accessible, and scalable design foundations regardless of the specific color palette, chart type, or visual style chosen."
+description: "Applies design-token, color, typography, spacing, and accessibility systems to frontend output. Use for any UI creation or restyling task — components, pages, dashboards, forms, charts, data tables — even when the user never says 'design system', and when they ask to make it look better, improve the design, or fix the styling."
 status: beta
 stability: experimental
 ---
@@ -350,21 +350,9 @@ shadow-xl:  0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.04) → f
 
 ## 11. Tailwind CSS & shadcn/ui Integration
 
-When the output uses **Tailwind CSS** or **shadcn/ui**, read `references/tailwind-shadcn.md` before writing code. It contains:
+When the output uses **Tailwind CSS** or **shadcn/ui**, read [references/tailwind-shadcn.md](references/tailwind-shadcn.md) before writing code. It maps every token in this skill to its Tailwind config entry, utility class, and shadcn CSS variable, with dark mode shade shifts, breakpoints, and worked button/alert/card/chart examples.
 
-- Complete `tailwind.config.js` mapping (colors, spacing, fontSize, borderRadius, boxShadow)
-- Skill principle → Tailwind utility cheat sheet (every token to its `class` equivalent)
-- Dark mode class patterns with correct shade shifts (500→400 for primary)
-- Breakpoint mapping (skill breakpoints → Tailwind `md:` / `lg:` / `xl:` prefixes)
-- Button component examples at all 3 sizes with full state coverage
-- Alert components using the feedback color pattern (900 text on 50 bg)
-- shadcn CSS variable mapping (`--primary`, `--muted`, `--destructive`, etc.) in HSL format
-- shadcn dark theme variables with correct desaturation
-- How to extend shadcn with success/warning/info feedback colors
-- shadcn variant → skill variant mapping (default, secondary, outline, ghost, destructive)
-- shadcn size → skill size mapping (sm=32px, default=40px, lg=44px)
-- Chart color variables following the 5-color-max rule with colorblind-safe hues
-- Card layout example with correct spacing token application
+Do not translate tokens to Tailwind classes from memory — the shade shifts and size mappings are exact.
 
 ---
 

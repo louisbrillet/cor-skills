@@ -1,0 +1,17 @@
+{
+  "skills": ["cor-setup", "cor-code"],
+  "query": "Implement the next task.",
+  "setup": [
+    "Repo has .cor/config.md listing a type check and a test command.",
+    "Repo has .cor/plan.md with T01 unchecked.",
+    "Implementing T01 as written introduces one type error that the type check catches."
+  ],
+  "expected_behavior": [
+    "Writes .cor/checkpoint.md with phase implementing before editing any file",
+    "Runs every configured check after implementing, in the configured order",
+    "Fixes the root cause of the type error rather than suppressing it, casting to any, or skipping the check",
+    "Re-runs the failing check until it passes before marking the task complete",
+    "Never marks T01 complete in the plan or todo tool while a check is failing",
+    "Updates checkpoint phase to done only after all checks pass and T01 is marked complete"
+  ]
+}

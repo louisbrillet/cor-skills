@@ -1,6 +1,8 @@
 ---
 name: cor-design
-description: "Exploratory UI design phase for COR. Captures visual goals and constraints, generates lightweight web variants for comparison, and produces a decision-ready direction before planning implementation."
+description: "Exploratory UI design phase of the COR methodology. Captures visual goals and constraints, generates three comparable lightweight web variants, scores them, and produces a decision-ready direction before implementation planning. Use when the user wants to explore visual directions, compare UI options, redesign a screen or app shell, or needs a design direction settled before cor-plan. Claude Code users: invoke as /cor:design."
+status: beta
+stability: experimental
 ---
 
 # COR Design — Exploratory UI Phase
@@ -61,11 +63,11 @@ Run phases in this exact order:
 
 Determine which interactive question tool is available. Check in this order:
 
-| Priority | Signal | Environment | Question tool |
-|---|---|---|---|
-| 1 | `AskUserQuestion` available | Claude Code | `AskUserQuestion` |
-| 2 | `vscode_askQuestions` available | Copilot | `vscode_askQuestions` |
-| 3 | neither | Codex / other | inline numbered list |
+| Priority | Signal                          | Environment   | Question tool         |
+| -------- | ------------------------------- | ------------- | --------------------- |
+| 1        | `AskUserQuestion` available     | Claude Code   | `AskUserQuestion`     |
+| 2        | `vscode_askQuestions` available | Copilot       | `vscode_askQuestions` |
+| 3        | neither                         | Codex / other | inline numbered list  |
 
 Store as **active environment**. Use the matching question format whenever user input is required.
 

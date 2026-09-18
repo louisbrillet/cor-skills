@@ -1,6 +1,8 @@
 ---
 name: cor-refacto
-description: "Think+Plan skill for behavior-preserving refactoring. Use when the user wants to improve readability, simplicity, maintainability, duplication, or coupling without functional changes. Produces a concrete refactor plan and a strict handoff for cor-code; blocks theoretical refactors that do not reduce net complexity."
+description: "Think+Plan skill for behavior-preserving refactoring. Use when the user wants to improve readability, simplicity, maintainability, duplication, or coupling without functional changes. Produces a concrete refactor plan and a strict handoff for cor-code; blocks theoretical refactors that do not reduce net complexity. Claude Code users: invoke as /cor:refacto."
+status: beta
+stability: experimental
 ---
 
 # COR Refacto — Think + Plan
@@ -26,15 +28,15 @@ Never start planning before analysis artifacts are produced.
 
 ## Environment Detection
 
-Detect question tooling in this order:
+Determine which interactive question tool is available. Check in this order:
 
-| Priority | Signal | Environment | Question tool |
-|---|---|---|---|
-| 1 | `AskUserQuestion` available | Claude Code | `AskUserQuestion` |
-| 2 | `vscode_askQuestions` available | Copilot | `vscode_askQuestions` |
-| 3 | neither | Codex / other | inline numbered list |
+| Priority | Signal                          | Environment   | Question tool         |
+| -------- | ------------------------------- | ------------- | --------------------- |
+| 1        | `AskUserQuestion` available     | Claude Code   | `AskUserQuestion`     |
+| 2        | `vscode_askQuestions` available | Copilot       | `vscode_askQuestions` |
+| 3        | neither                         | Codex / other | inline numbered list  |
 
-Use multiple-choice format for every question.
+Store as **active environment**. Use the matching question tool for every question in this skill; always multiple-choice with `(Recommended)` on the best default.
 
 ---
 

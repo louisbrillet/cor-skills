@@ -2,6 +2,12 @@
 
 Two related but distinct lineages, both providing grounded vocabulary for *why a layout reads the way it does*. Gestalt is the perceptual psychology theory; PARC is the practitioner-facing compression of that theory into four design moves.
 
+## Contents
+
+- Gestalt principles (proximity, similarity, continuity, closure, figure/ground, common region, common fate, Prägnanz, uniform connectedness, past experience)
+- PARC (proximity, alignment, repetition, contrast)
+- How Gestalt + PARC fit the other frameworks
+
 ---
 
 ## Gestalt principles

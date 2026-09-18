@@ -2,6 +2,13 @@
 
 Use this template when the user requests a full UX audit, heuristic evaluation, or design critique. Adapt as needed — not every artifact needs all five layers, but consider each before deciding to skip it.
 
+## Contents
+
+- Audit structure (the copyable markdown template)
+- Tone guidance for the audit
+- When to skip a layer
+- Worked example: severity-rated finding
+
 ## Audit structure
 
 ```markdown

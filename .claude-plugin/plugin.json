@@ -1,12 +1,17 @@
 {
   "name": "cor-skills",
   "skills": [
+    "./skills/authoring-skills",
     "./skills/cor-code",
+    "./skills/cor-design",
     "./skills/cor-plan",
+    "./skills/cor-refacto",
     "./skills/cor-setup",
     "./skills/cor-test",
     "./skills/cor-think",
     "./skills/cor-work",
-    "./skills/token-caveman"
+    "./skills/token-caveman",
+    "./skills/ui-design-system-principles",
+    "./skills/ux-frameworks"
   ]
 }
