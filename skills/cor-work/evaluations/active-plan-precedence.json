@@ -1,0 +1,14 @@
+{
+  "skills": ["cor-work"],
+  "query": "Resume my COR work.",
+  "setup": [
+    ".cor/config.md exists",
+    "An active plan has one pending implementation task",
+    "A previous research report also exists"
+  ],
+  "expected_behavior": [
+    "Uses the active plan rather than re-entering a pre-plan phase",
+    "Shows plan progress and identifies the next implementation task",
+    "Routes to cor-code without asking whether to research again"
+  ]
+}

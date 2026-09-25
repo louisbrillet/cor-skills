@@ -1,0 +1,15 @@
+{
+  "skills": ["cor-research"],
+  "query": "We finished COR Think for adding background jobs to this TypeScript app. Research maintained libraries and give cor-plan an implementation-ready recommendation.",
+  "setup": [
+    "Repository contains package.json and a lockfile",
+    "Think context includes deployment constraints and acceptance criteria"
+  ],
+  "expected_behavior": [
+    "Reads resolved dependency and runtime versions before researching candidates",
+    "Checks whether the platform or existing dependencies already cover the need",
+    "Uses current primary sources to compare compatibility, maintenance, security, license, and operational fit",
+    "Produces one justified default recommendation plus an escape hatch rather than an unranked library list",
+    "Writes a cited research handoff under .cor for cor-plan without implementing code"
+  ]
+}

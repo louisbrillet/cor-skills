@@ -1,0 +1,14 @@
+{
+  "skills": ["cor-work"],
+  "query": "Continue with COR after the research phase.",
+  "setup": [
+    ".cor/config.md exists",
+    "No active plan exists",
+    "One completed research report matches the current topic and preserves Think context"
+  ],
+  "expected_behavior": [
+    "Recognizes that Research is complete",
+    "Routes to cor-plan using the matching report",
+    "Does not repeat web research or route back to cor-think"
+  ]
+}

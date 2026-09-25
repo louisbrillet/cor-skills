@@ -2,7 +2,7 @@
 
 **CodingOnRails** — a methodological skill harness for AI coding agents.
 
-Think before you plan. Plan before you code. Code until it's clean. Test only what you said you would.
+Think before you research or plan. Research when current evidence matters. Plan before you code. Code until it's clean. Test only what you said you would.
 
 ## Design
 
@@ -33,6 +33,7 @@ The `skills` CLI will ask which skills and which agents to install to. Supports 
 | --------------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
 | `cor-setup`     | Init      | Detects your stack, configures check commands, sets plan storage                                                    |
 | `cor-think`     | 1 — Think | Interrogates you with targeted questions, ends with a confidence summary                                            |
+| `cor-research`  | Optional  | Researches current libraries, APIs, and architecture practices, then saves an evidence-backed handoff for planning  |
 | `cor-plan`      | 2 — Plan  | Breaks the work into an ordered task list, saved to your chosen storage                                             |
 | `cor-code`      | 3 — Code  | Implements tasks autonomously, running all checks after each; pauses only when new information changes the approach |
 | `cor-test`      | 4 — Test  | Runs only the tests that were planned — unit, integration, or UAT                                                   |
@@ -53,11 +54,13 @@ These skills are available but may change structure or behavior without backward
 
 ## How it works
 
-COR separates AI coding into four distinct phases. You move through them in order; the agent does not skip ahead.
+COR separates AI coding into four core phases plus optional Research between Think and Plan. You move through core phases in order; the agent does not skip ahead.
 
 **Think** — Before any code is considered, the agent asks you structured questions across five areas: problem definition, scope, constraints, risks, and acceptance criteria. After each round of questions it produces a confidence summary (HIGH / MEDIUM / LOW per area). You decide when confidence is high enough to move on.
 
-**Plan** — The agent takes everything surfaced in Think and breaks it into an ordered, dependency-respecting task list. Test tasks are tagged explicitly (`[unit]`, `[integration]`, `[UAT]`). You review and confirm the breakdown before it's saved. Nothing is saved until you agree.
+**Research (optional)** — When implementation depends on current external evidence, the agent inspects project versions and existing primitives, researches primary sources, compares viable options, and saves a cited `.cor/research_<slug>.md` handoff. It does not code or create plan tasks.
+
+**Plan** — The agent takes everything surfaced in Think and relevant Research findings, then breaks it into an ordered, dependency-respecting task list. Test tasks are tagged explicitly (`[unit]`, `[integration]`, `[UAT]`). You review and confirm the breakdown before it's saved. Nothing is saved until you agree.
 
 **Code** — The agent implements one task at a time without stopping for confirmation. After each task it runs every check command you configured (type-checking, linting, tests). If a check fails it fixes the root cause and re-runs — it never marks a task complete while checks are failing. Between tasks it writes notes to your agent instruction file (`CLAUDE.md`, `AGENTS.md`, or Copilot instructions) when something non-obvious was discovered.
 
@@ -73,7 +76,9 @@ Invoke `cor-setup`. It scans `package.json`, `tsconfig.json`, `Gemfile`, etc. an
 
 Invoke `cor-think` — the agent asks you questions and produces a confidence summary after each round. When confidence is HIGH across all areas, you move on.
 
-Invoke `cor-plan` — takes the thinking output and breaks it into an ordered task list. You confirm the breakdown before it's saved.
+Optionally invoke `cor-research` when library choice, version-specific APIs, standards, or current architecture practice could change implementation. It saves a cited handoff under `.cor/`.
+
+Invoke `cor-plan` — takes the thinking output and any applicable research handoff, then breaks it into an ordered task list. You confirm the breakdown before it's saved.
 
 Invoke `cor-code` — picks up the first pending task and runs autonomously through the list: implement, run checks, fix failures, mark complete, repeat. It only pauses when a tool or command output reveals something that would materially change the approach (for example: a migration reveals the table already exists with a conflicting schema). Routine linter and test failures are fixed silently.
 

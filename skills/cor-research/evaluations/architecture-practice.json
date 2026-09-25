@@ -1,0 +1,15 @@
+{
+  "skills": ["cor-research"],
+  "query": "Research the current architectural best practice for introducing multi-tenancy after COR Think, then hand findings to COR Plan.",
+  "setup": [
+    "Repository exposes its current persistence and auth architecture",
+    "Think context defines tenant isolation and migration constraints"
+  ],
+  "expected_behavior": [
+    "Inspects current architecture and constraints before web research",
+    "Prioritizes standards, official documentation, maintainers, and recent primary technical sources",
+    "Separates sourced facts from project-specific recommendations and unresolved uncertainty",
+    "Rejects fashionable patterns that conflict with repository constraints",
+    "Produces concrete plan inputs including affected areas, risks, validation needs, and source URLs"
+  ]
+}
