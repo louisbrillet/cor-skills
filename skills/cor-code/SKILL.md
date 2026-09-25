@@ -222,6 +222,16 @@ Before implementing against an external dependency:
 
 Do not guess API names or install a replacement dependency before completing this gate. If evidence conflicts with the plan and materially changes implementation, follow the pause policy.
 
+### Dependency documentation gate
+
+When `docs/DEPENDENCIES.md` exists and this task uses or changes a third-party API:
+
+1. Read its entry before web research; prefer its official `llms.txt` link.
+2. Fetch only relevant linked pages. Do not load `llms-full.txt` by default.
+3. Resolve any online-versus-local version disagreement in favor of the lockfile, installed typings, source, and README.
+
+When this task changes direct dependencies, their ranges, or a lockfile, regenerate the map with the exact `Generate` command from `.cor/config.md` before Step 3. Include the generated map in the task changes. If no dependency-documentation config exists, do not invent it.
+
 ---
 
 ## Step 3 — Run Checks

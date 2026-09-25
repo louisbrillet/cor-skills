@@ -31,7 +31,7 @@ The `skills` CLI will ask which skills and which agents to install to. Supports 
 
 | Skill           | Phase     | What it does                                                                                                        |
 | --------------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
-| `cor-setup`     | Init      | Detects your stack, configures check commands, sets plan storage                                                    |
+| `cor-setup`     | Init      | Detects stack, configures checks and plan storage, optionally maps official dependency docs                        |
 | `cor-think`     | 1 — Think | Interrogates you with targeted questions, ends with a confidence summary                                            |
 | `cor-research`  | Optional  | Researches current libraries, APIs, and architecture practices, then saves an evidence-backed handoff for planning  |
 | `cor-plan`      | 2 — Plan  | Breaks the work into an ordered task list, saved to your chosen storage                                             |
@@ -70,7 +70,7 @@ COR separates AI coding into four core phases plus optional Research between Thi
 
 **First time in a repo:**
 
-Invoke `cor-setup`. It scans `package.json`, `tsconfig.json`, `Gemfile`, etc. and proposes the right check commands for your stack. You confirm, adjust, and pick where plans are stored.
+Invoke `cor-setup`. It scans `package.json`, `tsconfig.json`, `Gemfile`, etc. and proposes the right check commands for your stack. You confirm, adjust, pick where plans are stored, and can enable a committed map of official dependency docs for Node projects.
 
 **Starting a new task:**
 
@@ -97,6 +97,12 @@ During `cor-setup` you choose where task plans live:
 - **Session** — the agent's task panel (if supported). Resets on new session, best for short-lived work.
 
 If you have multiple active plans (for example, two features in flight simultaneously), COR saves them as `plan_1_auth_flow.md`, `plan_2_checkout_flow.md`, etc. `cor-code` and `cor-work` list all plans with pending tasks and ask which one to work on.
+
+## Dependency documentation
+
+For Node projects, `cor-setup` can install an opt-in, version-aware documentation workflow. It adds `.cor/scripts/gen-dependency-docs.mjs`, a `docs:deps` package script, and generated `docs/DEPENDENCIES.md` committed with code changes.
+
+Agents consult this map before using third-party APIs. It prefers official `llms.txt` indexes, avoids loading full documentation without need, and treats lockfiles, installed typings, and package source as authoritative when online docs describe another version. Regenerate the map whenever direct dependencies or lockfiles change. CI may run the command then require no diff in `docs/DEPENDENCIES.md`.
 
 ## Crash recovery
 
