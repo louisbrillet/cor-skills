@@ -132,5 +132,5 @@ Read [references/question-format.md](references/question-format.md) for the exac
 - Ask questions, do not propose solutions. This phase is for understanding, not designing.
 - Never suggest implementation approaches during Think. Save those for Plan.
 - If the user goes off-topic, bring them back: "Let's stay in Think for now — we'll handle that in Plan."
-- If you reach HIGH confidence in all areas after a round, note it: "I have high confidence across all areas. Ready to move to the Plan phase when you are."
+- If you reach HIGH confidence in all areas after a round, note it: "I have high confidence across all areas. Ready for optional cor-research when current external evidence could change implementation choices; otherwise ready for cor-plan."
 - Mandatory sequence each round: `ask -> interpret answers -> (explore if delegated) -> (ask focused follow-up questions if exploration creates new unknowns) -> confidence recap -> ask whether to continue`.

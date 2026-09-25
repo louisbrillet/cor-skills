@@ -1,0 +1,15 @@
+{
+  "skills": ["cor-research"],
+  "query": "Find the best package for schema validation in this service before we plan implementation.",
+  "setup": [
+    "The lockfile already resolves a maintained schema-validation library",
+    "The existing codebase uses that library consistently"
+  ],
+  "expected_behavior": [
+    "Finds and evaluates the existing dependency and its project usages before proposing packages",
+    "Verifies the installed API against version-matched documentation or package source",
+    "Recommends no new dependency when the existing primitive fully covers the requirement",
+    "Documents evidence and any limitations instead of inventing custom validation code",
+    "Does not modify production code"
+  ]
+}

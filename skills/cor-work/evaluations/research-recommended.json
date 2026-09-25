@@ -1,0 +1,14 @@
+{
+  "skills": ["cor-work"],
+  "query": "Continue with COR. Think is complete and we still need to choose a maintained queue library compatible with our runtime.",
+  "setup": [
+    ".cor/config.md exists",
+    "No active plan or matching research report exists",
+    "Current conversation contains a completed Think confidence summary"
+  ],
+  "expected_behavior": [
+    "Detects the unresolved evidence-sensitive library choice",
+    "Recommends optional cor-research and offers proceeding directly to cor-plan",
+    "Does not route directly to coding or testing"
+  ]
+}

@@ -210,6 +210,18 @@ Implement the task surgically:
 - If you encounter something clearly broken in files you are already modifying, fix it — but do not go looking for things to clean up.
 - Apply consistent formatting to every modified file: run the auto-fix commands from the Checks config (e.g. `eslint --fix`, `rubocop -a`, `ruff --fix`). Non-optional.
 
+### External dependency gate
+
+Before implementing against an external dependency:
+
+1. Identify its resolved version from the lockfile or installed package metadata, not only the manifest range.
+2. Inspect available APIs in version-matched official docs, installed typings, or package source.
+3. Search the project for existing usages and conventions.
+4. Prefer a maintained native primitive that fully covers the requirement.
+5. Write custom code only when no suitable primitive exists. Record that conclusion and evidence in Step 5 notes.
+
+Do not guess API names or install a replacement dependency before completing this gate. If evidence conflicts with the plan and materially changes implementation, follow the pause policy.
+
 ---
 
 ## Step 3 — Run Checks

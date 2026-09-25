@@ -31,11 +31,21 @@ Read `.cor/config.md`. Extract the `Plan Storage` value. If the file does not ex
 
 ---
 
-## Step 2 — Read Thinking Context
+## Step 2 — Read Thinking and Research Context
 
-Summarise the key outputs from the Think phase in this conversation. If there is no prior Think phase in this session (the user jumped straight to Plan), ask: "What are we building? Give me a quick summary of the problem and constraints." Wait for the answer.
+Summarise the key outputs from the Think phase in this conversation.
 
-**Standalone by default.** A plan is a handoff artifact, not a conversation summary — it must be readable and executable by someone (or some agent) with zero memory of this conversation. Before decomposing into tasks, pull out of the Think phase (and of any exploration you did during it) everything a cold reader would need in order to act without re-deriving it:
+Research is optional. Scan `.cor/` for `research_*.md`:
+
+- No report: continue from Think context only.
+- One report: read its topic and project evidence. Incorporate it only when it matches current Think context; otherwise ignore it and state why.
+- Multiple reports: list filenames and topics, recommend the report matching current Think context (use recency only as tie-breaker), and ask which report applies. Wait before continuing.
+
+If this session has no prior Think phase, use a matching research report only when it contains inherited goal, scope boundaries, constraints, and acceptance criteria. Otherwise ask: "What are we building? Give me a quick summary of the problem and constraints." Wait for the answer.
+
+Treat research recommendations as evidence, not authority. Preserve cited version constraints and unresolved questions. If report conflicts with Think decisions, stop and ask user which constraint wins.
+
+**Standalone by default.** A plan is a handoff artifact, not a conversation summary — it must be readable and executable by someone (or some agent) with zero memory of this conversation. Before decomposing into tasks, pull out of the Think phase, relevant research report, and any exploration you did everything a cold reader would need in order to act without re-deriving it:
 
 - The problem/goal, in 1–2 sentences.
 - Root cause or current-state findings, if Think uncovered one — with concrete file/symbol references (`path/to/file.ts:123`), not a vague description.

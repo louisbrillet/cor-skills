@@ -1,6 +1,6 @@
 ---
 name: cor-work
-description: "Entry point for the COR (CodingOnRails) methodology. Detects the current project state, shows a compact progress summary, and routes automatically to the right phase (Think, Code, or Test). Use this when resuming mid-task or to check what's next. Claude Code users: invoke as /cor:work."
+description: "Entry point for the COR (CodingOnRails) methodology. Detects current project state, shows a compact progress summary, and routes to Think, optional Research, Plan, Code, or Test. Use when starting or resuming work, recovering an interrupted task, or checking what comes next. Claude Code users: invoke as /cor:work."
 status: stable
 stability: guaranteed
 ---
@@ -37,7 +37,7 @@ If it exists, read it and extract `Plan Storage` and `Checks`.
 
 ---
 
-## Step 2 — Gate: Plan
+## Step 2 — Gate: Pre-Plan or Plan
 
 Load the plan based on `Plan Storage`:
 
@@ -48,9 +48,23 @@ Load the plan based on `Plan Storage`:
 - **memory**: Check agent memory for a saved COR plan. If not found, no plan yet.
 - **session**: Check current session todos. If none tagged as COR tasks, no plan yet.
 
-If no plan exists:
-"No active plan found. Run the **cor-think** skill to start the Think phase."
-Stop here.
+If no plan exists, inspect pre-plan state:
+
+1. Scan `.cor/` for `research_*.md` reports matching current topic. A completed matching report means Research is done → route to Plan.
+2. Otherwise inspect current conversation for a completed Think confidence summary.
+   - No completed Think → route to Think.
+   - Completed Think with unresolved library, version-specific API, external standard, security guidance, or architecture-practice question → recommend Research and ask whether to run it or proceed directly to Plan.
+   - Completed Think without an evidence-sensitive implementation question → route to Plan.
+
+Never infer that an unrelated or stale research report applies. If several reports could match, list topics and ask user to select one.
+
+For a pre-plan route, show compact status and continue with target skill:
+
+- Think → follow `cor-think` from its opening step.
+- Research → after user selects it, follow `cor-research` from Step 1.
+- Plan → follow `cor-plan` from Step 1.
+
+Stop this router workflow after handing off. Do not continue to Step 3 without a plan.
 
 ---
 
