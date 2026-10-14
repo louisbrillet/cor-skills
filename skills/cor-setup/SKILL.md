@@ -182,7 +182,43 @@ done < "$include_file"
 
 ---
 
-## Step 4 — Plan Storage
+## Step 4 — Dependency Documentation (Node projects)
+
+Skip this step when no `package.json` exists. Otherwise ask: "Enable a committed map of official dependency docs for coding agents? It generates `docs/DEPENDENCIES.md`, prefers official `llms.txt` indexes, and stays aligned with dependency changes." Choices: `Yes (Recommended)` / `No, skip`.
+
+If yes:
+
+1. Copy bundled [`scripts/gen-dependency-docs.mjs`](scripts/gen-dependency-docs.mjs) to `.cor/scripts/gen-dependency-docs.mjs` in the target project. Do not modify the bundled source.
+2. Detect package manager from lockfile (`pnpm-lock.yaml` → `pnpm docs:deps`, `yarn.lock` → `yarn docs:deps`, `bun.lockb` → `bun run docs:deps`, else `npm run docs:deps`). Add this script without overwriting existing scripts:
+
+```json
+{
+  "scripts": {
+    "docs:deps": "node .cor/scripts/gen-dependency-docs.mjs"
+  }
+}
+```
+
+If `docs:deps` already exists and does not run this generator, ask the user whether to replace it or select another script name. Record the exact package-manager command.
+
+3. Run the recorded command once. It generates `docs/DEPENDENCIES.md`; inspect its version-source labels and network warnings before proceeding. Check whether Git ignores the generated file. If it does, ask before adding the narrowest safe `.gitignore` negation so this one file can be committed.
+4. Add a concise, managed `## Dependency Documentation` section to every configured root instruction file: `CLAUDE.md` for Claude Code, `.github/copilot-instructions.md` for GitHub Copilot, and `AGENTS.md` for Codex. Create only files required by selected extensions. Do not duplicate an existing equivalent rule:
+
+```markdown
+## Dependency Documentation
+
+Before using or changing a third-party API:
+1. Read `docs/DEPENDENCIES.md`.
+2. Verify its version source; `node_modules` and lockfiles are authoritative over web docs.
+3. Prefer official `llms.txt`, then official docs. Fetch `llms-full.txt` only when needed.
+4. Regenerate the map with the documented command after direct dependency changes.
+```
+
+5. Record `enabled`, map path, and exact generation command for Step 6. If the command fails due to a corporate TLS proxy, record the failure, preserve no misleading coverage claim, and instruct the user to configure `NODE_EXTRA_CA_CERTS`; never disable TLS verification.
+
+If no, record `disabled` for Step 6.
+
+## Step 5 — Plan Storage
 
 Ask the user: "Where should task plans live for this project?"
 
@@ -194,9 +230,9 @@ Wait for the user to choose before continuing.
 
 ---
 
-## Step 5 — Write Config
+## Step 6 — Write Config
 
-Create `.cor/` if it does not exist. Write `.cor/config.md` with this exact structure (no extra sections):
+Create `.cor/` if it does not exist. Write `.cor/config.md` with this exact structure:
 
 # COR Config
 
@@ -215,6 +251,12 @@ Create `.cor/` if it does not exist. Write `.cor/config.md` with this exact stru
 ## Plan Storage
 
 [one of: markdown | memory | session]
+
+## Dependency Documentation
+
+[disabled | enabled]
+Map: [docs/DEPENDENCIES.md when enabled]
+Generate: [exact command when enabled]
 
 ## Extensions
 

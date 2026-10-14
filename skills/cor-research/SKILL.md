@@ -31,8 +31,9 @@ Extract goal, constraints, scope boundaries, risks, and acceptance criteria from
 Before web research:
 
 - Read relevant manifests and lockfiles to identify runtime and resolved dependency versions.
+- If present, read `docs/DEPENDENCIES.md`; use its official entry point for an installed library.
 - Search existing code, tests, config, and architecture docs for current primitives and conventions.
-- Inspect installed package typings, source, or bundled docs when available.
+- Inspect installed package typings, source, or bundled docs when available. Local package files and lockfiles win over online docs when versions disagree.
 - Record platform, deployment, license, security, and compatibility constraints.
 
 Do not propose a new dependency before checking whether platform, standard library, or an existing dependency fully covers need.
@@ -48,7 +49,7 @@ Turn unresolved implementation choices into bounded questions. Research only que
 
 ### 4. Research current primary sources
 
-Use live web or documentation tools. Prioritize sources in this order:
+Use live web or documentation tools. For a mapped installed library, open its official `llms.txt` index first and follow only links relevant to the question. Do not fetch `llms-full.txt` unless the index is insufficient. Prioritize sources in this order:
 
 1. standards and official vendor/framework documentation;
 2. package source, releases, changelog, support policy, and security advisories;
