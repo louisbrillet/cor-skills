@@ -1,6 +1,8 @@
 ---
 name: cor-research
 description: "Researches current libraries, version-specific APIs, architecture practices, and implementation options after COR Think and before COR Plan. Use when implementation depends on maintained third-party packages, recent platform capabilities, external standards, security guidance, or an evidence-based architecture choice."
+status: stable
+stability: guaranteed
 ---
 
 # COR Research

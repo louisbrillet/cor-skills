@@ -8,7 +8,7 @@ Every skill shipped in `skills/`, with its invocation, inputs, outputs, and stab
 | --- | --- | --- | --- |
 | `cor-setup` | Init | `/cor:setup` | stable |
 | `cor-think` | 1 - Think | `/cor:think` | stable |
-| `cor-research` | Optional, between Think and Plan | - | not set |
+| `cor-research` | Optional, between Think and Plan | - | stable |
 | `cor-plan` | 2 - Plan | `/cor:plan` | stable |
 | `cor-code` | 3 - Code | `/cor:code [task-id]` | stable |
 | `cor-test` | 4 - Test | `/cor:test` | stable |
