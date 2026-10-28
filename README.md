@@ -48,6 +48,7 @@ These skills are available but may change structure or behavior without backward
 | Skill                         | Status | What it does                                                                                     |
 | ----------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
 | `cor-design`                  | Beta   | Exploratory UI design phase with variant generation, scoring, and hand-off into planning.        |
+| `cor-docs`                    | Beta   | Updates Diataxis Markdown docs (MkDocs/Zensical) from a branch diff; edits only affected quadrants. |
 | `cor-refacto`                 | Beta   | Think+Plan workflow for behavior-preserving refactoring with strict simplification gates.        |
 | `ux-frameworks`               | Beta   | Layered UX diagnostics using Nielsen, Garrett, Gestalt/PARC, Morville, and Yablonski frameworks. |
 | `ui-design-system-principles` | Beta   | Systematic UI design-token and accessibility principles for frontend output quality.             |
@@ -140,6 +141,10 @@ COR adapts its behaviour to the agent running it:
 | Codex / other  | `.cor/plan.md` directly    | Inline numbered list                |
 
 All phases work across all three environments. The agent detects which tools are available at startup and uses the right ones throughout the session.
+
+## Documentation
+
+Full documentation lives in [docs/](docs/index.md), organized with Diataxis (tutorials, how-to guides, reference, explanation). Preview with `pip install mkdocs && mkdocs serve`.
 
 ## Skill quality
 

@@ -4,6 +4,7 @@
     "./skills/authoring-skills",
     "./skills/cor-code",
     "./skills/cor-design",
+    "./skills/cor-docs",
     "./skills/cor-plan",
     "./skills/cor-refacto",
     "./skills/cor-research",

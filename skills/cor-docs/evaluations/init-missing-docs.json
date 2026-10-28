@@ -1,0 +1,16 @@
+{
+  "skills": ["cor-docs"],
+  "query": "Document the changes of branch feature/export compared to develop. Put the docs in documentation/.",
+  "setup": [
+    "Repository has no documentation/ directory and no mkdocs.yml or zensical.toml",
+    "Branch feature/export adds a CSV export CLI command"
+  ],
+  "expected_behavior": [
+    "Detects that documentation/ is not initialized and runs the setup workflow before analysing the diff",
+    "Asks which site generator to target with a recommended default instead of assuming one",
+    "Creates the four Diataxis directories each with an index.md plus a root index.md under documentation/",
+    "Writes a site config whose docs_dir points to documentation",
+    "Records docs directory and generator in .cor/docs.md",
+    "Does not invent a tutorial for content the diff does not justify"
+  ]
+}
