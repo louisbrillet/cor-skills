@@ -1,0 +1,18 @@
+{
+  "skills": ["cor-docs"],
+  "query": "Update the docs for my branch feat/rate-limit against main.",
+  "setup": [
+    "Repository has docs/ initialized with tutorials/, how-to/, reference/, explanation/ and index.md in each",
+    "Branch feat/rate-limit adds a new RATE_LIMIT_PER_MINUTE env variable and a 429 response on the public API",
+    "No change touches onboarding or first-run flow"
+  ],
+  "expected_behavior": [
+    "Computes the diff with git diff against the merge base of main and feat/rate-limit, not against main's tip",
+    "Reads the changed source files and existing docs pages before writing",
+    "Presents an impact map listing each Diataxis quadrant as update, create, or no change with a one-line reason",
+    "Updates reference pages for the new env variable and the 429 response",
+    "Adds or updates a how-to guide for configuring rate limits",
+    "Leaves tutorials/ untouched and states why",
+    "Runs scripts/check_docs.py and fixes every ERROR before reporting"
+  ]
+}

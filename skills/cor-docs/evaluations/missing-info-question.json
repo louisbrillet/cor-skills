@@ -1,0 +1,14 @@
+{
+  "skills": ["cor-docs"],
+  "query": "Run cor-docs for branch fix/retry-policy against main.",
+  "setup": [
+    "docs/ is initialized",
+    "Diff changes a retry constant from 3 to 5 and adds a feature flag ENABLE_JITTER with no comment, test, or commit message explaining its purpose"
+  ],
+  "expected_behavior": [
+    "Updates the reference value for the retry count from the code without asking",
+    "Asks the user about the purpose and expected usage of ENABLE_JITTER before writing explanation content about it",
+    "Offers answer choices with one recommended default and a free-text option",
+    "Does not fabricate rationale for ENABLE_JITTER when the user declines; writes reference facts only and lists the gap in the final report"
+  ]
+}
