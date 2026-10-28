@@ -142,6 +142,10 @@ COR adapts its behaviour to the agent running it:
 
 All phases work across all three environments. The agent detects which tools are available at startup and uses the right ones throughout the session.
 
+## Documentation
+
+Full documentation lives in [docs/](docs/index.md), organized with Diataxis (tutorials, how-to guides, reference, explanation). Preview with `pip install mkdocs && mkdocs serve`.
+
 ## Skill quality
 
 `authoring-skills` is the meta-skill governing this repo's own skills. It encodes the Agent Skills authoring best practices (frontmatter validity, description discoverability, the 500-line SKILL.md budget, one-level-deep references, progressive disclosure, workflows and evaluations) and ships a validator:
