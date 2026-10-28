@@ -1,2 +1,15 @@
 .DS_Store
+
+# Python virtual environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Docs build output and tool caches (MkDocs, Zensical)
 site/
+.cache/
+
+# Node
+node_modules/
