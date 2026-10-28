@@ -101,12 +101,12 @@ grep -rn "<symbol-or-flag>" <docs-dir>
 
 Action is one of `create`, `update`, `remove`, `none`. Add one line per quadrant that gets no change, with the reason (e.g. "tutorials: none, first-run path unchanged"). A quadrant with no change is a valid outcome; never pad a quadrant to look complete.
 
-Mark a row `GAP` in the Evidence column when the code shows **what** changed but nothing (code comment, test name, commit message, linked issue) shows **why** or **for whom**. Explanation and how-to rows depend on intent; reference rows rarely do.
+Mark a row `GAP` in the Evidence column when the code shows **what** changed but nothing (code comment, test name, commit message, linked issue) shows **why** or **for whom**. Explanation rows depend on intent; reference rows rarely do. A how-to whose steps follow from the code (set this variable, call this command, handle this response) is not a GAP; only recommendations inside it (which value to pick, when to use it) need evidence.
 
 **Step 6 — Resolve gaps and confirm.** Show the impact map. In the same round, ask one question per `GAP` row (purpose, target user, recommended usage, known limits). Wait for answers.
 
 - User answers -> record the answer as evidence ("user, <date>") and keep the row.
-- User declines or does not know -> drop explanation and how-to content for that change; keep reference facts derived from code; list the gap in the report.
+- User declines or does not know -> omit only the unsupported content (rationale, recommendations); keep reference facts and code-derived how-to steps; list the gap in the report.
 - User edits the map -> apply edits before writing.
 
 Never write rationale, intent, or recommendations that no evidence supports.
