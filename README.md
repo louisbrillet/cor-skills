@@ -71,7 +71,7 @@ COR separates AI coding into four core phases plus optional Research between Thi
 
 **First time in a repo:**
 
-Invoke `cor-setup`. It scans `package.json`, `tsconfig.json`, `Gemfile`, etc. and proposes the right check commands for your stack. You confirm, adjust, pick where plans are stored, and can enable a committed map of official dependency docs for Node projects.
+Invoke `cor-setup`. It scans `package.json`, `tsconfig.json`, `Gemfile`, etc. and proposes the right check commands for your stack. You confirm, adjust, pick where plans are stored, and can enable a committed map of official dependency docs for Node and Python projects.
 
 **Starting a new task:**
 
@@ -101,7 +101,7 @@ If you have multiple active plans (for example, two features in flight simultane
 
 ## Dependency documentation
 
-For Node projects, `cor-setup` can install an opt-in, version-aware documentation workflow. It adds `.cor/scripts/gen-dependency-docs.mjs`, a `docs:deps` package script, and generated `docs/DEPENDENCIES.md` committed with code changes.
+For Node and Python projects, `cor-setup` can install an opt-in, version-aware documentation workflow. It adds `.cor/scripts/gen-dependency-docs.mjs` (with a `docs:deps` package script) or `.cor/scripts/gen-dependency-docs.py` (run through `uv run`, `poetry run`, or `pdm run`), and generated `docs/DEPENDENCIES.md` committed with code changes.
 
 Agents consult this map before using third-party APIs. It prefers official `llms.txt` indexes, avoids loading full documentation without need, and treats lockfiles, installed typings, and package source as authoritative when online docs describe another version. Regenerate the map whenever direct dependencies or lockfiles change. CI may run the command then require no diff in `docs/DEPENDENCIES.md`.
 

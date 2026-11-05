@@ -50,7 +50,7 @@ Use Bash to check for these files in the current working directory:
 - `.eslintrc*` or `eslint.config.*` — ESLint configured
 - `.prettierrc*` — Prettier configured
 - `Gemfile` — Ruby/Rails
-- `pyproject.toml` or `requirements.txt` — Python
+- `pyproject.toml` or `requirements.txt` — Python (lockfile: `uv.lock` → uv, `poetry.lock` → Poetry, `pdm.lock` → PDM)
 - `go.mod` — Go
 - `Cargo.toml` — Rust
 
@@ -182,11 +182,13 @@ done < "$include_file"
 
 ---
 
-## Step 4 — Dependency Documentation (Node projects)
+## Step 4 — Dependency Documentation (Node and Python projects)
 
-Skip this step when no `package.json` exists. Otherwise ask: "Enable a committed map of official dependency docs for coding agents? It generates `docs/DEPENDENCIES.md`, prefers official `llms.txt` indexes, and stays aligned with dependency changes." Choices: `Yes (Recommended)` / `No, skip`.
+Skip this step when neither `package.json` nor a Python manifest (`pyproject.toml` or `requirements.txt`) exists. Otherwise ask: "Enable a committed map of official dependency docs for coding agents? It generates `docs/DEPENDENCIES.md`, prefers official `llms.txt` indexes, and stays aligned with dependency changes." Choices: `Yes (Recommended)` / `No, skip`.
 
-If yes:
+If yes, apply the matching ecosystem variant. When both manifests exist, ask which one is the primary dependency surface; for both, use `--out` to write distinct maps (e.g. `docs/DEPENDENCIES.md` and `docs/DEPENDENCIES-js.md`) and record every map and command.
+
+### Node (`package.json`)
 
 1. Copy bundled [`scripts/gen-dependency-docs.mjs`](scripts/gen-dependency-docs.mjs) to `.cor/scripts/gen-dependency-docs.mjs` in the target project. Do not modify the bundled source.
 2. Detect package manager from lockfile (`pnpm-lock.yaml` → `pnpm docs:deps`, `yarn.lock` → `yarn docs:deps`, `bun.lockb` → `bun run docs:deps`, else `npm run docs:deps`). Add this script without overwriting existing scripts:
@@ -201,20 +203,27 @@ If yes:
 
 If `docs:deps` already exists and does not run this generator, ask the user whether to replace it or select another script name. Record the exact package-manager command.
 
-3. Run the recorded command once. It generates `docs/DEPENDENCIES.md`; inspect its version-source labels and network warnings before proceeding. Check whether Git ignores the generated file. If it does, ask before adding the narrowest safe `.gitignore` negation so this one file can be committed.
-4. Add a concise, managed `## Dependency Documentation` section to every configured root instruction file: `CLAUDE.md` for Claude Code, `.github/copilot-instructions.md` for GitHub Copilot, and `AGENTS.md` for Codex. Create only files required by selected extensions. Do not duplicate an existing equivalent rule:
+### Python (`pyproject.toml` / `requirements.txt`)
+
+1. Copy bundled [`scripts/gen-dependency-docs.py`](scripts/gen-dependency-docs.py) to `.cor/scripts/gen-dependency-docs.py` in the target project. Do not modify the bundled source. It uses only the standard library (Python 3.11+) and reads PEP 621 `dependencies`, `optional-dependencies`, PEP 735 `[dependency-groups]`, Poetry tables, or `requirements.txt`.
+2. Build the command so it runs **inside the project environment** (installed versions are then detected via `importlib.metadata`; otherwise it falls back to `uv.lock` / `poetry.lock` / `pdm.lock`): `uv.lock` → `uv run python .cor/scripts/gen-dependency-docs.py`, `poetry.lock` → `poetry run python .cor/scripts/gen-dependency-docs.py`, `pdm.lock` → `pdm run python .cor/scripts/gen-dependency-docs.py`, else `python .cor/scripts/gen-dependency-docs.py` (with the venv activated). Pass the manifest path as first argument when it is not `pyproject.toml` at the root. Python has no portable script runner like `package.json` scripts; record the exact command (and optionally mention it in `README`/`Makefile`/`justfile` if the project already uses one).
+
+### Both ecosystems
+
+3. Run the recorded command once. It generates `docs/DEPENDENCIES.md`; inspect its version-source labels and network warnings before proceeding. Check whether Git ignores the generated file. If it does, ask before adding the narrowest safe `.gitignore` negation so this one file can be committed. If the project's docs tool (MkDocs, Zensical) builds `docs/` with strict nav checks, ensure the generated file does not break the build (exclude it or add it to nav).
+4. Add a concise, managed `## Dependency Documentation` section to every configured root instruction file: `CLAUDE.md` for Claude Code, `.github/copilot-instructions.md` for GitHub Copilot, and `AGENTS.md` for Codex. Create only files required by selected extensions. Do not duplicate an existing equivalent rule. Use the authoritative-source wording matching the ecosystem (`node_modules` for Node, the project virtualenv `site-packages` for Python):
 
 ```markdown
 ## Dependency Documentation
 
 Before using or changing a third-party API:
 1. Read `docs/DEPENDENCIES.md`.
-2. Verify its version source; `node_modules` and lockfiles are authoritative over web docs.
+2. Verify its version source; installed packages (`node_modules` / virtualenv `site-packages`) and lockfiles are authoritative over web docs.
 3. Prefer official `llms.txt`, then official docs. Fetch `llms-full.txt` only when needed.
-4. Regenerate the map with the documented command after direct dependency changes.
+4. Regenerate the map with `[exact Generate command]` after direct dependency changes.
 ```
 
-5. Record `enabled`, map path, and exact generation command for Step 6. If the command fails due to a corporate TLS proxy, record the failure, preserve no misleading coverage claim, and instruct the user to configure `NODE_EXTRA_CA_CERTS`; never disable TLS verification.
+5. Record `enabled`, map path, and exact generation command for Step 6. If the command fails due to a corporate TLS proxy, record the failure, preserve no misleading coverage claim, and instruct the user to configure their CA bundle (`NODE_EXTRA_CA_CERTS` for Node, `SSL_CERT_FILE` for Python); never disable TLS verification.
 
 If no, record `disabled` for Step 6.
 

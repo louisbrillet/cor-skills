@@ -214,8 +214,8 @@ Implement the task surgically:
 
 Before implementing against an external dependency:
 
-1. Identify its resolved version from the lockfile or installed package metadata, not only the manifest range.
-2. Inspect available APIs in version-matched official docs, installed typings, or package source.
+1. Identify its resolved version from the lockfile (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `uv.lock`, `poetry.lock`, `pdm.lock`) or installed package metadata (`node_modules/<pkg>/package.json`, `uv pip show <pkg>` / `importlib.metadata.version`), not only the manifest range.
+2. Inspect available APIs in version-matched official docs, installed typings (`.d.ts`, `py.typed` / `.pyi` stubs), or package source (`node_modules/<pkg>/`, virtualenv `site-packages/<pkg>/`).
 3. Search the project for existing usages and conventions.
 4. Prefer a maintained native primitive that fully covers the requirement.
 5. Write custom code only when no suitable primitive exists. Record that conclusion and evidence in Step 5 notes.
@@ -228,9 +228,9 @@ When `docs/DEPENDENCIES.md` exists and this task uses or changes a third-party A
 
 1. Read its entry before web research; prefer its official `llms.txt` link.
 2. Fetch only relevant linked pages. Do not load `llms-full.txt` by default.
-3. Resolve any online-versus-local version disagreement in favor of the lockfile, installed typings, source, and README.
+3. Resolve any online-versus-local version disagreement in favor of the lockfile, installed typings, source, and README (or `*.dist-info/METADATA` for Python).
 
-When this task changes direct dependencies, their ranges, or a lockfile, regenerate the map with the exact `Generate` command from `.cor/config.md` before Step 3. Include the generated map in the task changes. If no dependency-documentation config exists, do not invent it.
+When this task changes direct dependencies, their ranges, or a lockfile (`package.json` dependency fields, `pyproject.toml` `dependencies` / `optional-dependencies` / `[dependency-groups]`, `requirements*.txt`, or any lockfile above — including via `npm install`, `uv add`/`uv remove`, `poetry add`), regenerate the map with the exact `Generate` command from `.cor/config.md` before Step 3. Include the generated map in the task changes. If no dependency-documentation config exists, do not invent it.
 
 ---
 

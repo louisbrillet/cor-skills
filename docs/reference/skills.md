@@ -33,7 +33,7 @@ Runs once per repository. Requires nothing.
 | 1 | - (detects stack from `package.json`, `tsconfig.json`, `Gemfile`, ...) | `Stack` |
 | 2 | Confirm check commands | `Checks` |
 | 3 | Worktree support | `.worktreeinclude`, `post-checkout` hook |
-| 4 | Dependency documentation (Node only) | `docs/DEPENDENCIES.md`, `docs:deps` script |
+| 4 | Dependency documentation (Node and Python) | `docs/DEPENDENCIES.md`, generation command (`docs:deps` script for Node) |
 | 5 | Plan storage: `markdown`, `memory`, `session` | `Plan Storage` |
 | 6 | - | writes `.cor/config.md` |
 

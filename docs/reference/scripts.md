@@ -58,3 +58,20 @@ node .cor/scripts/gen-dependency-docs.mjs [path/to/package.json] [--out docs/DEP
 Covers `dependencies` and `devDependencies`. Version source, in order: `node_modules/<pkg>/package.json`, `package-lock.json` or `npm-shrinkwrap.json`, then the `package.json range`. Output table columns: package, version observed with source, docs entry point (`llms.txt` when found, else homepage), fallback (repository or homepage).
 
 Exit code `1` when the manifest cannot be read or has no dependencies. Network or TLS errors produce a warning on stderr, not a failure.
+
+## gen-dependency-docs.py
+
+Bundled path: `skills/cor-setup/scripts/gen-dependency-docs.py`. Copied by `cor-setup` to `.cor/scripts/gen-dependency-docs.py`. Python 3.11 or later, standard library only.
+
+```bash
+uv run python .cor/scripts/gen-dependency-docs.py [path/to/pyproject.toml|requirements.txt] [--out docs/DEPENDENCIES.md]
+```
+
+| Argument | Default |
+| --- | --- |
+| dependency manifest | `pyproject.toml`, else `requirements.txt` |
+| `--out` | `docs/DEPENDENCIES.md` |
+
+Covers PEP 621 `dependencies` and `optional-dependencies`, PEP 735 `[dependency-groups]`, Poetry dependency tables, or `requirements.txt` lines. Version source, in order: installed distribution (only when run inside a virtualenv located in the project), `uv.lock`, `poetry.lock` or `pdm.lock` (platform-specific versions joined with `/`), a `==` pin, then the `manifest range`. Docs and repository links come from PyPI `project_urls`. Output format matches `gen-dependency-docs.mjs`.
+
+Exit code `1` when the manifest cannot be read or has no dependencies. Network or TLS errors produce a warning on stderr, not a failure.
