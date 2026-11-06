@@ -166,6 +166,10 @@ If the session already has the full plan loaded (all tasks present), skip this c
 
 Take the first `pending` task from the loaded list. If the user invoked with a task ID (e.g. `/cor:code T03`), jump to that task instead.
 
+### Artifact canvas (optional)
+
+Only when config has `## Artifact Canvas` set to `enabled`, storage is `markdown`, and an `open_canvas` tool is available: call `open_canvas` once per session with `canvasId: "cor-skills-artifacts"`, `instanceId: "cor-artifacts"`, `input: { "path": "<active plan file>" }`. The canvas follows checkbox and checkpoint edits on its own — never call it per task. Skip silently when unavailable or on failure.
+
 ---
 
 ## Step 2 — Implement

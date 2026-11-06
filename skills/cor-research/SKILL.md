@@ -127,6 +127,8 @@ Create `.cor/research_<slug>.md`, using a concise 2–3 word slug. If same path 
 
 Report saved path. Tell user to run `cor-plan`. Do not edit production code, install dependencies, or create implementation tasks.
 
+Optional: when `.cor/config.md` has `## Artifact Canvas` set to `enabled` and an `open_canvas` tool is available, call it with `canvasId: "cor-skills-artifacts"`, `instanceId: "cor-artifacts"`, `input: { "path": "<saved report path>" }`. Skip silently otherwise.
+
 ## Quality gates
 
 Do not complete handoff unless:

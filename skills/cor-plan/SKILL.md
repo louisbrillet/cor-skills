@@ -192,3 +192,5 @@ Every subsection above is optional except Context's opening 1–2 sentences and 
 ## Step 5 — Confirm
 
 Tell the user: "Plan saved. [N] tasks ready. Use the **cor-code** skill to start implementing, or **cor-work** to let the harness pick up where you are."
+
+Optional: when config has `## Artifact Canvas` set to `enabled`, storage is `markdown`, and an `open_canvas` tool is available, call it with `canvasId: "cor-skills-artifacts"`, `instanceId: "cor-artifacts"`, `input: { "path": "<saved plan path>" }`. Skip silently otherwise.
