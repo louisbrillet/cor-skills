@@ -105,6 +105,12 @@ For Node and Python projects, `cor-setup` can install an opt-in, version-aware d
 
 Agents consult this map before using third-party APIs. It prefers official `llms.txt` indexes, avoids loading full documentation without need, and treats lockfiles, installed typings, and package source as authoritative when online docs describe another version. Regenerate the map whenever direct dependencies or lockfiles change. CI may run the command then require no diff in `docs/DEPENDENCIES.md`.
 
+## Artifact canvas (GitHub Copilot, opt-in)
+
+When GitHub Copilot is among the configured extensions, `cor-setup` offers an optional canvas extension (default: no). It installs `.github/extensions/cor-artifacts/`, which renders `.cor/` plans as a live task board (progress, current checkpoint task, tasks ticking as `cor-code` works) and research reports as a navigable page. It is read-only: markdown stays the source of truth. Other agents ignore it. See [How to view artifacts in Copilot](docs/how-to/view-artifacts-in-copilot.md).
+
+![COR artifact canvas: overview, research report, and plan tasks ticking live](media/artifact-canvas-demo.gif)
+
 ## Crash recovery
 
 `cor-code` writes a `.cor/checkpoint.md` file before touching any code. It records the active plan path, the current task ID, and the phase (`implementing`, `checks`, or `marking-complete`). When the skill starts it checks for this file. If found and the phase is not `done`, it runs all configured checks to assess the situation and either resumes automatically or surfaces the state to you. When a task finishes cleanly the checkpoint is overwritten with `phase: done` — no file deletion needed.

@@ -13,3 +13,7 @@ site/
 
 # Node
 node_modules/
+
+# Cap screen-recording projects and MP4 masters (large); only the README GIF is versioned
+media/*.cap/
+media/*.mp4
