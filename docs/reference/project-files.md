@@ -12,6 +12,7 @@ Files COR skills create or read in your project repository.
 | `.cor/scripts/gen-dependency-docs.mjs` or `.py` | `cor-setup` | `Generate` command in `.cor/config.md` |
 | `.cor/docs.md` | `cor-docs` | `cor-docs` |
 | `docs/DEPENDENCIES.md` | `Generate` command | `cor-code`, `cor-research` |
+| `.github/extensions/cor-artifacts/` | `cor-setup` (opt-in) | GitHub Copilot runtime |
 | `.worktreeinclude` | `cor-setup` | Claude Code, Codex, OpenCode, `post-checkout` hook |
 | `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.claude/rules/*.md` | `cor-setup`, `cor-code` notes | your agent |
 
@@ -37,6 +38,10 @@ markdown | memory | session
 disabled | enabled
 Map: docs/DEPENDENCIES.md
 Generate: npm run docs:deps
+
+## Artifact Canvas
+disabled | enabled
+Path: .github/extensions/cor-artifacts/
 
 ## Extensions
 claude-code, copilot

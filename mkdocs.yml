@@ -13,6 +13,7 @@ nav:
       - how-to/explore-ui-directions.md
       - how-to/enable-dependency-docs.md
       - how-to/enable-worktree-support.md
+      - how-to/view-artifacts-in-copilot.md
       - how-to/document-a-branch.md
       - how-to/author-a-skill.md
   - Reference:

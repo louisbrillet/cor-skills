@@ -34,8 +34,9 @@ Runs once per repository. Requires nothing.
 | 2 | Confirm check commands | `Checks` |
 | 3 | Worktree support | `.worktreeinclude`, `post-checkout` hook |
 | 4 | Dependency documentation (Node and Python) | `docs/DEPENDENCIES.md`, generation command (`docs:deps` script for Node) |
-| 5 | Plan storage: `markdown`, `memory`, `session` | `Plan Storage` |
-| 6 | - | writes `.cor/config.md` |
+| 5 | Artifact canvas (only if GitHub Copilot selected; opt-in, default no) | `.github/extensions/cor-artifacts/`, `Artifact Canvas` |
+| 6 | Plan storage: `markdown`, `memory`, `session` | `Plan Storage` |
+| 7 | - | writes `.cor/config.md` |
 
 Default checks by stack:
 
