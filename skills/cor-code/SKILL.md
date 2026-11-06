@@ -251,6 +251,8 @@ started: 2026-05-12T14:30:00
 
 Run every command listed in the `Checks` section of `.cor/config.md`, in order.
 
+If the active plan file name contains `_review_` and `.cor/config.md` has an `### Optional quality gates (cor-review)` sub-section, also run those commands after an implementation task that changed source files. Compare touched functions against the plan's **Validation strategy** (CRAP, duplication pairs, mutation survivors). A regression on a touched function is a failing check; a pre-existing number elsewhere is not.
+
 If a check fails:
 
 - Read the error output carefully.

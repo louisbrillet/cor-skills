@@ -48,7 +48,9 @@ Load the plan based on `Plan Storage`:
 - **memory**: Check agent memory for a saved COR plan. If not found, no plan yet.
 - **session**: Check current session todos. If none tagged as COR tasks, no plan yet.
 
-If no plan exists, inspect pre-plan state:
+If no plan exists and the user's request is a review or refactor of existing code (improve, simplify, clean up, audit, "what needs refactoring", metrics such as complexity, coverage, duplication), route to **cor-review**: follow `cor-review` from Step 0. It measures, reads, asks, and saves a refactor plan that `cor-code` then implements. Stop this router after handing off.
+
+Otherwise inspect pre-plan state:
 
 1. Scan `.cor/` for `research_*.md` reports matching current topic. A completed matching report means Research is done → route to Plan.
 2. Otherwise inspect current conversation for a completed Think confidence summary.

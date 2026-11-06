@@ -17,6 +17,7 @@ Every skill shipped in `skills/`, with its invocation, inputs, outputs, and stab
 | `authoring-skills` | Meta | - | stable |
 | `cor-design` | Before Plan | `/cor:design` | beta |
 | `cor-refacto` | Think + Plan | `/cor:refacto` | beta |
+| `cor-review` | Measure + Think + Plan | `/cor:review` | beta |
 | `cor-docs` | After Code | `/cor:docs` | beta |
 | `ux-frameworks` | Any | - | beta |
 | `ui-design-system-principles` | Any UI work | - | beta |
@@ -141,6 +142,24 @@ Refactor gates; a candidate failing one is marked `REJECTED`:
 | No mixed intent | no feature work mixed with refactoring |
 
 Separate plan file name: `.cor/plan_<N>_refacto_<slug>.md`.
+
+## cor-review
+
+Order: measure, read, Review Findings, Think, Plan. Writes no code. Shares the cor-refacto gates and adds one: **Pin before change** (a `[unit]` task precedes any structural task on code under 80 % covered).
+
+Measurement pass (tools from `unclebob/crapper`, `unclebob/dryer`, `unclebob/mutator`):
+
+| Tool | Candidate when | Plan validation |
+| --- | --- | --- |
+| crapper | CRAP ≥ 10 | touched functions < 10 unless arbitrated |
+| dryer | similarity ≥ 0.8 | no new pair; assumed exceptions listed |
+| mutator | survivor or uncovered site | 0 survivors on touched files |
+
+A threshold marks a candidate; the gates decide. Conflicts are recorded in an **Arbitrations** table so later runs do not reopen them. Bugs found during review go under **Out of scope**.
+
+Writes the measurement commands into `.cor/config.md` under `### Optional quality gates (cor-review)`; `cor-code` runs them after implementation tasks of a review plan.
+
+Separate plan file name: `.cor/plan_<N>_review_<slug>.md`.
 
 ## cor-docs
 
