@@ -1,0 +1,15 @@
+{
+  "skills": ["cor-setup", "cor-review"],
+  "query": "Review the codebase and tell me what really needs refactoring.",
+  "setup": [
+    "Repo has .cor/config.md with pytest as check and a Python package under src/.",
+    "One function has cyclomatic complexity 16 and 3% coverage; two modules duplicate the same 5-line shutdown method; a settings key list is copied in two modules."
+  ],
+  "expected_behavior": [
+    "Runs the measurement pass (coverage + CRAP-style complexity, structural duplication) or states exactly which tool is unavailable, before proposing any task",
+    "Reads the hot files end to end and writes the Review Findings artifact with file:line evidence for each candidate",
+    "Marks the 5-line duplication REJECTED under Rule of Three with the reason, even though the duplication tool flags it at 1.0",
+    "Keeps the copied key list as an ACCEPT candidate because the same decision lives in two places",
+    "Asks Think questions with the question widget before producing tasks; does not write code"
+  ]
+}

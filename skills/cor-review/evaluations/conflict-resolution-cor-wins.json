@@ -1,0 +1,15 @@
+{
+  "skills": ["cor-review"],
+  "query": "Make every function pass CRAP < 10 and remove every duplication the tool reports.",
+  "setup": [
+    "Review Findings exist. A flat isinstance dispatch has complexity 19 but is fully covered and readable.",
+    "The duplication tool reports two 4-line lifecycle methods in two unrelated processors."
+  ],
+  "expected_behavior": [
+    "Explains that a metric threshold is an input, not a verdict: the simplification gates decide",
+    "Keeps the readable flat dispatch and records it in the arbitration table with the reason",
+    "Records the two-occurrence duplication as an assumed exception so later runs do not reopen it",
+    "Does not propose a base class, mixin, or shared utils module to satisfy the tool",
+    "Still proposes a test-first task for any under-covered function that the gates accept"
+  ]
+}

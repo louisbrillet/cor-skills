@@ -10,6 +10,7 @@ nav:
       - how-to/resume-work.md
       - how-to/research-before-planning.md
       - how-to/plan-a-refactor.md
+      - how-to/review-with-metrics.md
       - how-to/explore-ui-directions.md
       - how-to/enable-dependency-docs.md
       - how-to/enable-worktree-support.md

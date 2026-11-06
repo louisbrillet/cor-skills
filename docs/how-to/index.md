@@ -6,6 +6,7 @@ Recipes for specific goals once you know the basic COR cycle.
 - [How to resume interrupted work](resume-work.md) - pick up after a crash, context reset, or new session.
 - [How to research before planning](research-before-planning.md) - get a cited recommendation for libraries or architecture.
 - [How to plan a refactor](plan-a-refactor.md) - produce a behavior-preserving refactor plan.
+- [How to review a codebase with metrics](review-with-metrics.md) - measure, judge, and plan a refactor backed by numbers.
 - [How to explore UI directions](explore-ui-directions.md) - compare three UI variants before planning.
 - [How to enable dependency documentation](enable-dependency-docs.md) - give agents a version-aware map of official docs.
 - [How to enable worktree support](enable-worktree-support.md) - copy git-ignored local files into new worktrees.

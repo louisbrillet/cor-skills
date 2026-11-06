@@ -50,6 +50,7 @@ These skills are available but may change structure or behavior without backward
 | `cor-design`                  | Beta   | Exploratory UI design phase with variant generation, scoring, and hand-off into planning.        |
 | `cor-docs`                    | Beta   | Updates Diataxis Markdown docs (MkDocs/Zensical) from a branch diff; edits only affected quadrants. |
 | `cor-refacto`                 | Beta   | Think+Plan workflow for behavior-preserving refactoring with strict simplification gates.        |
+| `cor-review`                  | Beta   | Measured code review (CRAP, duplication, mutation testing) judged by the refactor gates; ends in a refactor plan for `cor-code`. |
 | `ux-frameworks`               | Beta   | Layered UX diagnostics using Nielsen, Garrett, Gestalt/PARC, Morville, and Yablonski frameworks. |
 | `ui-design-system-principles` | Beta   | Systematic UI design-token and accessibility principles for frontend output quality.             |
 

@@ -5,7 +5,8 @@ Files COR skills create or read in your project repository.
 | Path | Written by | Read by |
 | --- | --- | --- |
 | `.cor/config.md` | `cor-setup` | all phase skills |
-| `.cor/plan.md`, `.cor/plan_<N>_<slug>.md` | `cor-plan`, `cor-refacto` | `cor-code`, `cor-test`, `cor-work` |
+| `.cor/plan.md`, `.cor/plan_<N>_<slug>.md` | `cor-plan`, `cor-refacto`, `cor-review` | `cor-code`, `cor-test`, `cor-work` |
+| `.cor/config.md` `### Optional quality gates (cor-review)` | `cor-review` (via its first plan task) | `cor-code` |
 | `.cor/checkpoint.md` | `cor-code` | `cor-code`, `cor-work` |
 | `.cor/research_<slug>.md` | `cor-research` | `cor-plan`, `cor-work` |
 | `.cor/design-lab/` | `cor-design` | user, `cor-plan` |

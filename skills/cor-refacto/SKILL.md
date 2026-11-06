@@ -11,6 +11,8 @@ Open a refactoring session focused on **real simplification**.
 
 Hard constraint: every proposed step must preserve behavior strictly.
 
+For a review backed by metrics (CRAP, duplication, mutation testing) and arbitration between tools and gates, use **cor-review** instead; it shares these gates.
+
 This skill performs:
 - Think (interrogate scope, risks, constraints, acceptance)
 - Plan (produce ordered, atomic tasks and save plan)

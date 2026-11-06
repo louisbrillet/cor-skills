@@ -1,0 +1,15 @@
+{
+  "skills": ["cor-review"],
+  "query": "Plan the refactor of the settings route and the wake-word state machine.",
+  "setup": [
+    "Review Findings list: route applies 10 side effects inline (3% covered); listener keeps state in five boolean flags (63% covered).",
+    "Plan Storage is markdown; .cor/plan.md has no open tasks."
+  ],
+  "expected_behavior": [
+    "Emits a [unit] pinning task before every structural task on under-covered code, and lists it as a prerequisite",
+    "Writes a Net Simplification Check on every structural task and ACCEPTs only when no axis worsens and hidden cost is NO",
+    "Reduces the state-machine candidate to the smallest explicit state that removes an illegal combination, instead of modelling every flag",
+    "Sets the plan handoff validation to: project checks after each task, then the measurement pass on touched functions with zero surviving mutants",
+    "Saves .cor/plan_<N>_review_<slug>.md after user confirmation and ends with 'Next: run cor-code'"
+  ]
+}
