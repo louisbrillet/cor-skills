@@ -64,7 +64,7 @@ COR separates AI coding into four core phases plus optional Research between Thi
 
 **Plan** — The agent takes everything surfaced in Think and relevant Research findings, then breaks it into an ordered, dependency-respecting task list. Test tasks are tagged explicitly (`[unit]`, `[integration]`, `[UAT]`). You review and confirm the breakdown before it's saved. Nothing is saved until you agree.
 
-**Code** — The agent implements one task at a time without stopping for confirmation. After each task it runs every check command you configured (type-checking, linting, tests). If a check fails it fixes the root cause and re-runs — it never marks a task complete while checks are failing. Between tasks it writes notes to your agent instruction file (`CLAUDE.md`, `AGENTS.md`, or Copilot instructions) when something non-obvious was discovered.
+**Code** — The agent implements one task at a time without stopping for confirmation. After each task it runs every check command you configured (type-checking, linting, tests). If a check fails it fixes the root cause and re-runs — it never marks a task complete while checks are failing. Between tasks it writes notes to your agent instruction file (`CLAUDE.md`, `AGENTS.md`, or Copilot instructions) when something non-obvious was discovered, then commits the task (one commit per task, on by default; choose manual commits during setup to opt out).
 
 **Test** — Works through any tasks tagged as tests. Unit and integration tests run the commands from your config. UAT tasks present the acceptance criteria and ask you to confirm manually.
 

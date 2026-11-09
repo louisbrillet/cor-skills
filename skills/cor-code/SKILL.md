@@ -1,6 +1,6 @@
 ---
 name: cor-code
-description: "Code phase of the COR methodology. Implements tasks from the plan sequentially and autonomously, running all configured checks after each task. Pauses only when tool/command output reveals unexpected high-impact information. Maintains concise repo instructions by updating active rules and archiving historical notes after each task. Claude Code users: invoke as /cor:code [task-id]."
+description: "Code phase of the COR methodology. Implements tasks from the plan sequentially and autonomously, running all configured checks after each task and committing per task when Auto Commit is enabled. Pauses only when tool/command output reveals unexpected high-impact information. Maintains concise repo instructions by updating active rules and archiving historical notes after each task. Claude Code users: invoke as /cor:code [task-id]."
 status: stable
 stability: guaranteed
 ---
@@ -62,8 +62,8 @@ If no checkpoint (or `phase: done`) but `git status` reports uncommitted changes
 
 - Run `git diff --name-only` to list changed files.
 - Cross-reference against `.cor/plan*.md` files to identify the likely interrupted task.
-- Treat phase as unknown.
-- Proceed to Severity Assessment.
+- If `Auto Commit` is `auto`, the checkpoint says `phase: done`, and the dirty files map to the task named in that checkpoint (already `[x]` in the plan): the run was interrupted between marking complete and committing. Run the Step 6 commit for that task, then proceed to Step 1.
+- Otherwise treat phase as unknown and proceed to Severity Assessment.
 
 **3. Clean state**
 
@@ -94,6 +94,7 @@ Read `.cor/config.md`. Extract:
 
 - `Checks` — commands to run after each task
 - `Plan Storage` — where the plan lives (`markdown`, `memory`, or `session`)
+- `Auto Commit` — `auto` or `manual`. Missing section → `auto`.
 
 If config does not exist: "Run the **cor-setup** skill first." and stop.
 
@@ -342,12 +343,33 @@ Classify the note by audience, then pick the destination:
 
 ---
 
+## Step 6 — Commit
+
+Skip when `Auto Commit` is `manual`, or when the working tree has no changes.
+
+1. Run `git status --porcelain`. Stage only files this task touched (`git add <paths>`), plus the active plan file, `.cor/checkpoint.md`, and any note files written in Step 5. Never `git add -A` or `git add .`: unrelated pre-existing dirty files stay unstaged. Never stage files matched by `.gitignore` or anything that looks like a secret (`.env*`, keys, tokens).
+2. Build a Conventional Commits message. Type from the task tag or content: `[unit]` / `[integration]` → `test`; `[UAT]` → `docs` or `chore`; a bug-fix task → `fix`; a refactor plan (`_refacto_` / `_review_` in the plan file name) → `refactor`; otherwise `feat`. Optional scope = main module or directory touched. Format:
+
+   ```
+   <type>(<scope>): <imperative summary of the task> (T03)
+
+   <1-3 lines: what changed and why, if not obvious from the subject>
+
+   Co-authored-by: <agent name> <noreply@...>
+   ```
+
+   The trailer identifies the agent (e.g. `Co-authored-by: Claude <noreply@anthropic.com>`, `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`). Use the host's configured trailer when it provides one.
+3. Run `git commit` (no `--no-verify`). If a commit hook fails, treat it like a failing check: fix the cause, re-stage, retry. If the hook failure is pre-existing and unrelated, leave the task uncommitted and tell the user why. Never amend or rewrite history to make the commit pass.
+4. One commit per task; never squash several tasks into one commit, never push.
+
+---
+
 ## Continue or Stop
 
-After Step 5, output:
+After Step 6, output:
 
 ```
-T02 complete. Checks passed.
+T02 complete. Checks passed. Committed as a1b2c3d (omit when Auto Commit is manual).
 
 Next: T03 — Write unit tests for withAuth [unit]
 ```
@@ -391,3 +413,4 @@ When pausing, state clearly: the unexpected finding, why it matters, and the pat
 - Check commands are non-negotiable. They exist because the user configured them.
 - Surgical: if you didn't need to open a file to do the task, don't open it.
 - Notes are written per-task. If nothing notable happened, write nothing.
+- Commits follow `Auto Commit`: one commit per task when `auto`, none when `manual`. Never push, never rewrite history.

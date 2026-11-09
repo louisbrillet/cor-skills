@@ -36,8 +36,9 @@ Runs once per repository. Requires nothing.
 | 3 | Worktree support | `.worktreeinclude`, `post-checkout` hook |
 | 4 | Dependency documentation (Node and Python) | `docs/DEPENDENCIES.md`, generation command (`docs:deps` script for Node) |
 | 5 | Artifact canvas (only if GitHub Copilot selected; opt-in, default no) | `.github/extensions/cor-artifacts/`, `Artifact Canvas` |
-| 6 | Plan storage: `markdown`, `memory`, `session` | `Plan Storage` |
-| 7 | - | writes `.cor/config.md` |
+| 6 | Auto commit per task (default yes) | `Auto Commit` |
+| 7 | Plan storage: `markdown`, `memory`, `session` | `Plan Storage` |
+| 8 | - | writes `.cor/config.md` |
 
 Default checks by stack:
 
@@ -80,7 +81,7 @@ When plans already exist, offers: merge as a new phase, overwrite (only if untou
 
 Requires `.cor/config.md` and a plan. Optional argument: task ID.
 
-Per task: write checkpoint, implement, run every check, mark complete, write notes, continue to next task without confirmation.
+Per task: write checkpoint, implement, run every check, mark complete, write notes, commit (when `Auto Commit` is `auto`: one Conventional Commits commit per task, including the plan and checkpoint), continue to next task without confirmation.
 
 Pauses only when tool output reveals information that changes the approach (for example a conflicting existing schema, a version conflict, or a duplicate implementation). Does not pause for lint or test failures; it fixes them.
 

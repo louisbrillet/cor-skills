@@ -32,6 +32,9 @@ eslint --fix
 ## Worktree Support
 husky | githooks | disabled
 
+## Auto Commit
+auto | manual
+
 ## Plan Storage
 markdown | memory | session
 
@@ -47,6 +50,11 @@ Path: .github/extensions/cor-artifacts/
 ## Extensions
 claude-code, copilot
 ```
+
+| Auto commit | Behaviour |
+| --- | --- |
+| `auto` (default, also when the section is missing) | `cor-code` commits once per task after checks pass: code changes plus `.cor/` plan and checkpoint, Conventional Commits subject ending with the task ID |
+| `manual` | `cor-code` never runs `git commit`; you commit yourself |
 
 | Plan storage | Location |
 | --- | --- |

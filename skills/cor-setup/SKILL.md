@@ -104,7 +104,7 @@ Wait for explicit confirmation before continuing. If the user modifies the list,
 
 Ask the user: "Set up worktree support? This lets any tool (`git worktree add`, VS Code, Claude Code, Codex, OpenCode, GitHub Copilot CLI, ...) automatically copy git-ignored local files (`.env`, local DB, local settings, ...) into every new worktree, so you don't have to recreate them by hand." Choices: `Yes (Recommended)` / `No, skip`.
 
-If the user says no, skip to Step 4 and omit the `## Worktree Support` section in Step 7's config (or write `disabled`).
+If the user says no, skip to Step 4 and omit the `## Worktree Support` section in Step 8's config (or write `disabled`).
 
 If yes:
 
@@ -178,7 +178,7 @@ done < "$include_file"
 - **Non-Node projects** (Ruby, Python, Go, ...): Husky doesn't apply. Instead, commit a `.githooks/post-checkout` with the same script content and instruct the user to run `git config core.hooksPath .githooks` once per clone (mention this manually in the confirmation message, since there is no package-manager `prepare` step to automate it).
 
 5. **Verify it actually works** before confirming: create a throwaway worktree (`git worktree add -b cor-setup-worktree-test /tmp/cor-setup-wt-test HEAD`), check the confirmed files were copied, then clean up (`git worktree remove --force ...` and `git branch -D cor-setup-worktree-test`).
-6. Record the outcome (`husky` / `githooks` / `disabled`) for Step 7's config.
+6. Record the outcome (`husky` / `githooks` / `disabled`) for Step 8's config.
 
 ---
 
@@ -223,9 +223,9 @@ Before using or changing a third-party API:
 4. Regenerate the map with `[exact Generate command]` after direct dependency changes.
 ```
 
-5. Record `enabled`, map path, and exact generation command for Step 7. If the command fails due to a corporate TLS proxy, record the failure, preserve no misleading coverage claim, and instruct the user to configure their CA bundle (`NODE_EXTRA_CA_CERTS` for Node, `SSL_CERT_FILE` for Python); never disable TLS verification.
+5. Record `enabled`, map path, and exact generation command for Step 8. If the command fails due to a corporate TLS proxy, record the failure, preserve no misleading coverage claim, and instruct the user to configure their CA bundle (`NODE_EXTRA_CA_CERTS` for Node, `SSL_CERT_FILE` for Python); never disable TLS verification.
 
-If no, record `disabled` for Step 7.
+If no, record `disabled` for Step 8.
 
 ## Step 5 — Artifact Canvas (GitHub Copilot only, opt-in)
 
@@ -238,11 +238,21 @@ If yes:
 1. Copy the bundled [`assets/artifact-canvas/`](assets/artifact-canvas/) directory unmodified to `.github/extensions/cor-artifacts/` in the target project: `extension.mjs`, `artifacts.mjs`, `server.mjs`, `public/index.html`, `public/app.js`, `public/style.css`. If that directory exists and differs, ask before overwriting. Do not create a `package.json`; the Copilot runtime provides `@github/copilot-sdk`.
 2. Validate syntax: `node --check .github/extensions/cor-artifacts/extension.mjs`.
 3. When the current agent can reload extensions (Copilot `extensions_reload`), reload and open canvas `cor-skills-artifacts` once to verify. Otherwise tell the user it loads in the next Copilot session.
-4. Record `enabled` and the path for Step 7.
+4. Record `enabled` and the path for Step 8.
 
-If no, record `disabled` for Step 7.
+If no, record `disabled` for Step 8.
 
-## Step 6 — Plan Storage
+## Step 6 — Auto Commit
+
+Skip this step and record `manual` when the project is not a git repository (`git rev-parse --is-inside-work-tree` fails).
+
+Ask: "Should **cor-code** commit automatically after each task passes its checks? One commit per task (Conventional Commits message, task ID in the subject, plan and checkpoint included) gives you a clean, bisectable history and a safe resume point. Choose manual if you prefer to review and commit yourself." Choices: `Yes, commit per task (Recommended)` / `No, I commit manually`.
+
+Record `auto` or `manual` for Step 8.
+
+---
+
+## Step 7 — Plan Storage
 
 Ask the user: "Where should task plans live for this project?"
 
@@ -254,7 +264,7 @@ Wait for the user to choose before continuing.
 
 ---
 
-## Step 7 — Write Config
+## Step 8 — Write Config
 
 Create `.cor/` if it does not exist. Write `.cor/config.md` with this exact structure:
 
@@ -271,6 +281,10 @@ Create `.cor/` if it does not exist. Write `.cor/config.md` with this exact stru
 ## Worktree Support
 
 [one of: husky | githooks | disabled — if husky/githooks, list the confirmed .worktreeinclude patterns beneath it]
+
+## Auto Commit
+
+[one of: auto | manual]
 
 ## Plan Storage
 
