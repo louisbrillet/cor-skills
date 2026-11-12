@@ -28,6 +28,6 @@ The user configures check commands once in `cor-setup`. A task is complete only 
 
 ## Optional and experimental branches
 
-`cor-design` and `cor-refacto` add specialized Think and Plan variants for UI exploration and behavior-preserving refactors. `cor-review` goes one step further for refactors: it measures first (complexity and coverage per function, structural duplication, mutation testing), lets the refactor gates judge the numbers, and records every arbitration in the plan. `cor-docs` closes the loop by documenting the result. They are marked beta because their structure may still change.
+`cor-design` and `cor-refacto` add specialized Think and Plan variants for UI exploration and behavior-preserving refactors. `cor-review` goes one step further for refactors: it measures first (complexity and coverage per function, structural duplication, mutation testing), lets the refactor gates judge the numbers, and records every arbitration in the plan. `cor-docs` closes the loop by documenting the result. `cor-design` and `cor-refacto` are still beta; their structure may change.
 
 See also: [Skills](../reference/skills.md), [Ship your first change with COR](../tutorials/first-change.md).

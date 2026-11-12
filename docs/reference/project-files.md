@@ -10,6 +10,7 @@ Files COR skills create or read in your project repository.
 | `.cor/checkpoint.md` | `cor-code` | `cor-code`, `cor-work` |
 | `.cor/research_<slug>.md` | `cor-research` | `cor-plan`, `cor-work` |
 | `.cor/design-lab/` | `cor-design` | user, `cor-plan` |
+| `.cor/show-me/<slug>.html` | `show-me` | user |
 | `.cor/scripts/gen-dependency-docs.mjs` or `.py` | `cor-setup` | `Generate` command in `.cor/config.md` |
 | `.cor/docs.md` | `cor-docs` | `cor-docs` |
 | `docs/DEPENDENCIES.md` | `Generate` command | `cor-code`, `cor-research` |
@@ -121,4 +122,4 @@ main
 
 ## COR Notes
 
-`cor-code` writes agent-facing notes under a `## COR Notes` section in the instruction file that matches the note scope. Setup notes for humans go to `README.md` instead. Scoping rules: `skills/cor-code/references/instruction-files.md`.
+`cor-code` writes agent-facing notes under a `## COR Notes` section in the instruction file that matches the note scope. Setup notes for humans go to `README.md` instead. Scoping rules: `plugins/cor/skills/cor-code/references/instruction-files.md`.

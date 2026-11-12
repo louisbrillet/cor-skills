@@ -15,44 +15,81 @@ There is also a meta dimension: the harness remembers. After each task, COR writ
 - **Lightweight** — no added infrastructure. Structured workflow, not rigid one. No opinions on your stack, tooling, or memory setup.
 - **Adaptable** — stack-detected defaults you override at setup. Plan storage (markdown / memory / session) is your choice.
 - **Transparent** — gotchas and best practices written to your native instruction file after each task. Plain text you own; nothing hidden.
-- **Token-efficient** — `token-caveman` ships with COR; cuts ~75% response verbosity without losing technical content.
+- **Token-efficient** — `token-caveman` (in the `toolbox` plugin) cuts ~75% response verbosity without losing technical content.
 
 ## Install
+
+The repository is a plugin marketplace with two plugins:
+
+| Plugin    | Contents                                                                                   |
+| --------- | ------------------------------------------------------------------------------------------ |
+| `cor`     | The CodingOnRails workflow: setup, think, research, plan, code, test, work router, plus the design, review, refactor and docs phases |
+| `toolbox` | Standalone engineer helpers with no dependency on the workflow: `show-me`, `token-caveman`, `authoring-skills` |
+
+Any agent via the `skills` CLI (asks which skills and agents to install to):
 
 ```bash
 npx skills add louisbrillet/cor-skills
 ```
 
-The `skills` CLI will ask which skills and which agents to install to. Supports multi-select for both. Works with GitHub Copilot, Codex, Claude Code, Cursor, and [50+ other agents](https://github.com/vercel-labs/skills#supported-agents).
+Claude Code:
+
+```bash
+claude plugin marketplace add louisbrillet/cor-skills
+claude plugin install cor@cor-skills
+claude plugin install toolbox@cor-skills   # optional
+```
+
+GitHub Copilot CLI (also browsable from Customize in VS Code and the Copilot app):
+
+```bash
+copilot plugin marketplace add louisbrillet/cor-skills
+copilot plugin install cor@cor-skills
+copilot plugin install toolbox@cor-skills   # optional
+```
+
+Plugin skills are namespaced: `/cor:cor-think`, `/toolbox:show-me`.
+
+### Upgrading from 0.1 (flat `skills/` layout)
+
+Skills moved to `plugins/<plugin>/skills/`. Installed copies keep working, but `npx skills update` cannot resolve the old paths recorded in `skills-lock.json`. Reinstall once per project:
+
+```bash
+npx skills remove --all -y
+npx skills add louisbrillet/cor-skills
+```
+
+To stay on the old layout: `npx skills add louisbrillet/cor-skills@v0.1.0`.
 
 ## Skills
 
-### Stable skills
+### `cor` plugin
 
-| Skill           | Phase     | What it does                                                                                                        |
-| --------------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
-| `cor-setup`     | Init      | Detects stack, configures checks and plan storage, optionally maps official dependency docs                        |
-| `cor-think`     | 1 — Think | Interrogates you with targeted questions, ends with a confidence summary                                            |
-| `cor-research`  | Optional  | Researches current libraries, APIs, and architecture practices, then saves an evidence-backed handoff for planning  |
-| `cor-plan`      | 2 — Plan  | Breaks the work into an ordered task list, saved to your chosen storage                                             |
-| `cor-code`      | 3 — Code  | Implements tasks autonomously, running all checks after each; pauses only when new information changes the approach |
-| `cor-test`      | 4 — Test  | Runs only the tests that were planned — unit, integration, or UAT                                                   |
-| `cor-work`      | Any       | Entry point: reads plan state and routes to the right phase automatically                                           |
-| `token-caveman` | Always    | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy       |
-| `authoring-skills` | Meta   | Authors and audits skills against the Agent Skills best practices; ships a validator script                          |
+| Skill           | Phase     | Status | What it does                                                                                                        |
+| --------------- | --------- | ------ | ------------------------------------------------------------------------------------------------------------------- |
+| `cor-setup`     | Init      | stable | Detects stack, configures checks and plan storage, optionally maps official dependency docs                        |
+| `cor-think`     | 1 — Think | stable | Interrogates you with targeted questions, ends with a confidence summary                                            |
+| `cor-research`  | Optional  | stable | Researches current libraries, APIs, and architecture practices, then saves an evidence-backed handoff for planning  |
+| `cor-plan`      | 2 — Plan  | stable | Breaks the work into an ordered task list, saved to your chosen storage                                             |
+| `cor-code`      | 3 — Code  | stable | Implements tasks autonomously, running all checks after each; pauses only when new information changes the approach |
+| `cor-test`      | 4 — Test  | stable | Runs only the tests that were planned — unit, integration, or UAT                                                   |
+| `cor-work`      | Any       | stable | Entry point: reads plan state and routes to the right phase automatically                                           |
+| `cor-review`    | Measure   | stable | Measured code review (CRAP, duplication, mutation testing) judged by the refactor gates; ends in a refactor plan for `cor-code` |
+| `cor-docs`      | After Code | stable | Updates Diataxis Markdown docs (MkDocs/Zensical) from a branch diff; edits only affected quadrants                |
+| `cor-design`    | Before Plan | beta | Exploratory UI design phase with variant generation, scoring, and hand-off into planning                           |
+| `cor-refacto`   | Think + Plan | beta | Think+Plan workflow for behavior-preserving refactoring with strict simplification gates                          |
+| `ux-frameworks` | Any       | beta   | Layered UX diagnostics using Nielsen, Garrett, Gestalt/PARC, Morville, and Yablonski frameworks                     |
+| `ui-design-system-principles` | Any UI work | beta | Systematic UI design-token and accessibility principles for frontend output quality                   |
 
-### Experimental skills (beta)
+### `toolbox` plugin
 
-These skills are available but may change structure or behavior without backward-compatibility guarantees.
+| Skill              | Status | What it does                                                                                                   |
+| ------------------ | ------ | -------------------------------------------------------------------------------------------------------------- |
+| `show-me`          | beta   | Explains the current topic visually: pseudocode, call/component/file trees, Mermaid, diff sketches, or one HTML artifact |
+| `token-caveman`    | stable | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy  |
+| `authoring-skills` | stable | Authors and audits skills against the Agent Skills best practices; ships a validator script                    |
 
-| Skill                         | Status | What it does                                                                                     |
-| ----------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
-| `cor-design`                  | Beta   | Exploratory UI design phase with variant generation, scoring, and hand-off into planning.        |
-| `cor-docs`                    | Beta   | Updates Diataxis Markdown docs (MkDocs/Zensical) from a branch diff; edits only affected quadrants. |
-| `cor-refacto`                 | Beta   | Think+Plan workflow for behavior-preserving refactoring with strict simplification gates.        |
-| `cor-review`                  | Beta   | Measured code review (CRAP, duplication, mutation testing) judged by the refactor gates; ends in a refactor plan for `cor-code`. |
-| `ux-frameworks`               | Beta   | Layered UX diagnostics using Nielsen, Garrett, Gestalt/PARC, Morville, and Yablonski frameworks. |
-| `ui-design-system-principles` | Beta   | Systematic UI design-token and accessibility principles for frontend output quality.             |
+`beta` skills may change structure or behavior without backward-compatibility guarantees.
 
 ## How it works
 
@@ -158,7 +195,7 @@ Full documentation lives in [docs/](docs/index.md), organized with Diataxis (tut
 `authoring-skills` is the meta-skill governing this repo's own skills. It encodes the Agent Skills authoring best practices (frontmatter validity, description discoverability, the 500-line SKILL.md budget, one-level-deep references, progressive disclosure, workflows and evaluations) and ships a validator:
 
 ```bash
-python skills/authoring-skills/scripts/validate_skill.py skills/*/
+python plugins/toolbox/skills/authoring-skills/scripts/validate_skill.py plugins/*/skills/*/
 ```
 
 Run it before shipping a skill change. `ERROR` findings must be fixed; `WARN` findings must be triaged explicitly.

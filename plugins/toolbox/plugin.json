@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "toolbox",
+  "version": "0.2.0",
+  "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills",
+  "author": { "name": "Louis Brillet" },
+  "repository": "https://github.com/louisbrillet/cor-skills",
+  "license": "MIT",
+  "keywords": ["diagrams", "mermaid", "terse", "skill-authoring"]
+}

@@ -4,7 +4,7 @@ Continue a COR plan after an interrupted session, a context reset, or a crash mi
 
 Prerequisite: `.cor/config.md` exists and a plan has pending tasks.
 
-1. Run `cor-work` (`/cor:work`).
+1. Run `cor-work` (`/cor:cor-work`).
 2. If several plans have pending tasks, pick one from the list. The most recently modified plan is pre-selected.
 3. Read the `COR Status` block. `cor-work` routes to Code when implementation tasks remain, to Test when only test tasks remain.
 4. If `cor-code` finds `.cor/checkpoint.md` with a phase other than `done`, it runs all configured checks:

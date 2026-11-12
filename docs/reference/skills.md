@@ -1,28 +1,31 @@
 # Skills
 
-Every skill shipped in `skills/`, with its invocation, inputs, outputs, and stability.
+Every skill shipped under `plugins/<plugin>/skills/`, with its plugin, invocation, inputs, outputs, and stability.
 
 ## Overview
 
-| Skill | Phase | Claude Code command | Status |
-| --- | --- | --- | --- |
-| `cor-setup` | Init | `/cor:setup` | stable |
-| `cor-think` | 1 - Think | `/cor:think` | stable |
-| `cor-research` | Optional, between Think and Plan | - | stable |
-| `cor-plan` | 2 - Plan | `/cor:plan` | stable |
-| `cor-code` | 3 - Code | `/cor:code [task-id]` | stable |
-| `cor-test` | 4 - Test | `/cor:test` | stable |
-| `cor-work` | Any (router) | `/cor:work` | stable |
-| `token-caveman` | Always | `/token:caveman` | stable |
-| `authoring-skills` | Meta | - | stable |
-| `cor-design` | Before Plan | `/cor:design` | beta |
-| `cor-refacto` | Think + Plan | `/cor:refacto` | beta |
-| `cor-review` | Measure + Think + Plan | `/cor:review` | beta |
-| `cor-docs` | After Code | `/cor:docs` | beta |
-| `ux-frameworks` | Any | - | beta |
-| `ui-design-system-principles` | Any UI work | - | beta |
+Two plugins. `cor` is the workflow and everything that reads or writes `.cor/`. `toolbox` holds standalone helpers with no dependency on the workflow. A new skill goes to `toolbox` unless it reads or writes `.cor/` or is referenced by a `cor` skill.
 
-Status comes from the `status` frontmatter field. `beta` skills declare `stability: experimental` and may change without backward compatibility.
+| Skill | Plugin | Phase | Slash command | Status |
+| --- | --- | --- | --- | --- |
+| `cor-setup` | `cor` | Init | `/cor:cor-setup` | stable |
+| `cor-think` | `cor` | 1 - Think | `/cor:cor-think` | stable |
+| `cor-research` | `cor` | Optional, between Think and Plan | - | stable |
+| `cor-plan` | `cor` | 2 - Plan | `/cor:cor-plan` | stable |
+| `cor-code` | `cor` | 3 - Code | `/cor:cor-code [task-id]` | stable |
+| `cor-test` | `cor` | 4 - Test | `/cor:cor-test` | stable |
+| `cor-work` | `cor` | Any (router) | `/cor:cor-work` | stable |
+| `cor-review` | `cor` | Measure + Think + Plan | `/cor:cor-review` | stable |
+| `cor-docs` | `cor` | After Code | `/cor:cor-docs` | stable |
+| `cor-design` | `cor` | Before Plan | `/cor:cor-design` | beta |
+| `cor-refacto` | `cor` | Think + Plan | `/cor:cor-refacto` | beta |
+| `ux-frameworks` | `cor` | Any | - | beta |
+| `ui-design-system-principles` | `cor` | Any UI work | - | beta |
+| `show-me` | `toolbox` | Any | `/toolbox:show-me` | beta |
+| `token-caveman` | `toolbox` | Always | `/toolbox:token-caveman` | stable |
+| `authoring-skills` | `toolbox` | Meta | - | stable |
+
+Slash commands are `/<plugin>:<skill>` when installed as a plugin (Claude Code, Copilot CLI). Skills installed with `npx skills` are invoked by skill name. Status comes from the `status` frontmatter field. `beta` skills declare `stability: experimental` and may change without backward compatibility.
 
 ## cor-setup
 
@@ -180,9 +183,13 @@ Applies Nielsen's heuristics, Garrett's Five Planes, Gestalt/PARC, Morville's Ho
 
 Design tokens, color, typography, spacing, layout, components, charts, and accessibility rules for frontend output. Acts as scoring authority for `cor-design`. Bundles `references/tailwind-shadcn.md`.
 
+## show-me
+
+User-invoked only (`disable-model-invocation: true`). Reads the relevant code, then answers with the smallest fitting view: pseudocode, call tree, component tree, file tree, Mermaid (sequence, state, flowchart, ER), diff sketch, full block, or a single self-contained HTML artifact. HTML artifacts go to `.cor/show-me/<slug>.html` when `.cor/` exists, else `./show-me-<slug>.html`. Max three views per answer; names must exist in the repository.
+
 ## Skill format
 
-Each skill is a directory under `skills/` containing `SKILL.md` with YAML frontmatter:
+Each skill is a directory under `plugins/<plugin>/skills/` containing `SKILL.md` with YAML frontmatter:
 
 | Field | Rule |
 | --- | --- |
@@ -191,4 +198,4 @@ Each skill is a directory under `skills/` containing `SKILL.md` with YAML frontm
 | `status` | `stable` or `beta` |
 | `stability` | `guaranteed` or `experimental` |
 
-Optional subdirectories: `references/`, `scripts/`, `templates/`, `evaluations/`. `SKILL.md` stays under 500 lines and links bundled files one level deep. Skills are registered in `.claude-plugin/plugin.json`.
+Optional subdirectories: `references/`, `scripts/`, `templates/`, `evaluations/`. `SKILL.md` stays under 500 lines and links bundled files one level deep. Plugins are listed in `.claude-plugin/marketplace.json` at the repository root; each plugin directory carries a root `plugin.json` (Agent Plugins 1.0, read by Copilot and VS Code) and a `.claude-plugin/plugin.json` (Claude Code). Skills are discovered from the plugin's `skills/` directory; the marketplace entry also lists them for the `skills` CLI.

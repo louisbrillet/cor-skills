@@ -1,0 +1,15 @@
+{
+  "skills": ["show-me"],
+  "query": "Show me the three onboarding screens side by side so I can compare their spacing and button placement.",
+  "setup": [
+    "Repository has three onboarding screen components sharing a design-token file",
+    ".cor/ directory exists"
+  ],
+  "expected_behavior": [
+    "Chooses an HTML artifact because side-by-side visual layout cannot be carried by text or Mermaid",
+    "Reads the components and the token file and reuses their real colors, spacing, and labels",
+    "Writes a single self-contained HTML file under .cor/show-me/ with no external network requests",
+    "Attempts to open the file with the platform open command and reports the path",
+    "Does not produce an HTML artifact when the question is about a non-visual concept"
+  ]
+}

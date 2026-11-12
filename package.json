@@ -1,9 +1,9 @@
 {
   "name": "cor-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "COR (CodingOnRails) — Think, Plan, Code, Test methodology skills for AI coding agents",
   "files": [
-    "skills/"
+    "plugins/"
   ],
   "engines": {
     "node": ">=18"

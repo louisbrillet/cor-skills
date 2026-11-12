@@ -1,0 +1,46 @@
+{
+  "name": "cor-skills",
+  "owner": {
+    "name": "Louis Brillet"
+  },
+  "metadata": {
+    "description": "CodingOnRails: Think, Plan, Code, Test workflow for AI coding agents, plus standalone engineer helpers",
+    "version": "0.2.0"
+  },
+  "plugins": [
+    {
+      "name": "cor",
+      "source": "./plugins/cor",
+      "description": "CodingOnRails workflow: setup, think, research, plan, code, test, work router, plus design, review, refactor and docs phases",
+      "version": "0.2.0",
+      "category": "workflow",
+      "skills": [
+        "./skills/cor-setup",
+        "./skills/cor-think",
+        "./skills/cor-research",
+        "./skills/cor-plan",
+        "./skills/cor-code",
+        "./skills/cor-test",
+        "./skills/cor-work",
+        "./skills/cor-design",
+        "./skills/cor-review",
+        "./skills/cor-refacto",
+        "./skills/cor-docs",
+        "./skills/ux-frameworks",
+        "./skills/ui-design-system-principles"
+      ]
+    },
+    {
+      "name": "toolbox",
+      "source": "./plugins/toolbox",
+      "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills",
+      "version": "0.2.0",
+      "category": "productivity",
+      "skills": [
+        "./skills/show-me",
+        "./skills/token-caveman",
+        "./skills/authoring-skills"
+      ]
+    }
+  ]
+}

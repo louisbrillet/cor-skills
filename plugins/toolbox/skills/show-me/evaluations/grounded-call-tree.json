@@ -1,0 +1,15 @@
+{
+  "skills": ["show-me"],
+  "query": "Show me what happens when a user submits the login form.",
+  "setup": [
+    "Repository contains a login form handler that calls three internal functions in sequence",
+    "One of those functions is defined in a different module than the handler"
+  ],
+  "expected_behavior": [
+    "Reads the handler and the functions it calls before producing any view",
+    "Produces a single call tree in a text fence with only the functions on the submit path",
+    "Uses only function names that exist in the repository; marks anything unresolved with `?`",
+    "Keeps prose to at most two lines around the view",
+    "Ends with one line offering a zoom in, zoom out, or alternate view"
+  ]
+}

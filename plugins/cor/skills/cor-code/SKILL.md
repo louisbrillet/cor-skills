@@ -1,0 +1,416 @@
+---
+name: cor-code
+description: "Code phase of the COR methodology. Implements tasks from the plan sequentially and autonomously, running all configured checks after each task and committing per task when Auto Commit is enabled. Pauses only when tool/command output reveals unexpected high-impact information. Maintains concise repo instructions by updating active rules and archiving historical notes after each task. Claude Code users: invoke as /cor:cor-code [task-id]."
+status: stable
+stability: guaranteed
+---
+
+# COR Code — Code Phase
+
+You are opening the Code phase of the COR (CodingOnRails) methodology. Implement tasks sequentially and autonomously — no confirmation prompts unless unexpected information emerges that materially changes the approach (see Pause Policy). One task at a time. Surgical.
+
+---
+
+## Environment Detection
+
+Determine which task-tracking and question tools are available. Probe in this order:
+
+| Priority | Signal                     | Environment   | Todo tool                  | Question tool         |
+| -------- | -------------------------- | ------------- | -------------------------- | --------------------- |
+| 1        | `TodoWrite` available      | Claude Code   | `TodoWrite`                | `AskUserQuestion`     |
+| 2        | `todo_write` MCP available | Copilot       | `todo_write` / `todo_read` | `vscode_askQuestions` |
+| 3        | neither                    | Codex / other | none — `.cor/plan.md`      | inline numbered list  |
+
+Store as **active environment**. Use consistently across all steps.
+
+---
+
+## Step 0 — Resume Detection
+
+Before reading config or loading the plan, detect whether a prior run was interrupted.
+
+### Easy case (same session)
+
+Scan prior conversation for the most recent task that was started. Verify:
+
+- Step 3 checks passed for that task.
+- `TodoWrite` was called marking it `"completed"` (Step 4 completed).
+
+Both true → task finished cleanly, skip to Step 1.
+Either missing → interrupted; cross-validate with checkpoint below.
+
+### Hard case (fresh session / cold start)
+
+**1. Check `.cor/checkpoint.md`**
+
+If it exists, read it:
+
+```
+plan: .cor/plan_2_checkout_flow.md
+task: T03
+phase: implementing   # implementing | checks | marking-complete | done
+started: 2026-05-12T14:30:00
+```
+
+If `phase: done` → task finished cleanly. Proceed to Step 1.
+
+Otherwise task was interrupted at that phase. Use the `plan:` field as the active plan file. Proceed to Severity Assessment.
+
+**2. Fallback — git state**
+
+If no checkpoint (or `phase: done`) but `git status` reports uncommitted changes:
+
+- Run `git diff --name-only` to list changed files.
+- Cross-reference against `.cor/plan*.md` files to identify the likely interrupted task.
+- If `Auto Commit` is `auto`, the checkpoint says `phase: done`, and the dirty files map to the task named in that checkpoint (already `[x]` in the plan): the run was interrupted between marking complete and committing. Run the Step 6 commit for that task, then proceed to Step 1.
+- Otherwise treat phase as unknown and proceed to Severity Assessment.
+
+**3. Clean state**
+
+No checkpoint, `phase: done`, or no dirty git state → no prior interruption. Proceed to Step 1.
+
+### Severity Assessment
+
+Run all configured checks from `.cor/config.md`.
+
+| Result                           | Action                                                                                   |
+| -------------------------------- | ---------------------------------------------------------------------------------------- |
+| All checks pass                  | Safe. Re-run the interrupted task from the beginning of Step 2.                          |
+| Only linter / formatter failures | Auto-fix (`eslint --fix`, `rubocop -a`, `ruff --fix`, etc.), re-run checks, then resume. |
+| Test failures or compile errors  | **Pause.** Report: interrupted task, phase, failing check output, and options below.     |
+| Can't map dirty files to a task  | **Pause.** Show `git diff --stat` summary and ask how to proceed.                        |
+
+When pausing, use the native question widget:
+
+- _Claude Code_: `AskUserQuestion` — options: re-implement task from scratch / skip task and continue / investigate manually.
+- _Copilot_: `vscode_askQuestions` with same choices.
+- _Codex_: Inline numbered list, `**(Recommended)**` on the safest default, plus "Other — describe in free text."
+
+---
+
+## Step 1 — Read Config and Plan
+
+Read `.cor/config.md`. Extract:
+
+- `Checks` — commands to run after each task
+- `Plan Storage` — where the plan lives (`markdown`, `memory`, or `session`)
+- `Auto Commit` — `auto` or `manual`. Missing section → `auto`.
+
+If config does not exist: "Run the **cor-setup** skill first." and stop.
+
+### Load the plan
+
+**markdown**: Scan `.cor/` for `plan.md` and any `plan_*.md` files. Filter to those with at least one `- [ ]` task. Call this set **active plans**.
+
+- **One active plan**: use it. Store its path as the **active plan file**.
+- **Multiple active plans**: list each with its filename and remaining task count. Pre-select the most recently modified. Ask the user to confirm or pick another. Wait. Store the chosen path as the **active plan file**.
+- **No active plans** (all tasks complete or no plan files): "No pending tasks found. All done." Stop.
+
+Extract all tasks (checked and unchecked) from the active plan file into a working list.
+
+**memory**: Read plan from agent memory. Build working list.
+
+**session**: Load into the active environment's todo tool:
+
+**Claude Code (`TodoWrite`)**
+
+Read `.cor/plan.md` (or memory). Call `TodoWrite` **once, right now, with every task in the plan** — all of them, not just the first. This is mandatory before any implementation begins. Map statuses: `- [x]` → `"completed"`, in-progress marker → `"in_progress"`, `- [ ]` → `"pending"`. `TodoWrite` replaces the entire list, so every task must be present in every call:
+
+```json
+{
+  "todos": [
+    { "content": "T01 — description [tag]", "status": "completed" },
+    { "content": "T02 — description [tag]", "status": "pending" },
+    { "content": "T03 — description [tag]", "status": "pending" },
+    { "content": "T04 — description [tag]", "status": "pending" },
+    { "content": "T05 — description [tag]", "status": "pending" }
+  ]
+}
+```
+
+If the session already has the full plan loaded (all tasks present), skip this call and use the existing list. If any tasks are missing, reload the full list.
+
+**Copilot (`todo_write` / `todo_read`)**
+
+1. Call `todo_read` (no parameters). Examine the result:
+   - Result contains todos matching this plan → use them directly; skip step 2.
+   - Result is empty or null → proceed to step 2.
+2. Read `.cor/plan.md` (or memory). Call `todo_write` with all tasks:
+
+```json
+{
+  "title": "COR Plan",
+  "todos": [
+    {
+      "id": "T01",
+      "content": "T01 — description [tag]",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "id": "T02",
+      "content": "T02 — description [tag]",
+      "status": "completed",
+      "priority": "medium"
+    }
+  ]
+}
+```
+
+- Map `.cor/plan.md` checkboxes: `- [x]` → `"completed"`, `- [ ]` → `"pending"`.
+- `id` must match the task ID (e.g. `"T01"`).
+- Always pass the full task list — `todo_write` replaces the entire list.
+
+**Codex / fallback**: Read `.cor/plan.md`. Track state in memory only — no tool to populate.
+
+### Select next task
+
+Take the first `pending` task from the loaded list. If the user invoked with a task ID (e.g. `/cor:cor-code T03`), jump to that task instead.
+
+### Artifact canvas (optional)
+
+Only when config has `## Artifact Canvas` set to `enabled`, storage is `markdown`, and an `open_canvas` tool is available: call `open_canvas` once per session with `canvasId: "cor-skills-artifacts"`, `instanceId: "cor-artifacts"`, `input: { "path": "<active plan file>" }`. The canvas follows checkbox and checkpoint edits on its own — never call it per task. Skip silently when unavailable or on failure.
+
+---
+
+## Step 2 — Implement
+
+### Cross-plan checkpoint guard
+
+Before writing the checkpoint, check if `.cor/checkpoint.md` already exists with `phase != done`.
+
+If it does, compare its `plan:` field to the current active plan file:
+
+- **Same plan** → prior run on this plan was interrupted; proceed normally (Step 0 already handled recovery).
+- **Different plan** → a previous plan was interrupted. Pause using the native question widget:
+
+  > "Plan `[checkpoint plan]` was interrupted at `[task]` (phase: `[phase]`). You are now starting `[current plan]`. What do you want to do?"
+  >
+  > - A: Discard the old checkpoint and continue with the current plan
+  > - B: Stop here — switch back to `[checkpoint plan]` first (use cor-work)
+
+  Wait for the user to choose. If A: overwrite and continue. If B: stop.
+
+### Write checkpoint
+
+Write `.cor/checkpoint.md`:
+
+```
+plan: .cor/plan_2_checkout_flow.md
+task: T03
+phase: implementing
+started: 2026-05-12T14:30:00
+```
+
+Always include the `plan:` field — even when only one plan file exists. Use the actual task ID, active plan file path, and current timestamp. This file is the crash-recovery signal — write it first, before any code change.
+
+No confirmation prompt. Begin immediately.
+
+Implement the task surgically:
+
+- Only touch files and lines required by this task.
+- Do not refactor unrelated code.
+- Do not add abstractions beyond what the task requires.
+- Do not add comments unless the why is genuinely non-obvious.
+- If you encounter something clearly broken in files you are already modifying, fix it — but do not go looking for things to clean up.
+- Apply consistent formatting to every modified file: run the auto-fix commands from the Checks config (e.g. `eslint --fix`, `rubocop -a`, `ruff --fix`). Non-optional.
+
+### External dependency gate
+
+Before implementing against an external dependency:
+
+1. Identify its resolved version from the lockfile (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `uv.lock`, `poetry.lock`, `pdm.lock`) or installed package metadata (`node_modules/<pkg>/package.json`, `uv pip show <pkg>` / `importlib.metadata.version`), not only the manifest range.
+2. Inspect available APIs in version-matched official docs, installed typings (`.d.ts`, `py.typed` / `.pyi` stubs), or package source (`node_modules/<pkg>/`, virtualenv `site-packages/<pkg>/`).
+3. Search the project for existing usages and conventions.
+4. Prefer a maintained native primitive that fully covers the requirement.
+5. Write custom code only when no suitable primitive exists. Record that conclusion and evidence in Step 5 notes.
+
+Do not guess API names or install a replacement dependency before completing this gate. If evidence conflicts with the plan and materially changes implementation, follow the pause policy.
+
+### Dependency documentation gate
+
+When `docs/DEPENDENCIES.md` exists and this task uses or changes a third-party API:
+
+1. Read its entry before web research; prefer its official `llms.txt` link.
+2. Fetch only relevant linked pages. Do not load `llms-full.txt` by default.
+3. Resolve any online-versus-local version disagreement in favor of the lockfile, installed typings, source, and README (or `*.dist-info/METADATA` for Python).
+
+When this task changes direct dependencies, their ranges, or a lockfile (`package.json` dependency fields, `pyproject.toml` `dependencies` / `optional-dependencies` / `[dependency-groups]`, `requirements*.txt`, or any lockfile above — including via `npm install`, `uv add`/`uv remove`, `poetry add`), regenerate the map with the exact `Generate` command from `.cor/config.md` before Step 3. Include the generated map in the task changes. If no dependency-documentation config exists, do not invent it.
+
+---
+
+## Step 3 — Run Checks
+
+Update `.cor/checkpoint.md` — change `phase` to `checks` (preserve all other fields):
+
+```
+plan: .cor/plan_2_checkout_flow.md
+task: T03
+phase: checks
+started: 2026-05-12T14:30:00
+```
+
+Run every command listed in the `Checks` section of `.cor/config.md`, in order.
+
+If the active plan file name contains `_review_` and `.cor/config.md` has an `### Optional quality gates (cor-review)` sub-section, also run those commands after an implementation task that changed source files. Compare touched functions against the plan's **Validation strategy** (CRAP, duplication pairs, mutation survivors). A regression on a touched function is a failing check; a pre-existing number elsewhere is not.
+
+If a check fails:
+
+- Read the error output carefully.
+- Fix the root cause. Do not skip or suppress errors.
+- Re-run the failing check (and dependents) until it passes.
+- Do not proceed while any check is failing.
+
+If a failure is caused by pre-existing code unrelated to this task → flag it in notes (Step 5), offer to log as a separate task, and continue.
+
+---
+
+## Step 4 — Mark Complete
+
+When all checks pass, update `.cor/checkpoint.md` — change `phase` to `marking-complete` (preserve all other fields):
+
+```
+plan: .cor/plan_2_checkout_flow.md
+task: T03
+phase: marking-complete
+started: 2026-05-12T14:30:00
+```
+
+Mark the task complete in the plan and todo tool (see below), then overwrite `.cor/checkpoint.md`:
+
+```
+plan: .cor/plan_2_checkout_flow.md
+task: T03
+phase: done
+started: 2026-05-12T14:30:00
+```
+
+No `rm` needed — `phase: done` is the clean-finish signal.
+
+**markdown**: Edit the active plan file — change `- [ ] T0X` to `- [x] T0X`.
+
+**memory**: Update plan in agent memory.
+
+**session**:
+
+_Claude Code_: Call `TodoWrite` with **every task in the plan** — never a subset. Set the just-finished task to `"in_progress"` first, then `"completed"` in a second call. Every other task keeps its current status:
+
+```json
+{
+  "todos": [
+    { "content": "T01 — description [tag]", "status": "completed" },
+    { "content": "T02 — description [tag]", "status": "in_progress" },
+    { "content": "T03 — description [tag]", "status": "pending" },
+    { "content": "T04 — description [tag]", "status": "pending" },
+    { "content": "T05 — description [tag]", "status": "pending" }
+  ]
+}
+```
+
+_Copilot_: Call `todo_write` with the full list, setting the completed task's `status` to `"completed"`. Never omit tasks — `todo_write` replaces the entire list.
+
+_Codex_: Edit the active plan file — change `- [ ] T0X` to `- [x] T0X`.
+
+---
+
+## Step 5 — Write Notes
+
+After marking a task complete, assess what was discovered. Write a note if any of the following apply:
+
+- **Gotcha / non-obvious constraint**: hidden invariant, surprising API behavior, footgun encountered.
+- **Check failure + root cause**: what broke and why — prevents re-triggering the same issue.
+- **Architectural decision**: why a certain approach was chosen over alternatives.
+- **Skipped / deferred item**: what was skipped and the reason, so future agents don't re-do the work.
+- **Good practice**: something worth repeating on this project.
+- **Error not to reproduce**: a specific mistake or pattern to avoid.
+- **Setup / config info**: new env var required, config file that must be created, service that must be running, or any step a developer needs to perform to get the project working.
+
+If nothing noteworthy → skip this step entirely.
+
+### Note destination and scoping
+
+Classify the note by audience, then pick the destination:
+
+| Audience                                   | Destination                                      |
+| ------------------------------------------ | ------------------------------------------------ |
+| Human developers (setup, config, env vars) | `README.md` — plain prose, no COR Notes block     |
+| AI agents — project-wide rules             | root agent instruction file (global)              |
+| AI agents — scoped to a module / directory | path-scoped rule file (see reference below)       |
+
+**README.md notes** are self-contained: append to the most relevant existing section (`## Configuration`, `## Environment Variables`, `## Setup`, `## Getting Started`), or create a minimal `## Configuration`. No tags, no COR Notes block. Nothing else to read.
+
+**For every other note type**, read [references/instruction-files.md](references/instruction-files.md) before writing. It covers per-agent scoping mechanics (`.claude/rules/` vs nested `AGENTS.md` vs the Codex index fallback), the hard rule against `@import`ing scoped files, the `## COR Notes` entry format and tags, and the archive/split maintenance policy. Getting scoping wrong silently forces the rule into every session — do not guess it from memory.
+
+---
+
+## Step 6 — Commit
+
+Skip when `Auto Commit` is `manual`, or when the working tree has no changes.
+
+1. Run `git status --porcelain`. Stage only files this task touched (`git add <paths>`), plus the active plan file, `.cor/checkpoint.md`, and any note files written in Step 5. Never `git add -A` or `git add .`: unrelated pre-existing dirty files stay unstaged. Never stage files matched by `.gitignore` or anything that looks like a secret (`.env*`, keys, tokens).
+2. Build a Conventional Commits message. Type from the task tag or content: `[unit]` / `[integration]` → `test`; `[UAT]` → `docs` or `chore`; a bug-fix task → `fix`; a refactor plan (`_refacto_` / `_review_` in the plan file name) → `refactor`; otherwise `feat`. Optional scope = main module or directory touched. Format:
+
+   ```
+   <type>(<scope>): <imperative summary of the task> (T03)
+
+   <1-3 lines: what changed and why, if not obvious from the subject>
+
+   Co-authored-by: <agent name> <noreply@...>
+   ```
+
+   The trailer identifies the agent (e.g. `Co-authored-by: Claude <noreply@anthropic.com>`, `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`). Use the host's configured trailer when it provides one.
+3. Run `git commit` (no `--no-verify`). If a commit hook fails, treat it like a failing check: fix the cause, re-stage, retry. If the hook failure is pre-existing and unrelated, leave the task uncommitted and tell the user why. Never amend or rewrite history to make the commit pass.
+4. One commit per task; never squash several tasks into one commit, never push.
+
+---
+
+## Continue or Stop
+
+After Step 6, output:
+
+```
+T02 complete. Checks passed. Committed as a1b2c3d (omit when Auto Commit is manual).
+
+Next: T03 — Write unit tests for withAuth [unit]
+```
+
+Then immediately begin Step 2 for the next pending task — no confirmation.
+
+If no pending tasks remain: "All tasks complete. Use **cor-test** for planned tests, or **cor-work** for a full status."
+
+---
+
+## Pause Policy
+
+Pause and surface to the user ONLY when a tool or command output reveals new information that would materially change the implementation approach. Not for routine failures. Not for pre-existing issues. Not as a courtesy.
+
+**Pause for:**
+
+- A migration reveals the table already exists with a conflicting schema.
+- A dependency install shows a version conflict requiring a choice between incompatible approaches.
+- A test run reveals the feature already exists elsewhere (duplicate implementation risk).
+- A file read reveals the target function is used in unexpected places the task didn't account for.
+
+**Do not pause for:**
+
+- A linter fails → fix and continue.
+- A test fails → fix the root cause and continue.
+- A pre-existing unrelated failure → note it, offer to log as a separate task, continue.
+- A choice between two equivalent implementation approaches → pick the better one, note the decision, continue.
+
+When pausing, state clearly: the unexpected finding, why it matters, and the paths forward. Ask for direction using the native question widget:
+
+- _Claude Code_: `AskUserQuestion` with the relevant options.
+- _Copilot_: `vscode_askQuestions` with the relevant options.
+- _Codex_: Inline numbered list with `**(Recommended)**` on the best default and a final "Other — describe in free text" option.
+
+---
+
+## Rules
+
+- One task at a time. Never implement multiple tasks in a single run.
+- Never mark a task complete while a check is failing.
+- Check commands are non-negotiable. They exist because the user configured them.
+- Surgical: if you didn't need to open a file to do the task, don't open it.
+- Notes are written per-task. If nothing notable happened, write nothing.
+- Commits follow `Auto Commit`: one commit per task when `auto`, none when `manual`. Never push, never rewrite history.

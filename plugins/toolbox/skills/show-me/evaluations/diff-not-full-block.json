@@ -1,0 +1,14 @@
+{
+  "skills": ["show-me"],
+  "query": "Show me how the folder layout changes if we split transport.ts into client and stream modules.",
+  "setup": [
+    "Repository has src/transport.ts and sibling folders src/commands/ and src/sessions/"
+  ],
+  "expected_behavior": [
+    "Produces a diff-fenced file tree showing transport.ts removed and transport/client.ts and transport/stream.ts added",
+    "Keeps unchanged sibling folders as context lines, not as additions",
+    "Does not output full source of the new modules",
+    "Does not add a Mermaid diagram or HTML artifact for the same point",
+    "Does not create or modify any file in the repository"
+  ]
+}

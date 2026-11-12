@@ -4,11 +4,11 @@ Scripts bundled with skills. All run from the repository root of the project the
 
 ## validate_skill.py
 
-Path: `skills/authoring-skills/scripts/validate_skill.py`. Python 3, standard library only.
+Path: `plugins/toolbox/skills/authoring-skills/scripts/validate_skill.py`. Python 3, standard library only.
 
 ```bash
-python skills/authoring-skills/scripts/validate_skill.py <skill-dir> [<skill-dir> ...]
-python skills/authoring-skills/scripts/validate_skill.py skills/*/
+python plugins/toolbox/skills/authoring-skills/scripts/validate_skill.py <skill-dir> [<skill-dir> ...]
+python plugins/toolbox/skills/authoring-skills/scripts/validate_skill.py plugins/*/skills/*/
 ```
 
 | Level | Checks |
@@ -22,10 +22,10 @@ Exit codes: `0` no ERROR, `1` at least one ERROR. WARN never fails the run.
 
 ## check_docs.py
 
-Path: `skills/cor-docs/scripts/check_docs.py`. Python 3, standard library only.
+Path: `plugins/cor/skills/cor-docs/scripts/check_docs.py`. Python 3, standard library only.
 
 ```bash
-python skills/cor-docs/scripts/check_docs.py [--root <repo-root>] [--docs-dir <dir>]
+python plugins/cor/skills/cor-docs/scripts/check_docs.py [--root <repo-root>] [--docs-dir <dir>]
 ```
 
 | Option | Default |
@@ -44,7 +44,7 @@ Exit codes: `0` no ERROR, `1` at least one ERROR.
 
 ## gen-dependency-docs.mjs
 
-Bundled path: `skills/cor-setup/scripts/gen-dependency-docs.mjs`. Copied by `cor-setup` to `.cor/scripts/gen-dependency-docs.mjs`. Node 18 or later.
+Bundled path: `plugins/cor/skills/cor-setup/scripts/gen-dependency-docs.mjs`. Copied by `cor-setup` to `.cor/scripts/gen-dependency-docs.mjs`. Node 18 or later.
 
 ```bash
 node .cor/scripts/gen-dependency-docs.mjs [path/to/package.json] [--out docs/DEPENDENCIES.md]
@@ -61,7 +61,7 @@ Exit code `1` when the manifest cannot be read or has no dependencies. Network o
 
 ## gen-dependency-docs.py
 
-Bundled path: `skills/cor-setup/scripts/gen-dependency-docs.py`. Copied by `cor-setup` to `.cor/scripts/gen-dependency-docs.py`. Python 3.11 or later, standard library only.
+Bundled path: `plugins/cor/skills/cor-setup/scripts/gen-dependency-docs.py`. Copied by `cor-setup` to `.cor/scripts/gen-dependency-docs.py`. Python 3.11 or later, standard library only.
 
 ```bash
 uv run python .cor/scripts/gen-dependency-docs.py [path/to/pyproject.toml|requirements.txt] [--out docs/DEPENDENCIES.md]
