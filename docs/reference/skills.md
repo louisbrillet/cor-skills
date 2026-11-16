@@ -24,6 +24,7 @@ Two plugins. `cor` is the workflow and everything that reads or writes `.cor/`. 
 | `show-me` | `toolbox` | Any | `/toolbox:show-me` | beta |
 | `token-caveman` | `toolbox` | Always | `/toolbox:token-caveman` | stable |
 | `authoring-skills` | `toolbox` | Meta | - | stable |
+| `feature-map` | `toolbox` | Any | `/toolbox:feature-map` | beta |
 
 Slash commands are `/<plugin>:<skill>` when installed as a plugin (Claude Code, Copilot CLI). Skills installed with `npx skills` are invoked by skill name. Status comes from the `status` frontmatter field. `beta` skills declare `stability: experimental` and may change without backward compatibility.
 
@@ -186,6 +187,20 @@ Design tokens, color, typography, spacing, layout, components, charts, and acces
 ## show-me
 
 User-invoked only (`disable-model-invocation: true`). Reads the relevant code, then answers with the smallest fitting view: pseudocode, call tree, component tree, file tree, Mermaid (sequence, state, flowchart, ER), diff sketch, full block, or a single self-contained HTML artifact. HTML artifacts go to `.cor/show-me/<slug>.html` when `.cor/` exists, else `./show-me-<slug>.html`. Max three views per answer; names must exist in the repository.
+
+## feature-map
+
+Builds `docs/feature-map.md`: capabilities, then features with kind, entrypoints (`file:line`), modules per layer, dependencies, tests, flag, and a confidence tag (`EXTRACTED`, `INFERRED`, `AMBIGUOUS`). Overview as a Mermaid `mindmap`; optional `flowchart` per capability.
+
+| Step | Behavior |
+| --- | --- |
+| Detect | stacks from manifests; entrypoint kinds per package (`http-route`, `graphql-operation`, `screen`, `command`, `job`, `event`, `task`, `isr`) |
+| Harvest | grep signals per framework from `references/entrypoint-patterns.md`; deterministic extractor (dependency-cruiser, pydeps, `go list`) only when already installed |
+| Cluster | FSD slice, route prefix, dominant domain module, or package; 4 to 12 capabilities |
+| Flags | providers, read sites, aliases, lifecycle stage from `references/flag-detection.md`; never proposes adding a flag |
+| Update | diff by feature within capability; manual blocks `<!-- manual -->` preserved; meta comment stores git sha, layers, kinds |
+
+Writes only under `docs/`. Asks at most one question round, on `AMBIGUOUS` items only. Template: `references/map-template.md`.
 
 ## Skill format
 

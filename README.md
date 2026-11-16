@@ -88,6 +88,7 @@ To stay on the old layout: `npx skills add louisbrillet/cor-skills@v0.1.0`.
 | `show-me`          | beta   | Explains the current topic visually: pseudocode, call/component/file trees, Mermaid, diff sketches, or one HTML artifact |
 | `token-caveman`    | stable | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy  |
 | `authoring-skills` | stable | Authors and audits skills against the Agent Skills best practices; ships a validator script                    |
+| `feature-map`      | beta   | Maps capabilities and features (entrypoints, modules per layer, tests, flags) of any codebase into `docs/feature-map.md` with Mermaid |
 
 `beta` skills may change structure or behavior without backward-compatibility guarantees.
 

@@ -1,0 +1,19 @@
+{
+  "skills": ["feature-map"],
+  "query": "Update the feature map, we added two screens since last time.",
+  "setup": [
+    "Flutter app with screens registered in lib/router.dart via GoRouter and state in lib/features/<name>/",
+    "docs/feature-map.md exists with a meta comment pointing at an older git sha, five capabilities, and a manual block <!-- manual --> ... <!-- /manual --> under the Payments capability written by the team",
+    "Two new screens were added since that sha; one existing screen was deleted",
+    "No feature flag SDK is installed"
+  ],
+  "expected_behavior": [
+    "Reads the existing docs/feature-map.md and its meta comment before scanning the code",
+    "Detects Flutter and uses GoRouter route registrations as the screen entrypoint signal",
+    "Adds the two new screens to the right capability sections and removes the deleted screen rather than regenerating the whole file from scratch",
+    "Preserves the manual block under Payments byte for byte",
+    "Updates the git sha in the meta comment",
+    "Reports no flags and writes `-` in the Flag column instead of inventing a flag mechanism",
+    "Summarises the diff to the user: added, removed, unchanged counts"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "skills": ["feature-map"],
+  "query": "Map the features of this application.",
+  "setup": [
+    "Monorepo: Express API under apps/api/src/routes/*.ts, React web app under apps/web/src with Feature-Sliced Design folders (app, pages, widgets, features, entities, shared)",
+    "A BullMQ worker registers two queues in apps/api/src/jobs/",
+    "LaunchDarkly client is installed; three flags are read via ldClient.variation() in apps/web/src/shared/config/flags.ts and one directly inside a route handler",
+    "No docs/feature-map.md exists"
+  ],
+  "expected_behavior": [
+    "Detects both the API and web packages and lists http-route, screen, and job as entrypoint kinds before harvesting",
+    "Finds every route handler, every page, and both queue consumers; does not list only the web pages",
+    "Groups features under capabilities derived from route prefixes and FSD slices, and marks the grouping of any feature it could not attribute as AMBIGUOUS",
+    "Reports all four LaunchDarkly flags in a Flags section with key, provider, default, read location, and impacted features",
+    "Writes docs/feature-map.md following the template: meta comment with git sha, mindmap overview, one capability section per capability, a feature table, and per-feature detail blocks",
+    "Contains no recommendations, refactoring advice, or quality judgments",
+    "Asks at most one round of questions, limited to AMBIGUOUS items"
+  ]
+}
