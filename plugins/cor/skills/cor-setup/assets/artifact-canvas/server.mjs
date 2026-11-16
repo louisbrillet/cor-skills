@@ -39,39 +39,47 @@ function readJson(req) {
   });
 }
 
+// Directories holding viewable artifacts, relative to the repo root.
+const WATCHED = [".cor", "docs", "docs/feature-map", "docs/codebase-map"];
+
 /**
- * Watches <root>/.cor for changes. Uses fs.watch when available plus an mtime
- * poll, because directory watching is unreliable on some file systems and
- * agents often replace files atomically.
+ * Watches artifact directories for changes. Uses fs.watch when available plus
+ * an mtime poll, because directory watching is unreliable on some file systems
+ * and agents often replace files atomically.
  */
 export function watchCorDir(root, onChange) {
-  const dir = path.join(root, ".cor");
+  const dirs = WATCHED.map((d) => path.join(root, d));
   let timer = null;
-  let watcher = null;
+  const watchers = new Map();
   let lastSig = "";
   const fire = () => {
     clearTimeout(timer);
     timer = setTimeout(onChange, 150);
   };
   const signature = async () => {
-    try {
-      const names = await fs.readdir(dir);
-      const stats = await Promise.all(names.filter((n) => n.endsWith(".md")).map(async (n) => `${n}:${(await fs.stat(path.join(dir, n))).mtimeMs}`));
-      return stats.sort().join("|");
-    } catch {
-      return "missing";
+    const parts = [];
+    for (const dir of dirs) {
+      try {
+        const names = await fs.readdir(dir);
+        const stats = await Promise.all(names.filter((n) => n.endsWith(".md")).map(async (n) => `${dir}/${n}:${(await fs.stat(path.join(dir, n))).mtimeMs}`));
+        parts.push(...stats);
+      } catch {
+        parts.push(`${dir}:missing`);
+      }
     }
+    return parts.sort().join("|");
   };
   const attach = () => {
-    if (watcher) return;
-    try {
-      watcher = watch(dir, { persistent: false }, fire);
-      watcher.on("error", () => {
-        watcher?.close();
-        watcher = null;
-      });
-    } catch {
-      watcher = null;
+    for (const dir of dirs) {
+      if (watchers.has(dir)) continue;
+      try {
+        const w = watch(dir, { persistent: false }, fire);
+        w.on("error", () => {
+          w.close();
+          watchers.delete(dir);
+        });
+        watchers.set(dir, w);
+      } catch {}
     }
   };
   attach();
@@ -88,7 +96,8 @@ export function watchCorDir(root, onChange) {
   return () => {
     clearInterval(poll);
     clearTimeout(timer);
-    watcher?.close();
+    for (const w of watchers.values()) w.close();
+    watchers.clear();
   };
 }
 

@@ -231,7 +231,7 @@ If no, record `disabled` for Step 8.
 
 Skip this step and record `disabled` unless **GitHub Copilot** is in the configured extensions from Step 0. Other agents never load it, so it changes nothing for Claude Code, Codex, or others.
 
-Ask: "Install the COR artifact canvas? It is an optional GitHub Copilot extension that shows `.cor/` plans as a live task board and research reports as a navigable page, inside a Copilot canvas panel. Read-only: markdown files stay the source of truth. Requires a Copilot host with extension canvases (experimental)." Choices: `No, skip (Recommended)` / `Yes, install`.
+Ask: "Install the COR artifact canvas? It is an optional GitHub Copilot extension that shows `.cor/` plans as a live task board, research reports as a navigable page, and `docs/feature-map.md` or `docs/codebase-map.md` with rendered Mermaid diagrams, inside a Copilot canvas panel. Read-only: markdown files stay the source of truth. Requires a Copilot host with extension canvases (experimental)." Choices: `No, skip (Recommended)` / `Yes, install`.
 
 If yes:
 

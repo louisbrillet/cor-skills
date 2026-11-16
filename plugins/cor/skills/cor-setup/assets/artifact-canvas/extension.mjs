@@ -1,5 +1,5 @@
 // COR artifact canvas — optional GitHub Copilot extension installed by cor-setup.
-// Read-only view of .cor/ plans and research reports. Files stay the source of truth.
+// Read-only view of .cor/ plans and research reports, and docs/ feature and codebase maps. Files stay the source of truth.
 import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { createCanvas, CanvasError, joinSession } from "@github/copilot-sdk/extension";
@@ -53,10 +53,13 @@ function summarize(state) {
     view: state.view ?? "overview",
     plans: state.overview.plans.map((p) => ({ path: p.path, title: p.title, progress: p.progress, nextTask: p.nextTask, error: p.error })),
     research: state.overview.research.map((r) => ({ path: r.path, title: r.title, confidence: r.confidence, error: r.error })),
+    maps: state.overview.maps.map((m) => ({ path: m.path, title: m.title, mapKind: m.mapKind, capabilities: m.capabilities, features: m.features, flags: m.flags, error: m.error })),
   };
   if (state.error) return { ...base, error: state.error };
   if (a?.kind === "plan") return { ...base, plan: { path: a.path, title: a.title, progress: a.progress, nextTask: a.nextTask, checkpoint: a.checkpoint } };
   if (a?.kind === "research") return { ...base, research_report: { path: a.path, title: a.title, confidence: a.confidence, sections: a.sections.map((s) => s.heading) } };
+  if (a?.kind === "map")
+    return { ...base, map: { path: a.path, title: a.title, mapKind: a.mapKind, generated: a.meta.generated ?? null, capabilities: a.capabilities.map((c) => ({ name: c.name, features: c.features.length })), flags: a.flagCount, confidence: a.confidence } };
   return base;
 }
 
@@ -95,12 +98,12 @@ function action(name, description, inputSchema, run) {
   };
 }
 
-const PATH_PROP = { type: "string", description: "Artifact path relative to the repo root, e.g. .cor/plan.md or .cor/research_auth_options.md." };
+const PATH_PROP = { type: "string", description: "Artifact path relative to the repo root, e.g. .cor/plan.md, .cor/research_auth_options.md, docs/feature-map.md or docs/codebase-map.md." };
 
 const canvas = createCanvas({
   id: CANVAS_ID,
   displayName: "COR artifacts",
-  description: "Live visual view of COR plans (task progress) and research reports stored in a repository's .cor/ folder.",
+  description: "Live visual view of COR plans (task progress) and research reports stored in a repository's .cor/ folder, plus feature and codebase maps under docs/.",
   inputSchema: {
     type: "object",
     properties: {
@@ -113,7 +116,7 @@ const canvas = createCanvas({
     action("getState", "Return the artifact overview and the artifact currently shown.", null, async (inst) => summarize(await buildState(inst))),
     action(
       "showArtifact",
-      "Show a plan or research report. Omit path to show the overview.",
+      "Show a plan, research report, feature map, or codebase map. Omit path to show the overview.",
       { type: "object", properties: { path: PATH_PROP }, additionalProperties: false },
       async (inst, input) => summarize(await setView(inst, { path: input.path ?? null })),
     ),
@@ -150,7 +153,11 @@ const canvas = createCanvas({
       else await refresh(inst);
       const state = await buildState(inst);
       const a = state.artifact;
-      const status = a?.kind === "plan" ? `${a.progress.done}/${a.progress.total} tasks` : a?.kind === "research" ? `Confidence ${a.confidence ?? "n/a"}` : `${state.overview.plans.length} plan(s), ${state.overview.research.length} report(s)`;
+      const status =
+        a?.kind === "plan" ? `${a.progress.done}/${a.progress.total} tasks`
+        : a?.kind === "research" ? `Confidence ${a.confidence ?? "n/a"}`
+        : a?.kind === "map" ? `${a.capabilities.length} capabilities, ${a.featureCount} features`
+        : `${state.overview.plans.length} plan(s), ${state.overview.research.length} report(s), ${state.overview.maps.length} map(s)`;
       return { url: inst.server.url, title: a ? `COR — ${a.title}` : "COR artifacts", status };
     } catch (err) {
       throw toCanvasError(err);

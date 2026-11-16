@@ -157,3 +157,24 @@ th { font-size: .7rem; font-weight: 500; text-transform: uppercase; letter-spaci
 .bar.lvl-low span { background: var(--warn); }
 .bar.lvl-mid span { background: var(--accent); }
 .bar.lvl-full span { background: var(--ok); }
+
+/* Maps */
+.conf-bar { display: flex; height: 4px; border-radius: 2px; overflow: hidden; background: var(--line); margin: 1.25rem 0 .4rem; }
+.conf-bar span { display: block; height: 100%; }
+.c-extracted { background: var(--ok); } .c-inferred { background: var(--warn); } .c-ambiguous { background: var(--bad); }
+.conf-legend { font-size: .78rem; color: var(--muted); margin: 0 0 .75rem; font-variant-numeric: tabular-nums; }
+.tag-extracted { color: var(--ok); } .tag-inferred { color: var(--warn); } .tag-ambiguous { color: var(--bad); }
+.map-meta { display: flex; flex-wrap: wrap; gap: .4rem 1.25rem; font-size: .78rem; color: var(--muted); margin: 0; }
+.map-meta .label { margin: 0 .25rem 0 0; }
+.cap { padding-bottom: 1rem; }
+.cap h2 .count, .toc .count { margin-left: .5rem; font-weight: 400; }
+.cap-summary { display: none; }
+.cap .md h5 { font-size: .9rem; font-weight: 600; margin: 1.25rem 0 .25rem; }
+.mermaid { margin: .5rem 0 1rem; overflow-x: auto; }
+.mermaid svg { max-width: 100%; height: auto; }
+.mermaid-src { font-size: .72rem; }
+.mermaid-error { border-left: 2px solid var(--bad); }
+.md .table-wrap { overflow-x: auto; margin: .75rem 0; }
+.md table { border-collapse: collapse; font-size: .8rem; min-width: 100%; }
+.md th, .md td { text-align: left; padding: .35rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.md th { font-weight: 500; color: var(--muted); white-space: nowrap; }

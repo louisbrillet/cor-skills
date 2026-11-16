@@ -68,9 +68,20 @@ function renderOverview(o) {
         )
         .join("")
     : `<li class="empty">No research report. Run <code>cor-research</code> when evidence matters.</li>`;
+  const maps = (o.maps ?? []).length
+    ? o.maps
+        .map(
+          (m) => `<li><button type="button" class="card" data-path="${esc(m.path)}">
+            <span class="card-title">${esc(m.title)}</span><span class="card-path">${esc(m.path)}</span>
+            <span class="card-side">${m.error ? `<span class="err">${esc(m.error)}</span>` : `<span>${m.capabilities} cap.</span><span>${m.features} feat.</span>${m.flags ? `<span>${m.flags} flag${m.flags === 1 ? "" : "s"}</span>` : ""}${m.generated ? `<code>${esc(m.generated)}</code>` : ""}`}</span>
+          </button></li>`,
+        )
+        .join("")
+    : `<li class="empty">No map yet. Run <code>feature-map</code> or <code>codebase-map</code>.</li>`;
   return `<h1>Artifacts</h1><p class="root">${esc(state.root)}</p>
     <div class="section-head"><h3>Plans</h3><span class="count">${o.plans.length}</span></div><ul class="cards">${plans}</ul>
-    <div class="section-head"><h3>Research</h3><span class="count">${o.research.length}</span></div><ul class="cards">${research}</ul>`;
+    <div class="section-head"><h3>Research</h3><span class="count">${o.research.length}</span></div><ul class="cards">${research}</ul>
+    <div class="section-head"><h3>Maps</h3><span class="count">${(o.maps ?? []).length}</span></div><ul class="cards">${maps}</ul>`;
 }
 
 function renderPlan(a) {
@@ -117,6 +128,65 @@ function renderResearch(a) {
     <div class="research-grid"><nav class="toc" aria-label="Sections"><ol>${toc}</ol></nav><div>${body}</div></div>`;
 }
 
+function renderMap(a) {
+  const c = a.confidence;
+  const confBar = a.featureCount
+    ? `<div class="conf-bar" role="img" aria-label="${c.EXTRACTED} extracted, ${c.INFERRED} inferred, ${c.AMBIGUOUS} ambiguous">
+        <span class="c-extracted" style="flex:${c.EXTRACTED}"></span><span class="c-inferred" style="flex:${c.INFERRED}"></span><span class="c-ambiguous" style="flex:${c.AMBIGUOUS}"></span></div>
+       <p class="conf-legend"><span class="pill tag-extracted">EXTRACTED</span> ${c.EXTRACTED}<span class="sep">·</span><span class="pill tag-inferred">INFERRED</span> ${c.INFERRED}<span class="sep">·</span><span class="pill tag-ambiguous">AMBIGUOUS</span> ${c.AMBIGUOUS}</p>`
+    : "";
+  const meta = Object.entries(a.meta)
+    .filter(([k]) => k !== "generated-at")
+    .map(([k, v]) => `<span><span class="label">${esc(k)}</span> <code>${esc(v)}</code></span>`)
+    .join("");
+  const toc = [
+    ...a.sections.filter((s) => /overview/i.test(s.heading)).map((s, i) => `<li><a href="#${slug(s.heading, i)}">${esc(s.heading)}</a></li>`),
+    ...a.capabilities.map((cap, i) => `<li><a href="#${slug(cap.name, "c" + i)}">${esc(cap.name)}<span class="count">${cap.features.length}</span></a></li>`),
+    ...a.sections.filter((s) => !/overview/i.test(s.heading)).map((s, i) => `<li><a href="#${slug(s.heading, "s" + i)}">${esc(s.heading)}</a></li>`),
+  ].join("");
+  const overview = a.sections.filter((s) => /overview/i.test(s.heading)).map((s, i) => `<section class="rsec" id="${slug(s.heading, i)}"><div class="md">${s.html}</div></section>`).join("");
+  const caps = a.capabilities
+    .map(
+      (cap, i) => `<section class="cap" id="${slug(cap.name, "c" + i)}"><h2>${esc(cap.name)}<span class="count">${cap.features.length} feature${cap.features.length === 1 ? "" : "s"}</span></h2>
+        ${cap.summary ? `<p class="cap-summary">${cap.summary}</p>` : ""}
+        <div class="md">${cap.html}</div></section>`,
+    )
+    .join("");
+  const rest = a.sections.filter((s) => !/overview/i.test(s.heading)).map((s, i) => `<section class="rsec" id="${slug(s.heading, "s" + i)}"><h2>${esc(s.heading)}</h2><div class="md">${s.html}</div></section>`).join("");
+  return `<h1>${esc(a.title)}</h1><p class="meta"><code>${esc(a.path)}</code><span class="sep">·</span>${when(a.updatedAt)}<span class="sep">·</span>${a.capabilities.length} capabilities<span class="sep">·</span>${a.featureCount} features<span class="sep">·</span>${a.flagCount} flag${a.flagCount === 1 ? "" : "s"}</p>
+    ${confBar}
+    ${meta ? `<p class="map-meta">${meta}</p>` : ""}
+    <div class="research-grid"><nav class="toc" aria-label="Sections"><ol>${toc}</ol></nav><div>${overview}${caps}${rest}</div></div>`;
+}
+
+let mermaidMod = null;
+let mermaidFailed = false;
+async function renderMermaid() {
+  const blocks = [...main.querySelectorAll("pre.mermaid-src")];
+  if (!blocks.length || mermaidFailed) return;
+  try {
+    if (!mermaidMod) {
+      mermaidMod = (await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")).default;
+      mermaidMod.initialize({ startOnLoad: false, securityLevel: "strict", theme: matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "neutral" });
+    }
+  } catch {
+    mermaidFailed = true;
+    return;
+  }
+  for (const [i, pre] of blocks.entries()) {
+    const src = pre.textContent;
+    try {
+      const { svg } = await mermaidMod.render(`mm-${Date.now()}-${i}`, src);
+      const div = document.createElement("div");
+      div.className = "mermaid";
+      div.innerHTML = svg;
+      pre.replaceWith(div);
+    } catch {
+      pre.classList.add("mermaid-error");
+    }
+  }
+}
+
 function wireContext() {
   const d = main.querySelector(".context details");
   if (!d) return;
@@ -139,9 +209,11 @@ function render() {
   if (state.error) html = `<p class="err" role="alert">${esc(state.error)}</p>${renderOverview(state.overview)}`;
   else if (a?.kind === "plan") html = renderPlan(a);
   else if (a?.kind === "research") html = renderResearch(a);
+  else if (a?.kind === "map") html = renderMap(a);
   else html = renderOverview(state.overview);
   main.innerHTML = html;
   wireContext();
+  renderMermaid();
   main.setAttribute("aria-busy", "false");
   main.querySelectorAll(".card[data-path]").forEach((b) => b.addEventListener("click", () => show(b.dataset.path)));
 
