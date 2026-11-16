@@ -1,0 +1,14 @@
+{
+  "skills": ["smart-commit"],
+  "query": "Commit what has been done since the last commit.",
+  "setup": [
+    "Working tree has uncommitted changes touching three unrelated areas: a new feature in src/, a docs/ restructure, and a dependency lockfile bump"
+  ],
+  "expected_behavior": [
+    "Inspects git status and the actual diff before writing any commit message",
+    "Produces at least three separate commits, one per unrelated area, rather than a single commit",
+    "Each commit subject matches the style of the last ten commits in the repository log",
+    "Each commit message describes the behavior or intent, not a list of file names",
+    "Leaves the working tree clean and shows the resulting git log"
+  ]
+}

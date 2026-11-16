@@ -1,0 +1,13 @@
+{
+  "skills": ["smart-commit"],
+  "query": "Commit the staged changes.",
+  "setup": [
+    "Index holds two files staged for one coherent change; a third modified file is unstaged and belongs to different work"
+  ],
+  "expected_behavior": [
+    "Commits only the two staged files",
+    "Does not stage or commit the unstaged file",
+    "Does not run git add -A or git add .",
+    "Writes a subject line under 72 characters in the imperative or the repository's established style"
+  ]
+}
