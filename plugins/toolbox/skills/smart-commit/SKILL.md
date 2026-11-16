@@ -1,6 +1,8 @@
 ---
 name: smart-commit
 description: "Turns uncommitted work into a small series of atomic, well-described git commits: reads the real diff, groups hunks by intent, excludes secrets and build noise, matches the repository's existing message style, and verifies a clean tree. Use when the user says commit, commit this, commit what's been done, commit smartly, split into commits, or asks for a commit message for pending changes."
+status: beta
+stability: experimental
 ---
 
 # Smart Commit

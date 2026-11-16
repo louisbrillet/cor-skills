@@ -28,6 +28,7 @@ Two plugins. `cor` is the workflow and everything that reads or writes `.cor/`. 
 | `feature-flag` | `toolbox` | Plan | `/toolbox:feature-flag` | beta |
 | `feature-unflag` | `toolbox` | Plan | `/toolbox:feature-unflag` | beta |
 | `codebase-map` | `toolbox` | Any | `/toolbox:codebase-map` | beta |
+| `smart-commit` | `toolbox` | After Code | `/toolbox:smart-commit` | beta |
 
 Slash commands are `/<plugin>:<skill>` when installed as a plugin (Claude Code, Copilot CLI). Skills installed with `npx skills` are invoked by skill name. Status comes from the `status` frontmatter field. `beta` skills declare `stability: experimental` and may change without backward compatibility.
 
@@ -244,6 +245,20 @@ Builds `docs/codebase-map.md` from an import graph.
 | Health | per slice: files, fan-in, fan-out, cycles, upward, cross, external, tests |
 
 Layout detection: `fsd`, `layered`, `domain-first`, `go-packages`, `python-packages`, `mixed`. Extractors only when installed (`dependency-cruiser`, `pydeps`, `go list`, `cargo metadata`, steiger for FSD violations); otherwise import grep per language (`references/graph-extraction.md`). Diagrams under 40 nodes; `flowchart` only. Idempotent update with a manual block.
+
+## smart-commit
+
+Turns uncommitted work into a series of atomic commits. Writes nothing but commits.
+
+| Step | Behavior |
+| --- | --- |
+| Read | `git status`, last 10 commits, `git diff HEAD`; reads the diff of every non-trivial file |
+| Triage | excludes secrets, build output, and local noise per `references/exclusions.md`; reports them and proposes `.gitignore` entries |
+| Group | one commit per intent: splits by product area, refactor vs behavior change, independent revertability |
+| Commit | stages by path or `git add -p`; message follows the repo's log convention per `references/message-style.md` |
+| Verify | clean tree except triaged exclusions; reports created commits |
+
+Respects an explicit index when the user asks to commit staged changes. Never uses `git add -A`, `git commit -a`, `--no-verify`, or rewrites pushed commits.
 
 ## Skill format
 
