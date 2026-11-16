@@ -299,9 +299,13 @@ export function parseMap(text, rel) {
     }
     other.push({ heading: s.heading, html: renderMarkdown(s.lines.join("\n")) });
   }
+  const counts = {};
+  const countsLine = text.split(/\r?\n/).find((l) => /^(Capabilities|Packages):\s*\d+/.test(l)) ?? "";
+  for (const m of countsLine.matchAll(/([A-Za-z ]+?):\s*(\d+)/g)) counts[m[1].trim().toLowerCase()] = Number(m[2]);
   return {
     kind: "map",
     mapKind: isFeature ? "feature" : "codebase",
+    counts,
     title: title || (isFeature ? "Feature Map" : "Codebase Map"),
     meta,
     capabilities,
@@ -356,7 +360,7 @@ export async function listArtifacts(root) {
   for (const rel of await listMapFiles(root)) {
     try {
       const a = await loadArtifact(root, resolveArtifact(root, rel));
-      maps.push({ path: a.path, title: a.title, mapKind: a.mapKind, capabilities: a.capabilities.length, features: a.featureCount, flags: a.flagCount, generated: a.meta.generated ?? null, updatedAt: a.updatedAt });
+      maps.push({ path: a.path, title: a.title, mapKind: a.mapKind, capabilities: a.capabilities.length, features: a.featureCount, flags: a.flagCount, counts: a.counts, generated: a.meta.generated ?? null, updatedAt: a.updatedAt });
     } catch (err) {
       maps.push({ path: rel, title: rel, error: err.message });
     }

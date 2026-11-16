@@ -1,0 +1,17 @@
+{
+  "skills": ["feature-flag"],
+  "query": "Make the BLE provisioning feature optional at build time.",
+  "setup": [
+    "ESP-IDF firmware; docs/feature-map.md lists BLE provisioning under Connectivity, kind task, entrypoint main/main.c:88 (xTaskCreate(ble_prov_task ...)), modules main/ble_prov.c, main/ble_prov.h, confidence EXTRACTED",
+    "Kconfig.projbuild exists in main/ with other CONFIG_APP_* options",
+    ".cor/config.md exists with Plan Storage: markdown"
+  ],
+  "expected_behavior": [
+    "Recognises the embedded context and proposes a compile-time flag via Kconfig (CONFIG_APP_FEATURE_BLE_PROV) rather than a runtime SDK",
+    "Gates at the task creation site in main.c and excludes ble_prov.c from the build via the component CMakeLists when the option is off, keeping a single #ifdef in main.c",
+    "Default y so current builds are unchanged",
+    "Includes a task to build with the option off and verify the binary links, tagged [integration] or [UAT]",
+    "Updates the Flags section of the feature map with provider kconfig",
+    "Writes no code"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "skills": ["codebase-map"],
+  "query": "Map the architecture, I am new on this service.",
+  "setup": [
+    "Go HTTP service: cmd/server, internal/handlers, internal/service, internal/repository, internal/platform/db, pkg/",
+    "No dependency-cruiser; go toolchain available",
+    "docs/feature-map.md exists with 3 capabilities"
+  ],
+  "expected_behavior": [
+    "Uses go list -json ./... to obtain the package import graph",
+    "Maps packages to detected layers (api, domain, infra, lib) by path heuristics and records the mapping in the meta comment",
+    "Produces a layers x packages flowchart and a context view listing external dependencies (database driver, HTTP clients, queues) as a separate flowchart or table",
+    "Uses the feature map to annotate which packages serve which capability",
+    "Health table includes fan-in/fan-out per package and cycle count from the import graph",
+    "Contains no advice, only facts and counts"
+  ]
+}

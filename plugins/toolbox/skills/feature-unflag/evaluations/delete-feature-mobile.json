@@ -1,0 +1,18 @@
+{
+  "skills": ["feature-unflag"],
+  "query": "Kill the Rewards feature entirely, flag included.",
+  "setup": [
+    "React Native app; docs/feature-map.md lists Rewards under Loyalty: screen at src/app/navigation/MainTabs.tsx:41, modules src/features/rewards/* (5 files), src/entities/points/* (shared with feature Points history), tests src/features/rewards/__tests__/*, flag loyalty.rewards provider config default false",
+    "src/entities/points is also listed under feature Points history",
+    "An i18n file contains rewards.* keys; an analytics events enum has REWARDS_VIEWED",
+    ".cor/config.md exists with Plan Storage: markdown"
+  ],
+  "expected_behavior": [
+    "Selects mode delete and restates what will go: flag, screen registration, exclusive modules, tests, translations, analytics enum members",
+    "Computes the exclusive module set from the map and excludes src/entities/points because Points history uses it; verifies with grep",
+    "Lists i18n keys and the analytics enum member as removal candidates found via grep for the feature slug, tagged INFERRED, and asks before including them",
+    "Plans one deletion task per module group under ~250 lines, then flag removal, then tests, then feature-map update removing the Rewards block",
+    "Requires explicit confirmation on the complete deletion file list before saving; writes no code and deletes nothing",
+    "Does not propose database migrations automatically; if persisted data exists, adds a separate deprecation note instead"
+  ]
+}

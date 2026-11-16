@@ -16,6 +16,7 @@ nav:
       - how-to/enable-worktree-support.md
       - how-to/view-artifacts-in-copilot.md
       - how-to/document-a-branch.md
+      - how-to/map-and-flag-features.md
       - how-to/author-a-skill.md
   - Reference:
       - reference/index.md

@@ -1,0 +1,17 @@
+{
+  "skills": ["feature-unflag"],
+  "query": "checkout-v2 is at 100% for a month, remove the flag.",
+  "setup": [
+    "docs/feature-map.md lists flag orders.checkout-v2 (provider openfeature, default true, stage production) read in apps/web/src/shared/config/flags.ts:14 via isCheckoutV2Enabled(), used by feature Checkout",
+    "Two components call isCheckoutV2Enabled() and render CheckoutV2 or legacy Checkout; a test file has cases for both branches",
+    ".cor/config.md exists with Plan Storage: markdown"
+  ],
+  "expected_behavior": [
+    "Finds the flag in the map's Flags section and confirms mode keep-on with the user (feature stays, condition removed) with the alternatives keep-off and delete offered",
+    "Searches the exact key plus aliases (isCheckoutV2Enabled, CHECKOUT_V2, checkoutV2) and lists every reference with file:line, including the two components the map did not list",
+    "Plans inlining the on branch, deleting the legacy Checkout component only if no other feature references it (verified by grep), removing the accessor and the key from the provider config, and removing the off-branch tests",
+    "Includes post-removal simplifications: unused imports, constant conditions",
+    "Includes a task to update docs/feature-map.md (Flag column to -, Flags row removed) and a [UAT] task to archive the flag in the provider dashboard",
+    "Shows the full list of files to delete and asks for explicit confirmation before saving the plan; writes no code"
+  ]
+}

@@ -89,6 +89,9 @@ To stay on the old layout: `npx skills add louisbrillet/cor-skills@v0.1.0`.
 | `token-caveman`    | stable | Ultra-compressed response mode — cuts token usage ~75% by dropping filler while preserving technical accuracy  |
 | `authoring-skills` | stable | Authors and audits skills against the Agent Skills best practices; ships a validator script                    |
 | `feature-map`      | beta   | Maps capabilities and features (entrypoints, modules per layer, tests, flags) of any codebase into `docs/feature-map.md` with Mermaid |
+| `feature-flag`     | beta   | Plans gating a mapped feature behind a flag: detects or proposes the provider, picks the gate boundary, defines the contract, hands off to `cor-code` |
+| `feature-unflag`   | beta   | Plans flag removal in keep-on, keep-off, or delete mode with a complete reference list and confirmed deletion set; hands off to `cor-code` |
+| `codebase-map`     | beta   | Architectural map in `docs/codebase-map.md`: layers x slices import graph with violations, context view, capability overlay, health table |
 
 `beta` skills may change structure or behavior without backward-compatibility guarantees.
 

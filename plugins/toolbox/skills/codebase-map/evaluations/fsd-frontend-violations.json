@@ -1,0 +1,18 @@
+{
+  "skills": ["codebase-map"],
+  "query": "Draw the architecture of this codebase.",
+  "setup": [
+    "React app under src/ with Feature-Sliced Design folders app, pages, widgets, features, entities, shared; about 30 slices",
+    "dependency-cruiser is installed as a devDependency",
+    "entities/cart imports from features/add-to-cart (an upward import), and two features import each other",
+    "No docs/codebase-map.md exists"
+  ],
+  "expected_behavior": [
+    "Detects FSD and uses its seven-layer vocabulary and downward import rule without asking",
+    "Runs dependency-cruiser in JSON mode since it is installed, and builds the slice graph from it instead of grepping imports",
+    "Writes docs/codebase-map.md with a layers x slices flowchart (one subgraph per layer, one node per slice), marking the upward import and the cross-import in red via classDef without prose recommendations",
+    "Includes a health table per slice with file count, fan-in, fan-out, cycles, and a violations column with raw counts",
+    "Keeps every diagram under 40 nodes, splitting by layer or capability when needed",
+    "Reads docs/feature-map.md if present to label slices with their capability; absent, does not fail"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "skills": ["codebase-map"],
+  "query": "Refresh the codebase map.",
+  "setup": [
+    "docs/codebase-map.md exists with a meta comment at an older sha, layers [ui, api, domain, infra] and a manual block under the Context section",
+    "Since that sha, one module moved from domain to infra and a new external dependency (Redis) was added",
+    "Python project; pydeps is not installed"
+  ],
+  "expected_behavior": [
+    "Reads the existing map and reuses its layer names from the meta comment",
+    "Falls back to import grep since pydeps is unavailable; does not install it",
+    "Updates the moved module's layer and adds Redis to the context view, leaving unchanged sections intact and preserving the manual block",
+    "Updates the sha in the meta comment and summarises the changes (moved, added, removed) to the user",
+    "Does not regenerate the whole file"
+  ]
+}

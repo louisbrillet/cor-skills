@@ -25,6 +25,9 @@ Two plugins. `cor` is the workflow and everything that reads or writes `.cor/`. 
 | `token-caveman` | `toolbox` | Always | `/toolbox:token-caveman` | stable |
 | `authoring-skills` | `toolbox` | Meta | - | stable |
 | `feature-map` | `toolbox` | Any | `/toolbox:feature-map` | beta |
+| `feature-flag` | `toolbox` | Plan | `/toolbox:feature-flag` | beta |
+| `feature-unflag` | `toolbox` | Plan | `/toolbox:feature-unflag` | beta |
+| `codebase-map` | `toolbox` | Any | `/toolbox:codebase-map` | beta |
 
 Slash commands are `/<plugin>:<skill>` when installed as a plugin (Claude Code, Copilot CLI). Skills installed with `npx skills` are invoked by skill name. Status comes from the `status` frontmatter field. `beta` skills declare `stability: experimental` and may change without backward compatibility.
 
@@ -201,6 +204,46 @@ Builds `docs/feature-map.md`: capabilities, then features with kind, entrypoints
 | Update | diff by feature within capability; manual blocks `<!-- manual -->` preserved; meta comment stores git sha, layers, kinds |
 
 Writes only under `docs/`. Asks at most one question round, on `AMBIGUOUS` items only. Template: `references/map-template.md`.
+
+## feature-flag
+
+Plan-only. Requires `docs/feature-map.md` (or an explicit file and symbol, tagged `INFERRED`). Writes no application code.
+
+| Step | Behavior |
+| --- | --- |
+| Provider | detection order from `references/providers.md`: existing SDK, home-grown module, env, compile-time; none found -> recommended default per context (OpenFeature + in-memory/env provider, typed config module, Kconfig for firmware) |
+| Boundary | entrypoint (not registered when off) > dispatcher (absent response) > internal branch (variants only); one read site per feature |
+| Contract | key `<capability>.<feature>`, type, default equal to current behavior, owner, lifetime (`release`, `experiment`, `permission`, `kill-switch`), review date |
+| Plan | template `references/plan-template.md`; saved per `Plan Storage`, or `docs/feature-map.plan.md` without `.cor/config.md`; separate file `.cor/plan_<N>_flag_<slug>.md` |
+
+Refuses features tagged `AMBIGUOUS` or sharing an entrypoint; points to `cor-refacto`.
+
+## feature-unflag
+
+Plan-only. Reads the `## Flags` table of `docs/feature-map.md`. Deletes nothing.
+
+| Mode | Result |
+| --- | --- |
+| `keep-on` | condition removed, on-branch stays, legacy path and off-tests deleted |
+| `keep-off` | condition removed, on-branch deleted, feature disabled permanently |
+| `delete` | flag, exclusive feature modules, tests, translations, analytics, fixtures removed |
+| `dead` | zero read sites: declaration, config, docs, provider cleanup only |
+
+Reference search covers exact key, generated aliases, accessor imports, config, infra, tests, docs (`references/reference-finding.md`). Exclusive module test: absent from every other feature block and no import from outside the feature. Post-removal simplifications mirror stale-flag cleanup (constant conditions, unused imports, empty enums). Persistence is never deleted; a deprecation note is added. The full deletion list is confirmed before the plan is saved. Separate file `.cor/plan_<N>_unflag_<slug>.md`.
+
+## codebase-map
+
+Builds `docs/codebase-map.md` from an import graph.
+
+| Section | Content |
+| --- | --- |
+| Layers | layer, role, slice and file counts |
+| View A | `flowchart` with one `subgraph` per layer, one node per slice; upward imports `classDef bad`, same-layer cross imports `classDef warn`, cycles `classDef cycle` |
+| View B | context: internal units and external systems (databases, queues, HTTP APIs) with the package that proved each |
+| View C | capability overlay joining `docs/feature-map.md` features to slices; omitted without a feature map |
+| Health | per slice: files, fan-in, fan-out, cycles, upward, cross, external, tests |
+
+Layout detection: `fsd`, `layered`, `domain-first`, `go-packages`, `python-packages`, `mixed`. Extractors only when installed (`dependency-cruiser`, `pydeps`, `go list`, `cargo metadata`, steiger for FSD violations); otherwise import grep per language (`references/graph-extraction.md`). Diagrams under 40 nodes; `flowchart` only. Idempotent update with a manual block.
 
 ## Skill format
 

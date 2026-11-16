@@ -1,0 +1,16 @@
+{
+  "skills": ["feature-unflag"],
+  "query": "Clean up the old search-v1 flag.",
+  "setup": [
+    "docs/feature-map.md Flags section lists search-v1 with provider launchdarkly, stage cleanup, read sites column shows a single line in src/shared/config/flags.ts that declares the key",
+    "grep for the key and aliases returns only that declaration and a line in .env.example",
+    ".cor/config.md exists with Plan Storage: session"
+  ],
+  "expected_behavior": [
+    "Detects zero functional read sites and says the flag is already dead code",
+    "Skips the mode question since there is no branch to keep or delete",
+    "Plans removal of the declaration and .env.example line, the feature-map Flags row, and a [UAT] task to archive the flag in LaunchDarkly and check code references report extinction",
+    "Creates session task entries per Plan Storage: session rather than a markdown file",
+    "Writes no code"
+  ]
+}

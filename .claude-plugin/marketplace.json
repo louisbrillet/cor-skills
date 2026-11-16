@@ -33,14 +33,17 @@
     {
       "name": "toolbox",
       "source": "./plugins/toolbox",
-      "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills, feature-map",
+      "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills, feature-map, feature-flag, feature-unflag, codebase-map",
       "version": "0.2.0",
       "category": "productivity",
       "skills": [
         "./skills/show-me",
         "./skills/token-caveman",
         "./skills/authoring-skills",
-        "./skills/feature-map"
+        "./skills/feature-map",
+        "./skills/feature-flag",
+        "./skills/feature-unflag",
+        "./skills/codebase-map"
       ]
     }
   ]

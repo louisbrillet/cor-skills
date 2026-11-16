@@ -1,0 +1,17 @@
+{
+  "skills": ["feature-flag"],
+  "query": "I want to dark-launch the new Rewards screen, add a toggle for it.",
+  "setup": [
+    "React Native app using React Navigation; docs/feature-map.md lists Rewards under Loyalty, kind screen, entrypoint src/app/navigation/MainTabs.tsx:41 (<Tab.Screen name=\"Rewards\">), confidence EXTRACTED",
+    "No feature flag SDK, no env-based flag module, no config/features file in the repository",
+    ".cor/config.md absent"
+  ],
+  "expected_behavior": [
+    "Reports that no flag infrastructure exists and offers choices with OpenFeature plus an in-memory or remote-config provider as the recommended default, and a typed local config module as the lightweight alternative",
+    "Chooses the navigator registration as gate boundary so the screen is absent from the tab bar when off, rather than rendering an empty screen",
+    "Default value is false because the feature is new and dark-launched",
+    "Plans a first task that creates the flag infrastructure, then the gate, then tests, then the feature-map update",
+    "Because .cor/config.md is absent, writes the plan to docs/feature-map.plan.md and tells the user how to execute it manually or with cor-setup then cor-code",
+    "Writes no application code"
+  ]
+}

@@ -73,7 +73,7 @@ function renderOverview(o) {
         .map(
           (m) => `<li><button type="button" class="card" data-path="${esc(m.path)}">
             <span class="card-title">${esc(m.title)}</span><span class="card-path">${esc(m.path)}</span>
-            <span class="card-side">${m.error ? `<span class="err">${esc(m.error)}</span>` : `<span>${m.capabilities} cap.</span><span>${m.features} feat.</span>${m.flags ? `<span>${m.flags} flag${m.flags === 1 ? "" : "s"}</span>` : ""}${m.generated ? `<code>${esc(m.generated)}</code>` : ""}`}</span>
+            <span class="card-side">${m.error ? `<span class="err">${esc(m.error)}</span>` : `${m.mapKind === "codebase" ? `<span>${m.counts?.slices ?? 0} slices</span><span>${m.counts?.edges ?? 0} edges</span>` : `<span>${m.capabilities} cap.</span><span>${m.features} feat.</span>${m.flags ? `<span>${m.flags} flag${m.flags === 1 ? "" : "s"}</span>` : ""}`}${m.generated ? `<code>${esc(m.generated)}</code>` : ""}`}</span>
           </button></li>`,
         )
         .join("")
@@ -153,7 +153,10 @@ function renderMap(a) {
     )
     .join("");
   const rest = a.sections.filter((s) => !/overview/i.test(s.heading)).map((s, i) => `<section class="rsec" id="${slug(s.heading, "s" + i)}"><h2>${esc(s.heading)}</h2><div class="md">${s.html}</div></section>`).join("");
-  return `<h1>${esc(a.title)}</h1><p class="meta"><code>${esc(a.path)}</code><span class="sep">·</span>${when(a.updatedAt)}<span class="sep">·</span>${a.capabilities.length} capabilities<span class="sep">·</span>${a.featureCount} features<span class="sep">·</span>${a.flagCount} flag${a.flagCount === 1 ? "" : "s"}</p>
+  const stats = a.mapKind === "codebase"
+    ? Object.entries(a.counts).map(([k, v]) => `<span class="sep">·</span>${v} ${esc(k)}`).join("")
+    : `<span class="sep">·</span>${a.capabilities.length} capabilities<span class="sep">·</span>${a.featureCount} features<span class="sep">·</span>${a.flagCount} flag${a.flagCount === 1 ? "" : "s"}`;
+  return `<h1>${esc(a.title)}</h1><p class="meta"><code>${esc(a.path)}</code><span class="sep">·</span>${when(a.updatedAt)}${stats}</p>
     ${confBar}
     ${meta ? `<p class="map-meta">${meta}</p>` : ""}
     <div class="research-grid"><nav class="toc" aria-label="Sections"><ol>${toc}</ol></nav><div>${overview}${caps}${rest}</div></div>`;

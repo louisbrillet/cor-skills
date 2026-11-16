@@ -1,0 +1,17 @@
+{
+  "skills": ["feature-flag"],
+  "query": "Put the Checkout feature behind a feature flag.",
+  "setup": [
+    "docs/feature-map.md exists and lists Checkout under Orders with kind http-route, entrypoint apps/api/src/routes/checkout.ts:18, confidence EXTRACTED",
+    "@openfeature/server-sdk is installed and a provider is configured in apps/api/src/shared/config/openfeature.ts",
+    ".cor/config.md exists with Plan Storage: markdown"
+  ],
+  "expected_behavior": [
+    "Reads docs/feature-map.md and confirms Checkout with the user from the map instead of asking them to describe it",
+    "Detects the existing OpenFeature setup and reuses it; does not propose a second flag library or an env-var mechanism",
+    "Chooses the entrypoint as gate boundary (route registration or a guard at the top of the handler returning 404) and states why over an internal branch",
+    "Defines the flag contract: key prefixed by the capability (orders.checkout), boolean, default true so merging changes nothing, owner, expected lifetime, review date",
+    "Produces an ordered task list with one single read site for the flag, on/off tests tagged [unit], a task updating the Flags section of the feature map, and a [UAT] task verifying the off state",
+    "Saves the plan to .cor/ per Plan Storage and writes no application code"
+  ]
+}
