@@ -194,7 +194,7 @@ User-invoked only (`disable-model-invocation: true`). Reads the relevant code, t
 
 ## feature-map
 
-Builds `docs/feature-map.md`: capabilities, then features with kind, entrypoints (`file:line`), modules per layer, dependencies, tests, flag, and a confidence tag (`EXTRACTED`, `INFERRED`, `AMBIGUOUS`). Overview as a Mermaid `mindmap`; optional `flowchart` per capability.
+Builds `docs/feature-map.md`: capabilities, then features with kind, entrypoints (`file:line`), modules per layer, dependencies, tests, flag, and a confidence tag (`EXTRACTED`, `INFERRED`, `AMBIGUOUS`). Overview as a Mermaid `flowchart LR` tree (product, capabilities, features); optional `flowchart` per capability.
 
 | Step | Behavior |
 | --- | --- |

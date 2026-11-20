@@ -152,7 +152,7 @@ Counts from the metrics section of the extraction reference. No thresholds, colo
 
 ## Mermaid limits
 
-- `flowchart` only. No `architecture-beta`, `C4*`, `treemap-beta`, `mindmap` in this file; the first three have unstable syntax, and the capability tree already lives in the feature map.
+- `flowchart` only. No `architecture-beta`, `C4*`, `treemap-beta`, `mindmap` in this file; the first three have unstable syntax, `mindmap` is unreadable, and the capability tree already lives in the feature map.
 - Under 40 nodes and under 80 edges per diagram.
 - Node IDs are short and stable (`F1`, `E2`); labels are real slice names.
 - Edge labels only when the weight matters (`-->|12|`).

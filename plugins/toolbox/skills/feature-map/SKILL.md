@@ -109,9 +109,9 @@ Do not ask about `INFERRED` items. Mention their count in the report instead.
 
 Fresh run: write the template from [references/map-template.md](references/map-template.md) in full.
 
-Update run: apply the update algorithm from the template reference. Rewrite only changed feature blocks, preserve manual blocks and block order, rewrite Flags and Unattributed entirely, refresh meta and counts.
+Update run: apply the update algorithm from the template reference. Rewrite only changed feature blocks, preserve manual blocks and block order, rewrite Overview, Flags, and Unattributed entirely, refresh meta and counts.
 
-Mermaid limits: overview `mindmap` under 40 nodes, otherwise capabilities only in the overview plus a `flowchart` per capability. File over 500 lines: split per capability as described in the template reference.
+Mermaid limits: overview is a `flowchart LR` tree (product, capabilities, features) under 40 nodes, otherwise capabilities only in the overview plus a `flowchart` per capability. Never `mindmap`. File over 500 lines: split per capability as described in the template reference.
 
 Create `docs/` if missing. Do not write anywhere else.
 
@@ -135,3 +135,4 @@ Reply with:
 - Regenerating the file on update and losing manual blocks.
 - Asking the user to classify dozens of items. Above 4 questions, make a best guess, tag `INFERRED`, and report.
 - Adding `architecture-beta`, `C4*`, or `treemap-beta` diagrams: syntax unstable across renderers.
+- Drawing the overview as a `mindmap`: unreadable radial layout. Use the `flowchart LR` tree from the template.

@@ -11,7 +11,7 @@
     "Falls back to grep for xTaskCreate, command table entries, and subscribe calls, and tags trace results as INFERRED where it followed #include chains instead of a dependency graph",
     "Lists the two Kconfig switches as compile-time flags in the Flags section with provider `kconfig` and their current values",
     "Writes docs/feature-map.md with the same template as for web projects, with layers named after the detected folder roles rather than forcing FSD names",
-    "Keeps the overview mindmap under 40 nodes, splitting into per-capability flowcharts if needed",
+    "Keeps the overview flowchart under 40 nodes, splitting into per-capability flowcharts if needed",
     "States explicitly which parts of the map are INFERRED and asks the user to confirm those in a single question round"
   ]
 }

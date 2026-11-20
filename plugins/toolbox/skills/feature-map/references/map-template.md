@@ -32,13 +32,17 @@ Capabilities: <N>. Features: <N>. Flags: <N>. Confidence: <N> EXTRACTED, <N> INF
 ## Overview
 
 ```mermaid
-mindmap
-  root((<Product name>))
-    <Capability A>
-      <Feature 1>
-      <Feature 2> 🚩
-    <Capability B>
-      <Feature 3>
+flowchart LR
+  P(["<Product name>"])
+  P --> C1["<Capability A>"]
+  P --> C2["<Capability B>"]
+  C1 --> F1["<Feature 1>"]
+  C1 --> F2["<Feature 2> 🚩"]
+  C2 --> F3["<Feature 3>"]
+  classDef capability font-weight:bold
+  classDef flagged stroke-dasharray:4 3
+  class C1,C2 capability
+  class F2 flagged
 ```
 
 ## Capabilities
@@ -115,7 +119,10 @@ Content between `<!-- manual -->` and `<!-- /manual -->` is owned by humans. On 
 
 ## Mermaid rules
 
-- Overview: `mindmap`, max 40 nodes. Above that, show only capabilities in the overview and add one `flowchart` per capability inside its section.
+- Overview: `flowchart LR` tree, product node to capabilities to features, max 40 nodes. Above that, show only capabilities in the overview and add one `flowchart` per capability inside its section.
+- Overview edges go from parent to child only: product to capability, capability to feature. No feature-to-feature edges; dependencies live in the feature blocks.
+- Overview node IDs are short (`P`, `C1`, `F1`); labels are always quoted (`F1["GET /orders/:id"]`) so route paths and punctuation do not break parsing. IDs are renumbered on each write; only labels carry meaning.
+- No `mindmap`: its radial layout becomes unreadable past a handful of nodes.
 - Per-capability diagram (optional, only when a capability has more than 3 features or the user asks):
 
 ```mermaid
@@ -135,7 +142,7 @@ flowchart TB
 ```
 
   One `subgraph` per layer, one node per module, arrows follow imports. Use the layer names from the meta comment.
-- Flagged features get the `🚩` suffix in diagrams. No other emoji.
+- Flagged features get the `🚩` suffix in diagrams, plus the `flagged` class in the overview. No other emoji.
 - Node labels are feature or module names that exist in the repository.
 - No `architecture-beta`, `C4*`, or `treemap-beta` in the map file: their syntax is not stable across renderers.
 
@@ -152,7 +159,7 @@ When the file would exceed 500 lines, keep `docs/feature-map.md` as the index (m
    - entrypoint gone -> remove its block; keep its manual block under Unattributed
    - changed modules, tests, flag -> rewrite that feature block only
    - unchanged -> leave the block untouched, including its ordering
-4. Rewrite Flags and Unattributed sections entirely.
+4. Rewrite the Overview diagram, Flags, and Unattributed sections entirely. An existing `mindmap` overview is replaced by the `flowchart LR` tree.
 5. Update the meta comment and the counts line.
 6. Report `added / removed / changed / unchanged` counts to the user.
 
