@@ -5,6 +5,6 @@
   "description": "CodingOnRails workflow: setup, think, research, plan, code, test, work router, plus design, review, refactor and docs phases",
   "author": { "name": "Louis Brillet" },
   "repository": "https://github.com/louisbrillet/cor-skills",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": ["coding-on-rails", "methodology", "workflow", "plan", "tdd"]
 }

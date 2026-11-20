@@ -1,0 +1,62 @@
+name: Bug report
+description: A skill or script does not behave as documented.
+labels: ["bug"]
+body:
+  - type: input
+    id: skill
+    attributes:
+      label: Skill or script
+      description: Which skill or script is affected.
+      placeholder: cor-plan
+    validations:
+      required: true
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent
+      options:
+        - Claude Code
+        - GitHub Copilot
+        - Codex
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versions
+      description: COR Skills version, agent version and model.
+      placeholder: cor-skills 0.2.0, Claude Code x.y.z, model name
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Install method
+      options:
+        - skills CLI (npx skills)
+        - Claude Code plugin
+        - Copilot plugin
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The prompt you used and the relevant project context (stack, plan storage choice).
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include agent output or logs. Remove secrets and private code first.
+    validations:
+      required: true

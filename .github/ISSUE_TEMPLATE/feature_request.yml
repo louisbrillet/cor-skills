@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest a change to an existing skill, script or the docs.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What you were trying to do and where the current behavior falls short.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Name the skill or script it applies to.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: agents
+    attributes:
+      label: Agents concerned
+      multiple: true
+      options:
+        - Claude Code
+        - GitHub Copilot
+        - Codex
+        - Other

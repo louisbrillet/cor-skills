@@ -205,6 +205,10 @@ python plugins/toolbox/skills/authoring-skills/scripts/validate_skill.py plugins
 
 Run it before shipping a skill change. `ERROR` findings must be fixed; `WARN` findings must be triaged explicitly.
 
+## Contributing
+
+Issues are welcome; pull requests are reviewed on a best-effort basis. See [CONTRIBUTING.md](CONTRIBUTING.md), the [Code of Conduct](CODE_OF_CONDUCT.md) and the [security policy](SECURITY.md).
+
 ## License
 
-MIT
+[Apache-2.0](LICENSE)

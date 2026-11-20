@@ -1,0 +1,57 @@
+name: Skill proposal
+description: Propose a new skill for the cor or toolbox plugin.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open this before writing the skill. Pull requests adding a skill without an accepted proposal are unlikely to be reviewed.
+  - type: input
+    id: name
+    attributes:
+      label: Skill name
+      placeholder: my-skill
+    validations:
+      required: true
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Target plugin
+      options:
+        - cor (workflow phase)
+        - toolbox (standalone helper)
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: Baseline gap
+      description: What an agent gets wrong or cannot do today without this skill. Concrete examples help.
+    validations:
+      required: true
+  - type: textarea
+    id: trigger
+    attributes:
+      label: When it should trigger
+      description: The user requests or situations that should activate the skill.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected behavior
+      description: What the skill does, its outputs, and any scripts or references it needs.
+    validations:
+      required: true
+  - type: textarea
+    id: evaluations
+    attributes:
+      label: Evaluation scenarios
+      description: Up to three scenarios that would show the skill works.
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to write this skill myself.

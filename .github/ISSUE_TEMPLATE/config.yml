@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or idea
+    url: https://github.com/louisbrillet/cor-skills/discussions
+    about: Ask usage questions and share ideas in Discussions.
+  - name: Security vulnerability
+    url: https://github.com/louisbrillet/cor-skills/security/advisories/new
+    about: Report vulnerabilities privately, not in a public issue.
