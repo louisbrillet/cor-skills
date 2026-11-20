@@ -77,7 +77,7 @@ To stay on the old layout: `npx skills add louisbrillet/cor-skills@v0.1.0`.
 | `cor-review`    | Measure   | stable | Measured code review (CRAP, duplication, mutation testing) judged by the refactor gates; ends in a refactor plan for `cor-code` |
 | `cor-docs`      | After Code | stable | Updates Diataxis Markdown docs (MkDocs/Zensical) from a branch diff; edits only affected quadrants                |
 | `cor-design`    | Before Plan | beta | Exploratory UI design phase with variant generation, scoring, and hand-off into planning                           |
-| `cor-refacto`   | Think + Plan | beta | Think+Plan workflow for behavior-preserving refactoring with strict simplification gates                          |
+| `cor-refacto`   | Think + Plan | deprecated | Think+Plan workflow for behavior-preserving refactoring with strict simplification gates                          |
 | `ux-frameworks` | Any       | beta   | Layered UX diagnostics using Nielsen, Garrett, Gestalt/PARC, Morville, and Yablonski frameworks                     |
 | `ui-design-system-principles` | Any UI work | beta | Systematic UI design-token and accessibility principles for frontend output quality                   |
 

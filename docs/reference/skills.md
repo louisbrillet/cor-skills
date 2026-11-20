@@ -18,7 +18,7 @@ Two plugins. `cor` is the workflow and everything that reads or writes `.cor/`. 
 | `cor-review` | `cor` | Measure + Think + Plan | `/cor:cor-review` | stable |
 | `cor-docs` | `cor` | After Code | `/cor:cor-docs` | stable |
 | `cor-design` | `cor` | Before Plan | `/cor:cor-design` | beta |
-| `cor-refacto` | `cor` | Think + Plan | `/cor:cor-refacto` | beta |
+| `cor-refacto` | `cor` | Think + Plan | `/cor:cor-refacto` | deprecated |
 | `ux-frameworks` | `cor` | Any | - | beta |
 | `ui-design-system-principles` | `cor` | Any UI work | - | beta |
 | `show-me` | `toolbox` | Any | `/toolbox:show-me` | beta |
@@ -268,7 +268,7 @@ Each skill is a directory under `plugins/<plugin>/skills/` containing `SKILL.md`
 | --- | --- |
 | `name` | lowercase letters, numbers, hyphens; max 64 chars; equals directory name; no `anthropic` or `claude` |
 | `description` | max 1024 chars; third person; states what and when to use |
-| `status` | `stable` or `beta` |
+| `status` | `stable`, `beta`, or `deprecated` |
 | `stability` | `guaranteed` or `experimental` |
 
 Optional subdirectories: `references/`, `scripts/`, `templates/`, `evaluations/`. `SKILL.md` stays under 500 lines and links bundled files one level deep. Plugins are listed in `.claude-plugin/marketplace.json` at the repository root; each plugin directory carries a root `plugin.json` (Agent Plugins 1.0, read by Copilot and VS Code) and a `.claude-plugin/plugin.json` (Claude Code). Skills are discovered from the plugin's `skills/` directory; the marketplace entry also lists them for the `skills` CLI.

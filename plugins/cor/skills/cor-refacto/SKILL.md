@@ -1,7 +1,7 @@
 ---
 name: cor-refacto
 description: "Think+Plan skill for behavior-preserving refactoring. Use when the user wants to improve readability, simplicity, maintainability, duplication, or coupling without functional changes. Produces a concrete refactor plan and a strict handoff for cor-code; blocks theoretical refactors that do not reduce net complexity. Claude Code users: invoke as /cor:cor-refacto."
-status: beta
+status: deprecated
 stability: experimental
 ---
 
