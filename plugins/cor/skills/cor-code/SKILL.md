@@ -95,6 +95,7 @@ Read `.cor/config.md`. Extract:
 - `Checks` — commands to run after each task
 - `Plan Storage` — where the plan lives (`markdown`, `memory`, or `session`)
 - `Auto Commit` — `auto` or `manual`. Missing section → `auto`.
+- `Delegation` — `enabled` or `disabled`, plus `Worker model`. Missing section → `disabled`.
 
 If config does not exist: "Run the **cor-setup** skill first." and stop.
 
@@ -205,6 +206,12 @@ started: 2026-05-12T14:30:00
 Always include the `plan:` field — even when only one plan file exists. Use the actual task ID, active plan file path, and current timestamp. This file is the crash-recovery signal — write it first, before any code change.
 
 No confirmation prompt. Begin immediately.
+
+### Delegated implementation (optional)
+
+Only when `Delegation` is `enabled` and a subagent tool is available (`Task` / `Agent` in Claude Code, `task` or `runSubagent` in Copilot, subagent spawning in Codex): read [references/delegation.md](references/delegation.md) and have one subagent implement this task instead of editing files yourself. You remain responsible for the checkpoint, Steps 3 to 6, and every question to the user. The rules below still apply; pass them to the subagent.
+
+When `Delegation` is `disabled`, the section is missing, or no subagent tool exists, implement the task yourself. Do not mention delegation.
 
 Implement the task surgically:
 

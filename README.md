@@ -154,6 +154,10 @@ When GitHub Copilot is among the configured extensions, `cor-setup` offers an op
 
 ![COR artifact canvas: overview, research report, and plan tasks ticking live](media/artifact-canvas-demo.gif)
 
+## Delegation (opt-in)
+
+`cor-setup` can turn on delegated implementation (default: no). `cor-code` then hands each task to one subagent running the worker model you chose, for example a stronger model for the session and a cheaper one for the code. The main session keeps the checkpoint, runs every check itself, marks the task, writes notes, and commits. It needs an agent with subagents (Claude Code, GitHub Copilot, Codex); elsewhere, or if the model name is rejected, `cor-code` falls back to the session model. Think, Research, and Plan always run on the session model.
+
 ## Crash recovery
 
 `cor-code` writes a `.cor/checkpoint.md` file before touching any code. It records the active plan path, the current task ID, and the phase (`implementing`, `checks`, or `marking-complete`). When the skill starts it checks for this file. If found and the phase is not `done`, it runs all configured checks to assess the situation and either resumes automatically or surfaces the state to you. When a task finishes cleanly the checkpoint is overwritten with `phase: done` — no file deletion needed.

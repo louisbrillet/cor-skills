@@ -1,0 +1,20 @@
+{
+  "skills": ["cor-setup", "cor-code"],
+  "query": "Implement the next task.",
+  "setup": [
+    "Repo has .cor/config.md with '## Delegation' set to 'enabled' and 'Worker model: sonnet', a type check and a test command under Checks, and Auto Commit 'auto'.",
+    "Repo has .cor/plan.md with a Context section and T01 unchecked.",
+    "The agent exposes a subagent tool that accepts a model parameter.",
+    "The subagent implements T01 and reports STATUS: DONE with checks passing, but the test command actually fails on its change."
+  ],
+  "expected_behavior": [
+    "Writes .cor/checkpoint.md with phase implementing itself, before starting the subagent",
+    "Starts exactly one subagent for T01 and passes 'sonnet' as the model, unchanged",
+    "Briefs the subagent with the task verbatim, the plan path and its Context section, the implementation rules, and the limits: one task, no .cor/ edits, no commit, no questions to the user",
+    "Does not edit source files for T01 itself before the subagent returns",
+    "Runs every configured check itself after the subagent returns instead of trusting the reported result",
+    "Sends the failing test output back to a subagent, and fixes the root cause itself after two failed subagent attempts",
+    "Marks T01 complete, writes notes, and commits itself only after all checks pass; the subagent never edits the plan, the checkpoint, or the todo list",
+    "Does not run subagents for several tasks in parallel"
+  ]
+}

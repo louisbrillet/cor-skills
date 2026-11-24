@@ -39,6 +39,10 @@ auto | manual
 ## Plan Storage
 markdown | memory | session
 
+## Delegation
+disabled | enabled
+Worker model: sonnet
+
 ## Dependency Documentation
 disabled | enabled
 Map: docs/DEPENDENCIES.md
@@ -56,6 +60,11 @@ claude-code, copilot
 | --- | --- |
 | `auto` (default, also when the section is missing) | `cor-code` commits once per task after checks pass: code changes plus `.cor/` plan and checkpoint, Conventional Commits subject ending with the task ID |
 | `manual` | `cor-code` never runs `git commit`; you commit yourself |
+
+| Delegation | Behaviour |
+| --- | --- |
+| `disabled` (default, also when the section is missing) | `cor-code` implements each task in the main session |
+| `enabled` | `cor-code` hands each task to one subagent on `Worker model` (`inherit` = session model); the main session keeps checkpoint, checks, notes, and commit |
 
 | Plan storage | Location |
 | --- | --- |

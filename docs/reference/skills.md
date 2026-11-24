@@ -45,8 +45,9 @@ Runs once per repository. Requires nothing.
 | 4 | Dependency documentation (Node and Python) | `docs/DEPENDENCIES.md`, generation command (`docs:deps` script for Node) |
 | 5 | Artifact canvas (only if GitHub Copilot selected; opt-in, default no) | `.github/extensions/cor-artifacts/`, `Artifact Canvas` |
 | 6 | Auto commit per task (default yes) | `Auto Commit` |
-| 7 | Plan storage: `markdown`, `memory`, `session` | `Plan Storage` |
-| 8 | - | writes `.cor/config.md` |
+| 7 | Delegate implementation to a subagent on another model (opt-in, default no) | `Delegation`, `Worker model` |
+| 8 | Plan storage: `markdown`, `memory`, `session` | `Plan Storage` |
+| 9 | - | writes `.cor/config.md` |
 
 Default checks by stack:
 
@@ -90,6 +91,8 @@ When plans already exist, offers: merge as a new phase, overwrite (only if untou
 Requires `.cor/config.md` and a plan. Optional argument: task ID.
 
 Per task: write checkpoint, implement, run every check, mark complete, write notes, commit (when `Auto Commit` is `auto`: one Conventional Commits commit per task, including the plan and checkpoint), continue to next task without confirmation.
+
+When `Delegation` is `enabled` and the agent has a subagent tool, one subagent on the configured `Worker model` implements each task; the main session still writes the checkpoint, runs every check, marks the task, writes notes, and commits. Falls back to the main session when no subagent tool exists.
 
 Pauses only when tool output reveals information that changes the approach (for example a conflicting existing schema, a version conflict, or a duplicate implementation). Does not pause for lint or test failures; it fixes them.
 
