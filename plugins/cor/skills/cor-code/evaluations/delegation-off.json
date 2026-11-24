@@ -1,0 +1,17 @@
+{
+  "skills": ["cor-setup", "cor-code"],
+  "query": "Implement the next task.",
+  "setup": [
+    "Scenario A: repo has .cor/config.md with no '## Delegation' section, and the agent exposes a subagent tool.",
+    "Scenario B: repo has .cor/config.md with '## Delegation' set to 'enabled' and 'Worker model: sonnet', but the agent exposes no subagent tool.",
+    "Scenario C: same config as B, the agent exposes a subagent tool, but it rejects the model name 'sonnet'.",
+    "In every scenario .cor/plan.md has T01 unchecked."
+  ],
+  "expected_behavior": [
+    "Scenario A: implements T01 in the main session, starts no subagent, and does not mention delegation",
+    "Scenario B: implements T01 in the main session without failing or asking the user about delegation",
+    "Scenario C: runs the subagent without a model parameter and tells the user once that the worker used the session model and why",
+    "Scenario C: does not substitute another model name of its own choosing",
+    "In every scenario: checkpoint, checks, plan checkbox, notes, and commit behave exactly as without delegation"
+  ]
+}
