@@ -1,9 +1,9 @@
 {
   "name": "toolbox",
   "version": "0.2.0",
-  "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills",
+  "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills, feature-map, feature-flag, feature-unflag, codebase-map, smart-commit, cap-screen-recording",
   "author": { "name": "Louis Brillet" },
   "repository": "https://github.com/louisbrillet/cor-skills",
   "license": "Apache-2.0",
-  "keywords": ["diagrams", "mermaid", "terse", "skill-authoring"]
+  "keywords": ["diagrams", "mermaid", "terse", "skill-authoring", "feature-map", "feature-flags", "architecture-map", "git", "commits", "screen-recording", "demo"]
 }

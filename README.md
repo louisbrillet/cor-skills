@@ -24,7 +24,7 @@ The repository is a plugin marketplace with two plugins:
 | Plugin    | Contents                                                                                   |
 | --------- | ------------------------------------------------------------------------------------------ |
 | `cor`     | The CodingOnRails workflow: setup, think, research, plan, code, test, work router, plus the design, review, refactor and docs phases |
-| `toolbox` | Standalone engineer helpers with no dependency on the workflow: `show-me`, `token-caveman`, `authoring-skills`, `feature-map`, `feature-flag`, `feature-unflag`, `codebase-map`, `smart-commit` |
+| `toolbox` | Standalone engineer helpers with no dependency on the workflow: `show-me`, `token-caveman`, `authoring-skills`, `feature-map`, `feature-flag`, `feature-unflag`, `codebase-map`, `smart-commit`, `cap-screen-recording` |
 
 Any agent via the `skills` CLI (asks which skills and agents to install to):
 
@@ -93,6 +93,7 @@ To stay on the old layout: `npx skills add louisbrillet/cor-skills@v0.1.0`.
 | `feature-unflag`   | beta   | Plans flag removal in keep-on, keep-off, or delete mode with a complete reference list and confirmed deletion set; hands off to `cor-code` |
 | `codebase-map`     | beta   | Architectural map in `docs/codebase-map.md`: layers x slices import graph with violations, context view, capability overlay, health table |
 | `smart-commit`     | beta   | Turns pending work into atomic commits grouped by intent, excludes secrets and build noise, matches the repo's message style |
+| `cap-screen-recording` | beta | Records, edits (background, rounding, zooms) and exports screen-recording demos (MP4/GIF) on macOS with the Cap CLI, into `media/` |
 
 `beta` skills may change structure or behavior without backward-compatibility guarantees.
 

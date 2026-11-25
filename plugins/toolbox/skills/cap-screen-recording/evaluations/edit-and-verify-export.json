@@ -1,0 +1,17 @@
+{
+  "skills": [
+    "cap-screen-recording"
+  ],
+  "query": "Polish media/onboarding-demo.cap: nice background, and zoom on the moment the form is submitted, then export it.",
+  "setup": [
+    "media/onboarding-demo.cap exists and validates",
+    "No raw copy of the project exists"
+  ],
+  "expected_behavior": [
+    "Keeps a raw copy of the project before editing project-config.json",
+    "Inspects frames of the raw recording to place the zoom on the real timestamp of the form submission",
+    "Sets a blurred wallpaper background with padding, small rounding and shadow in project-config.json",
+    "Adds a manual zoom segment with explicit x/y that does not start at 0.0",
+    "Builds a frame grid of the exported MP4 and views it before reporting the export as done"
+  ]
+}

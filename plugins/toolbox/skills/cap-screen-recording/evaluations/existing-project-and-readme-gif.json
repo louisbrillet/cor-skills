@@ -1,0 +1,17 @@
+{
+  "skills": [
+    "cap-screen-recording"
+  ],
+  "query": "Record the artifact canvas demo again and make a GIF for the README.",
+  "setup": [
+    "media/artifact-canvas-demo.cap already exists",
+    "The recorded flow lasts about 40 seconds"
+  ],
+  "expected_behavior": [
+    "Does not overwrite media/artifact-canvas-demo.cap silently: asks before replacing it or picks a new slug",
+    "Produces the GIF with a reduced frame rate and width rather than a full-size 60 fps export",
+    "Reports the GIF file size and warns when it is too heavy for a README",
+    "Asks before committing the .cap project or suggests a .gitignore entry for it",
+    "Deletes scratch frame PNGs and closes the staging window after delivery"
+  ]
+}

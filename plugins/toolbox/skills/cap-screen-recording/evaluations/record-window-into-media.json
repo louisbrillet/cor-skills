@@ -1,0 +1,17 @@
+{
+  "skills": [
+    "cap-screen-recording"
+  ],
+  "query": "Record a 30 second demo of the web app running on http://127.0.0.1:5173 and give me an MP4.",
+  "setup": [
+    "macOS with Cap Desktop installed at /Applications/Cap.app and screen recording granted",
+    "Git repository with no media/ folder"
+  ],
+  "expected_behavior": [
+    "Runs cap-cli doctor and checks captureReady before recording",
+    "Records a single window selected by id from cap-cli targets, not the whole screen",
+    "Drives the app from a timeline script during the recording instead of asking the user to click",
+    "Saves the .cap project and the MP4 under media/ at the repository root, not in /tmp",
+    "Opens the .cap project in Cap's editor with open -a at the end"
+  ]
+}

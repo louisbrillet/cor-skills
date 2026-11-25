@@ -33,7 +33,7 @@
     {
       "name": "toolbox",
       "source": "./plugins/toolbox",
-      "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills, feature-map, feature-flag, feature-unflag, codebase-map, smart-commit",
+      "description": "Standalone engineer helpers independent of the COR workflow: show-me visual explanations, token-caveman terse mode, authoring-skills, feature-map, feature-flag, feature-unflag, codebase-map, smart-commit, cap-screen-recording",
       "version": "0.2.0",
       "category": "productivity",
       "skills": [
@@ -44,7 +44,8 @@
         "./skills/feature-flag",
         "./skills/feature-unflag",
         "./skills/codebase-map",
-        "./skills/smart-commit"
+        "./skills/smart-commit",
+        "./skills/cap-screen-recording"
       ]
     }
   ]

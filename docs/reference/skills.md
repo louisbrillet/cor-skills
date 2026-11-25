@@ -29,6 +29,7 @@ Two plugins. `cor` is the workflow and everything that reads or writes `.cor/`. 
 | `feature-unflag` | `toolbox` | Plan | `/toolbox:feature-unflag` | beta |
 | `codebase-map` | `toolbox` | Any | `/toolbox:codebase-map` | beta |
 | `smart-commit` | `toolbox` | After Code | `/toolbox:smart-commit` | beta |
+| `cap-screen-recording` | `toolbox` | Any | `/toolbox:cap-screen-recording` | beta |
 
 Slash commands are `/<plugin>:<skill>` when installed as a plugin (Claude Code, Copilot CLI). Skills installed with `npx skills` are invoked by skill name. Status comes from the `status` frontmatter field. `beta` skills declare `stability: experimental` and may change without backward compatibility.
 
@@ -262,6 +263,22 @@ Turns uncommitted work into a series of atomic commits. Writes nothing but commi
 | Verify | clean tree except triaged exclusions; reports created commits |
 
 Respects an explicit index when the user asks to commit staged changes. Never uses `git add -A`, `git commit -a`, `--no-verify`, or rewrites pushed commits.
+
+## cap-screen-recording
+
+Records a scripted demo of an application window with the Cap CLI, edits it, and exports it. macOS only; requires Cap Desktop at `/Applications/Cap.app` with screen-recording permission.
+
+| Step | Behavior |
+| --- | --- |
+| Check | `cap-cli doctor --json` must report `captureReady: true` |
+| Stage | clean target window (dedicated Chrome app window for web UIs); `targets --json` gives the window id |
+| Record | `record start --window <id>` while a timeline script drives the app (HTTP endpoints, file edits, `osascript`) |
+| Edit | `project-config.json` in the `.cap` project: wallpaper background, padding, rounding, shadow, manual zoom segments; raw copy kept |
+| Export | `export --quality social` to MP4; optional GIF through Cap or ffmpeg with a palette |
+| Verify | frame grid of the raw segment and of the export, viewed before delivery |
+| Deliver | opens the project in Cap's editor with `open -a` unless told otherwise |
+
+Output goes to `<project-root>/media/<slug>.cap` with exports beside it. Asks before replacing an existing project and before committing `.cap` projects.
 
 ## Skill format
 

@@ -11,6 +11,7 @@ Files COR skills create or read in your project repository.
 | `.cor/research_<slug>.md` | `cor-research` | `cor-plan`, `cor-work` |
 | `.cor/design-lab/` | `cor-design` | user, `cor-plan` |
 | `.cor/show-me/<slug>.html` | `show-me` | user |
+| `media/<slug>.cap`, `media/<slug>.mp4`, `media/<slug>.gif` | `cap-screen-recording` | user, Cap editor |
 | `.cor/scripts/gen-dependency-docs.mjs` or `.py` | `cor-setup` | `Generate` command in `.cor/config.md` |
 | `.cor/docs.md` | `cor-docs` | `cor-docs` |
 | `docs/DEPENDENCIES.md` | `Generate` command | `cor-code`, `cor-research` |
