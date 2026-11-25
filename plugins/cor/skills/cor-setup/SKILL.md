@@ -254,7 +254,9 @@ Record `auto` or `manual` for Step 9.
 
 ## Step 7 — Delegation (opt-in)
 
-Ask: "Should **cor-code** delegate each task's implementation to a subagent running another model? The session model keeps orchestrating: it writes the checkpoint, runs the checks itself, marks the task, and commits. Useful to pair a stronger model for the session with a cheaper one for the code. Requires an agent with subagents; elsewhere cor-code implements tasks itself." Choices: `No, the session model implements (Recommended)` / `Yes, delegate`.
+Ask: "Should **cor-code** delegate each task's implementation to a subagent running another model? The session model keeps orchestrating: it writes the checkpoint, runs the checks itself, marks the task, and commits. Useful to pair a stronger model for the session with a cheaper one for the code. Warning: delegation is a cost saving, not a quality gain. A cheaper worker will likely write weaker code than the session model would, and the checks only catch what they test. Requires an agent with subagents; elsewhere cor-code implements tasks itself." Choices: `No, the session model implements (Recommended)` / `Yes, delegate`.
+
+Always include the warning sentence in the question, so the user reads it before choosing.
 
 If yes, ask: "Which model should the worker use? Give the name exactly as your agent accepts it for subagents (for example `sonnet` in Claude Code), or `inherit` to use the session model." Record the answer verbatim; do not validate or rewrite the name.
 
